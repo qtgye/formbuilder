@@ -1,0 +1,18 @@
+{
+  "name": "formbuilder.dev",
+  "version": "1.0.0",
+  "homepage": "https://github.com/qtgye/formbuilder",
+  "authors": [
+    "qtgye (buquia.jace@gmail.com)"
+  ],
+  "description": "Basic Javascript Form Builder Application",
+  "main": "index.html",
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "~3.3.5",
+    "jquery-1.11.1": "~2.1.4",
+    "jquery.ui": "~1.11.4",
+    "mustache.js": "~2.1.3",
+    "jquery-ui": "jquery/jquery-ui#~1.11.4"
+  }
+}
