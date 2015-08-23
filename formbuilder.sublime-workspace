@@ -1,0 +1,890 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"ch",
+				"check_add_submit"
+			],
+			[
+				"access",
+				"access_token"
+			],
+			[
+				"page",
+				"page_id"
+			],
+			[
+				"li",
+				"library_name"
+			],
+			[
+				"font",
+				"font-family"
+			],
+			[
+				"mar",
+				"margin-right"
+			],
+			[
+				"chart",
+				"chart02"
+			],
+			[
+				"for",
+				"for	for (…) {…}"
+			],
+			[
+				"ave",
+				"aveGrade"
+			],
+			[
+				"ind",
+				"indexOf"
+			],
+			[
+				"gene",
+				"generateGrades"
+			],
+			[
+				"marg",
+				"margin-right"
+			],
+			[
+				"inlin",
+				"inline-table"
+			],
+			[
+				"pos",
+				"pos:a	position:absolute"
+			],
+			[
+				"padd",
+				"padding-right"
+			],
+			[
+				"max",
+				"max-height"
+			],
+			[
+				"cons",
+				"construct_query_options"
+			],
+			[
+				"date",
+				"date_create_from_format"
+			],
+			[
+				"file_",
+				"file_get_contents"
+			],
+			[
+				"load",
+				"load_model"
+			],
+			[
+				"strto",
+				"strtoupper"
+			],
+			[
+				"url",
+				"urlencode"
+			],
+			[
+				"m",
+				"ministry"
+			],
+			[
+				"mini",
+				"ministry_abbr"
+			],
+			[
+				"alb",
+				"album_id"
+			],
+			[
+				"fil",
+				"finalGrades"
+			],
+			[
+				"gra",
+				"grading_periods"
+			],
+			[
+				"sub",
+				"subjectsForAve"
+			],
+			[
+				"map",
+				"mapehSubjects"
+			],
+			[
+				"text",
+				"text-align"
+			],
+			[
+				"back",
+				"background"
+			],
+			[
+				"hei",
+				"height"
+			],
+			[
+				"tabl",
+				"table-cell"
+			],
+			[
+				"di",
+				"display"
+			],
+			[
+				"templ",
+				"template_arrays"
+			],
+			[
+				"bor",
+				"border"
+			],
+			[
+				"str_rep",
+				"str_replace"
+			],
+			[
+				"json_",
+				"json_encode"
+			],
+			[
+				"is",
+				"is_array"
+			],
+			[
+				"self",
+				"self_closing_tags"
+			],
+			[
+				"in",
+				"in_array"
+			],
+			[
+				"verse",
+				"verse_end"
+			],
+			[
+				"json",
+				"json_encode"
+			],
+			[
+				"chapter",
+				"chapter_nr"
+			],
+			[
+				"book",
+				"book_name"
+			],
+			[
+				"sa",
+				"save_to_db"
+			],
+			[
+				"boo",
+				"book_title"
+			],
+			[
+				"fetch",
+				"fetch_json"
+			],
+			[
+				"as",
+				"async"
+			],
+			[
+				"data",
+				"dataType"
+			],
+			[
+				"chap",
+				"chapters_count"
+			],
+			[
+				"lates",
+				"latest_published"
+			],
+			[
+				"status_",
+				"status_change"
+			],
+			[
+				"field",
+				"field_names"
+			],
+			[
+				"query",
+				"query_params"
+			],
+			[
+				"fie",
+				"field_names"
+			],
+			[
+				"q",
+				"query_params"
+			],
+			[
+				"fi",
+				"fields"
+			],
+			[
+				"regis",
+				"register"
+			],
+			[
+				"method",
+				"method_exists"
+			],
+			[
+				"border",
+				"border-box"
+			],
+			[
+				"bord",
+				"border-box"
+			],
+			[
+				"paddi",
+				"padding-top"
+			],
+			[
+				"send",
+				"send_mail"
+			],
+			[
+				"tab",
+				"table-cell"
+			],
+			[
+				"table",
+				"table-row"
+			],
+			[
+				"bold",
+				"bolder"
+			],
+			[
+				"Inpu",
+				"inputRem"
+			],
+			[
+				"wid",
+				"width"
+			],
+			[
+				"no",
+				"nowrap"
+			],
+			[
+				"min",
+				"min-width"
+			],
+			[
+				"inln",
+				"inline-block"
+			],
+			[
+				"inline",
+				"inline-block"
+			],
+			[
+				"Ima",
+				"ImageSelect"
+			],
+			[
+				"elem",
+				"elemSelector"
+			],
+			[
+				"PHOTOS",
+				"PHOTOS_DIR"
+			],
+			[
+				"mDa",
+				"modalSrc"
+			],
+			[
+				"cur",
+				"cursor"
+			],
+			[
+				"fetc",
+				"fetch_object"
+			],
+			[
+				"fon",
+				"font-size"
+			],
+			[
+				"bol",
+				"bolder"
+			],
+			[
+				"edit",
+				"edit_profile"
+			],
+			[
+				"user",
+				"user_permission"
+			],
+			[
+				"preg_",
+				"preg_match"
+			],
+			[
+				"uc",
+				"ucwords"
+			],
+			[
+				"var",
+				"var_dump"
+			],
+			[
+				"get_item",
+				"get_item_meta"
+			],
+			[
+				"str_re",
+				"str_replace"
+			],
+			[
+				"update",
+				"update_db"
+			],
+			[
+				"insert",
+				"insert_db"
+			],
+			[
+				"get_field",
+				"get_field_names"
+			],
+			[
+				"print",
+				"print_r"
+			],
+			[
+				"prin",
+				"print_r"
+			],
+			[
+				"border-radius",
+				"border-radius"
+			],
+			[
+				"rgb",
+				"rgba"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "index.html",
+			"settings":
+			{
+				"buffer_size": 186,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "",
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 311.0,
+		"last_filter": "php",
+		"selected_items":
+		[
+			[
+				"php",
+				"Set Syntax: PHP"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"in",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 512.0
+	},
+	"console":
+	{
+		"height": 146.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '2deb499853c4371624f5a07e27c334aa' + 'bf8c4e67d14fb0525ba4f89698a6d7e1'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by) ",
+			"import urllib.request,os,hashlib; h = '2deb499853c4371624f5a07e27c334aa' + 'bf8c4e67d14fb0525ba4f89698a6d7e1'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/xampp/htdocs/work/formbuilder.dev"
+	],
+	"file_history":
+	[
+		"/C/Users/Grace/AppData/Roaming/Sublime Text 3/Packages/User/blade-if.sublime-snippet",
+		"/C/xampp/htdocs/test/laravel/01/app/views/home/index.blade.php",
+		"/C/xampp/htdocs/test/laravel/01/app/controllers/PagesController.php",
+		"/C/xampp/htdocs/test/laravel/01/app/routes.php",
+		"/C/Users/Grace/AppData/Roaming/Sublime Text 3/Packages/User/blade-foreach.sublime-snippet",
+		"/C/xampp/htdocs/test/laravel/01/app/models/User.php",
+		"/C/xampp/htdocs/test/laravel/01/app/config/app.php",
+		"/C/xampp/htdocs/test/laravel/01/app/start/artisan.php",
+		"/C/xampp/htdocs/work/ccc.org/application/core/base.php",
+		"/C/xampp/htdocs/work/ccc.org/application/services/FacebookSvc/FacebookSvc.php",
+		"/C/xampp/htdocs/work/ccc.org/application/controllers/admin.php",
+		"/C/xampp/htdocs/work/ccc.org/public/js/admin/modules/ajaxPublish.js",
+		"/C/Users/Grace/AppData/Local/Temp/fz3temp-1/config.php",
+		"/C/xampp/htdocs/work/ccc.org/application/model/adminModel.php",
+		"/C/xampp/htdocs/work/ccc.org/public/css/public/style.css",
+		"/C/xampp/htdocs/work/ccc.org/application/controllers/updates.php",
+		"/C/xampp/htdocs/work/ccc.org/application/views/public/_templates/header.php",
+		"/C/xampp/htdocs/work/ccc.org/application/views/admin/_templates/header.php",
+		"/C/xampp/htdocs/work/ccc.org/public/js/admin/main.js",
+		"/C/xampp/htdocs/work/ccc.org/application/views/admin/new/header.php",
+		"/C/xampp/htdocs/work/ccc.org/package.json",
+		"/C/xampp/htdocs/work/ccc.org/application/views/admin/view/view_list_albums.php",
+		"/C/xampp/htdocs/work/ccc.org/application/views/admin/view/header.php",
+		"/C/xampp/htdocs/work/ccc.org/application/views/admin/view/view_list.php",
+		"/C/xampp/htdocs/work/ccc.org/application/libraries/FacebookLib/FacebookLib.php",
+		"/C/xampp/htdocs/work/ccci.org/application/core/MainModel.php",
+		"/C/xampp/htdocs/work/ccci.org/application/libraries/FacebookLib/load_sdk.php",
+		"/C/xampp/htdocs/work/ccci.org/application/libraries/FacebookLib/methods/post.php",
+		"/C/xampp/htdocs/work/ccci.org/public/js/admin/modules/Facebook.js",
+		"/C/xampp/htdocs/work/ccci.org/application/config/config.php",
+		"/C/xampp/htdocs/work/ccci.org/application/core/base.php",
+		"/C/xampp/htdocs/work/ccci.org/application/model/FacebookModel.php",
+		"/C/xampp/htdocs/work/ccci.org/application/controllers/updates.php",
+		"/C/xampp/htdocs/work/ccci.org/application/views/admin/_modals/modal-publish.php",
+		"/C/xampp/htdocs/work/ccci.org/public/js/admin/modules/DOMready.js",
+		"/C/xampp/htdocs/work/ccci.org/public/js/admin/modules/script.js",
+		"/C/xampp/htdocs/work/ccci.org/Gulpfile.js",
+		"/C/xampp/htdocs/work/ccci.org/public/js/admin/script.js",
+		"/C/xampp/htdocs/work/ccci.org/public/js/admin/modules/inputRemove.js",
+		"/C/xampp/htdocs/work/ccci.org/public/js/admin/modules/uploader.js",
+		"/C/xampp/htdocs/work/ccci.org/public/js/admin/modules/gallery.js",
+		"/C/xampp/htdocs/work/ccci.org/public/js/admin/modules/ajaxPublish",
+		"/C/xampp/htdocs/work/ccci.org/public/js/admin/modules/endtryEdit.js",
+		"/C/xampp/htdocs/work/ccci.org/public/js/admin/modules/imageSelect.js",
+		"/C/xampp/htdocs/work/ccci.org/public/js/admin/modules/uploadButton.js",
+		"/C/xampp/htdocs/work/ccci.org/public/js/admin/modules/UploadButton.js",
+		"/C/xampp/htdocs/work/ccci.org/public/js/admin/modules/itemsList.js",
+		"/C/xampp/htdocs/work/ccci.org/public/js/admin/modules/sticky.js",
+		"/C/xampp/htdocs/work/ccci.org/public/js/admin/modules/buttons.js",
+		"/Z/Jayson/pending/wattsmart/src/highcharts test/index.html",
+		"/Z/Jayson/pending/wattsmart/src/highcharts test/css/style.css",
+		"/C/Users/Jhing/Documents/Freemake/FreemakeVideoDownloader/History/DefaultHistory.xml",
+		"/Z/Jayson/pending/wattsmart/src/highcharts test/js/script.js",
+		"/C/xampp/htdocs/test/ccciweb.honor.es/application/core/loader.php",
+		"/C/xampp/htdocs/test/ccciweb.honor.es/application/model/TestModel.php",
+		"/C/xampp/htdocs/test/ccciweb.honor.es/application/model/main.php",
+		"/C/xampp/htdocs/test/ccciweb.honor.es/application/controllers/locationsphp.php",
+		"/C/xampp/htdocs/test/ccciweb.honor.es/application/controllers/locations.php",
+		"/C/xampp/htdocs/test/ccciweb.honor.es/application/views/public/updates/events_single.php",
+		"/C/xampp/htdocs/test/ccciweb.honor.es/application/controllers/ministry.php",
+		"/C/xampp/htdocs/CodeIgniter/application/core/index.html",
+		"/C/xampp/htdocs/.htaccess",
+		"/C/xampp/htdocs/test/ccciweb.honor.es/application/core/load.php",
+		"/C/xampp/htdocs/test/ccciweb.honor.es/.htaccess",
+		"/C/xampp/htdocs/test/ccciweb.honor.es/application/views/public/home/about.php",
+		"/C/xampp/htdocs/test/ccciweb.honor.es/application/views/public/about",
+		"/C/Jhing Files/jfb/pending/CCC website (ccciweb.honor.es)/mockup/03/src/css/layout_global.css",
+		"/C/Jhing Files/jfb/pending/CCC website (ccciweb.honor.es)/mockup/03/home/src/css/style.css",
+		"/C/Jhing Files/jfb/pending/CCC website (ccciweb.honor.es)/mockup/03/home/src/css/layout_global.css",
+		"/C/Jhing Files/jfb/pending/CCC website (ccciweb.honor.es)/mockup/03/home/src/index.html",
+		"/C/Windows/System32/java_test/01/Test.java",
+		"/C/Users/Jhing/workspace/HelloWorld/src/HelloWorld.java",
+		"/C/Users/Jhing/AppData/Local/Temp/fz3temp-1/config.php",
+		"/C/xampp/htdocs/test/ccciwebtest.honor.es/application/config/config.php",
+		"/C/xampp/htdocs/test/ccciwebtest.honor.es/public/css/admin/style_global.css",
+		"/C/xampp/htdocs/test/ccciweb.honor.es/application/views/admin/test/logout.php",
+		"/C/xampp/htdocs/test/ccciweb.honor.es/application/config/config.php",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/application/model/adminModel.php",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/application/views/admin/fields/repeat_password.php",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/application/views/admin/fields/img_url.php",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/application/views/admin/fields/permission.php",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/application/views/admin/view/view_gallery.php",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/application/views/admin/view/header.php",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/application/views/admin/new/footer.php",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/application/views/admin/fields/meta_fields.php",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/application/core/base.php",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/application/config/config.php",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/public/index.php",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/application/views/admin/_templates/top.php",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/application/views/admin/fields/img_title.php",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/application/views/admin/fields/mission.php",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/application/views/admin/fields/vision.php",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/application/controllers/admin.php",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/application/views/admin/_templates/sidebar.php",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/application/views/admin/fields/contact.php",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/application/views/admin/new/header.php",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/application/views/admin/_templates/header.php",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/application/views/admin/view/view_list.php",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/application/views/admin/fields/password.php",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/application/views/admin/home/register_header.php",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/application/views/admin/home/register_footer.php",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/public/js/script.js",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/application/views/admin/_modals/image-select.php",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/application/views/admin/fields/date_custom.php",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/public/js/Helpers.js",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/application/views/admin/fields/date_publish.php",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/public/js/App.js",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/public/js/DOMready.js",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/public/js/Collapse.js",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/application/views/admin/_modals/default-modal.php",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/public/js/Dropdown.js",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/public/css/admin/style_md.css",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/public/css/admin/style_sm.css",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/application/views/admin/fields/username.php",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/application/views/admin/profile/summary.php",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/public/css/admin/style_global.css",
+		"/C/xampp/htdocs/test/ccciweb.2fh.co/public/css/admin/style_large.css",
+		"/C/Users/Jhing/AppData/Local/Temp/fz3temp-1/adminModel.php",
+		"/C/xampp/htdocs/test/05/fb_js_sdk/index.php",
+		"/C/Users/Jhing/AppData/Local/Temp/fz3temp-1/admin.php",
+		"/C/Users/Jhing/AppData/Local/Temp/fz3temp-1/script.js"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"		\n",
+			"\\",
+			"args",
+			"->info",
+			"->info->post_info",
+			"check_add",
+			"library_name",
+			"load_library",
+			"load_service",
+			"link",
+			"add_",
+			"\\\\",
+			".which",
+			"updateProps",
+			"AjaxPublish",
+			"updateProps",
+			"AjaxPublish",
+			"header_title",
+			"new",
+			"AjaxPublish",
+			"listPhotos",
+			"Image",
+			"Image\\",
+			"get_album_pho",
+			"AjaxPublish",
+			"print_r",
+			"add_new",
+			"register_suc",
+			"sidebar-m",
+			"##",
+			"i != 0 ? null : Math.random()",
+			"number",
+			"$scope.",
+			"this",
+			"process_pos",
+			".posts-list",
+			"post-con",
+			"artic'",
+			"articl",
+			"post-i",
+			"post-li",
+			"posts-lis",
+			"post-lis",
+			"post-li",
+			"cf",
+			"clearfix",
+			"post-item",
+			"post-single-image",
+			"post-list",
+			"post-image",
+			"Stories",
+			"$this->News->",
+			"$this->Events",
+			"AjaxPublish",
+			"Events",
+			"M",
+			"date",
+			"check_",
+			"check",
+			"default article",
+			"section-content-header",
+			"$pastor",
+			"insert_",
+			"check_add_",
+			"insert_db",
+			"}\n",
+			"insert_db",
+			"load_where",
+			"summary-btn-add",
+			"site-status-radio",
+			".sidebar",
+			"modal",
+			"item",
+			"get_item_data",
+			"edit",
+			"get_column_names",
+			"local_churches",
+			"hel",
+			"thumbnail-container peop",
+			"btn",
+			"li4",
+			"<p>\n										Service Schedules\n									</p>",
+			"<h4>Service Title Here</h4>",
+			"<h5>Service Title Here</h5>",
+			"locations/",
+			"locations",
+			"li4",
+			"<a href=\"/updates/events/1\" class=\"post-image\">",
+			"$data->subpage",
+			"<a class=\"btn latest-post-link-btn\">",
+			"<div class=\"btn latest-post-link-btn\">",
+			"img/assets",
+			"event_perma_title",
+			"xi",
+			"sidebar",
+			"posts",
+			"post-single-sidebar-header",
+			"<a href=\"#\" class=\"post-image\">",
+			"get_instance(",
+			"function get_instance(",
+			"function get_instance",
+			"n get_instance",
+			"get_instance",
+			"->TABLE_NAME",
+			"new",
+			"btn",
+			"style=\"background-image:url('img/assets/",
+			"<div class=\"people-image\">\n						<img src=\"img/assets/pic/sampl",
+			"pastors_single.php",
+			"<div class=\"people-item\">\n								<a href=\"#\" class=\"people-image\">",
+			"<img src=\"img/assets/pic/",
+			"back",
+			"branc",
+			"bran",
+			"img/assets/pic",
+			"light",
+			"<a href=\"#\" class=\"thumbnail-container\">",
+			"href=\"#\"",
+			"$data",
+			"navlink-active",
+			"js/public",
+			"css/public",
+			".nav-main-menu > li li a",
+			"../img",
+			"js/",
+			"css/",
+			"get_field_values",
+			"edit"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "index.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 186,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								168,
+								168
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"auto_name": "",
+							"default_dir": "C:\\xampp\\htdocs\\work\\formbuilder.dev",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 26.0
+	},
+	"input":
+	{
+		"height": 38.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "formbuilder.sublime-project",
+	"replace":
+	{
+		"height": 48.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"C:\\Jhing Files\\jfb\\others\\sublime projects\\ccciweb.dev\\ccciweb.dev.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 250.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
