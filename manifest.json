@@ -1,0 +1,10 @@
+{
+	"files" : [
+		"js/partials/helpers.js",
+		"js/partials/main.js",		
+		"js/partials/fields.js",
+		"js/partials/sections.js",
+		"js/partials/form.js",
+		"js/partials/fieldSource.js"
+	]
+}

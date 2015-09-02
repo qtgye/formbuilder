@@ -4,18 +4,289 @@
 	<meta charset="UTF-8">
 	<title>Javascript Form Builder</title>
 
-	<!-- STYLSHEETS -->
+	<!-- LIB STYLESHEETS -->
+	<link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css">
+	
+	<!-- CUSTOM STYLESHEETS -->
+	<link rel="stylesheet" href="css/style.css">
 
 </head>
 <body>
+	
+	<div class="container">
+		<div class="row">
+			
+			<div class="col-md-12">
+				<h1>Form Builder JS App</h1>
+			</div>
+			
+			<div class="col-md-6">
+
+				<div class="fields-list js-field-list">
+					
+					<!-- singleline item -->
+					<div class="field" data-type="singleline">
+						<div class="field-header js-drag-handler">
+							<h5>Single Line</h5>
+						</div>
+						<div class="field-content">
+							<label>{{label}}</label>
+							<input type="text" id="{{key}}" name="{{key}}" placeholder="{{placeholder}}" value="{{value}}" required>
+							<span class="help-block">{{description}}</span>
+						</div>						
+					</div>
+
+					<!-- date item -->
+					<div class="field" data-type="date">
+						<div class="field-header js-drag-handler">
+							<h5>Date</h5>
+						</div>
+						<div class="field-content">
+							<label>{{label}}</label>
+							<input type="date" id="{{key}}" name="{{key}}" value="{{value}}" required>
+							<span class="help-block">{{description}}</span>
+						</div>						
+					</div>
+
+					<!-- entity item -->
+					<div class="field" data-type="entity">
+						<div class="field-header js-drag-handler">
+							<h5>Entity</h5>
+						</div>
+						<div class="field-content">
+							<label>{{label}}</label>
+							<span class="help-block">{{description}}</span>
+						</div>						
+					</div>
+
+					<!-- multiline item -->
+					<div class="field" data-type="multiline">
+						<div class="field-header js-drag-handler">
+							<h5>Multiline</h5>
+						</div>
+						<div class="field-content">
+							<label>{{label}}</label>
+							<textarea id="{{key}}" name="{{key}}" placeholder="{{placeholder}}" required>{{value}}</textarea>
+							<span class="help-block">{{description}}</span>
+						</div>						
+					</div>
+
+					<!-- selection item -->
+					<div class="field" data-type="selection">
+						<div class="field-header js-drag-handler">
+							<h5>Selection</h5>
+						</div>
+						<div class="field-content">
+							<label>{{label}}</label>
+							<select id="{{key}}" name="{{key}}" value="{{value}}">
+						    	<option value="{{options.value}}">{{options.label}}</option>
+							</select>
+							<span class="help-block">{{description}}</span>
+						</div>						
+					</div>
+
+					<!-- radio item -->
+					<div class="field" data-type="radio">
+						<div class="field-header js-drag-handler">
+							<h5>Radio Box</h5>
+						</div>
+						<div class="field-content">
+							<label>{{label}}</label>
+							<span class="help-block">{{description}}</span>
+							<label>
+								<input type="radio" name="{{key}}" value="{{options.value}}">{{options.label}}
+							</label>
+							<label>
+								<input type="radio" name="{{key}}" value="{{options.value}}">{{options.label}}
+							</label>
+						</div>						
+					</div>
+					
+					<!-- checkbox tem -->
+					<div class="field" data-type="checkbox">
+						<div class="field-header js-drag-handler">
+							<h5>Checkbox</h5>
+						</div>
+						<div class="field-content">
+							<label>{{label}}</label>
+							<span class="help-block">{{description}}</span>
+							<label>
+								<input type="checkbox" name="{{key}}" value="{{options.value}}">{{options.label}}
+							</label>
+							<label>
+								<input type="checkbox" name="{{key}}" value="{{options.value}}">{{options.label}}
+							</label>
+						</div>						
+					</div>
+
+				</div>
+			</div>
+
+			<div class="col-md-6 clearfix">
+				
+
+				<!-- the form -->
+				<form class="form" action="" name="" method="post">
+					<div class="form-header">
+						<div class="btn btn-primary js-add-section pull-right">Add Section</div>
+						<h4>Form Name</h4>
+					</div>
+					<div class="form-content js-form-content">
+						
+					</div>
+				</form>
+
+			</div>
+
+		</div>
+	</div>	
 
 
+	<!--=============================================================
+							TEMPLATES
+	==============================================================-->
+	<div id="templates" class="hidden">
+		
+		<!-- read templates -->
+
+		<!-- section -->
+		<script id="tmpl-read-section" type="text/html">
+			<div class="section">
+				<div class="section-header js-drag-handle">
+					<h5>{{name}}</h5>
+				</div>
+				<div class="section-content js-section-content">
+					
+				</div>
+			</div>
+		</script>
+
+		<!-- singleline -->
+		<script id="tmpl-read-singleline" type="text/html">
+			<div class="field" data-type="singleline">
+				<div class="field-header js-drag-handler">
+					<h5>Single Line</h5>
+				</div>
+				<div class="field-content">
+					<label>{{label}}</label>
+					<input type="text" id="{{key}}" name="{{key}}" placeholder="{{placeholder}}" value="{{value}}" required>
+					<span class="help-block">{{description}}</span>
+				</div>						
+			</div>
+		</script>
+		
+		<!-- date -->
+		<script id="tmpl-read-date" type="text/html">
+			<div class="field" data-type="date">
+				<div class="field-header js-drag-handler">
+					<h5>Date</h5>
+				</div>
+				<div class="field-content">
+					<label>{{label}}</label>
+					<input type="date" id="{{key}}" name="{{key}}" value="{{value}}" required>
+					<span class="help-block">{{description}}</span>
+				</div>						
+			</div>
+		</script>
+
+		<!-- entity -->
+		<script id="tmpl-read-entity" type="text/html">
+			<div class="field" data-type="entity">
+				<div class="field-header js-drag-handler">
+					<h5>Entity</h5>
+				</div>
+				<div class="field-content">
+					<label>{{label}}</label>
+					<span class="help-block">{{description}}</span>
+				</div>						
+			</div>
+		</script>
+
+		<!-- multiline -->
+		<script id="tmpl-read-multiline" type="text/html">
+			<div class="field" data-type="multiline">
+				<div class="field-header js-drag-handler">
+					<h5>Multiline</h5>
+				</div>
+				<div class="field-content">
+					<label>{{label}}</label>
+					<textarea id="{{key}}" name="{{key}}" placeholder="{{placeholder}}" required>{{value}}</textarea>
+					<span class="help-block">{{description}}</span>
+				</div>						
+			</div>
+		</script>		
+
+		<!-- selection -->
+		<script id="tmpl-read-selection" type="text/html">
+			<div class="field" data-type="selection">
+				<div class="field-header js-drag-handler">
+					<h5>Selection</h5>
+				</div>
+				<div class="field-content">
+					<label>{{label}}</label>
+					<select id="{{key}}" name="{{key}}" value="{{value}}">
+				    	<option value="{{options.value}}">{{options.label}}</option>
+					</select>
+					<span class="help-block">{{description}}</span>
+				</div>						
+			</div>
+		</script>
+
+		<!-- radio -->
+		<script id="tmpl-read-radio" type="text/html">
+			<div class="field" data-type="radio">
+				<div class="field-header js-drag-handler">
+					<h5>Radio Box</h5>
+				</div>
+				<div class="field-content">
+					<label>{{label}}</label>
+					<span class="help-block">{{description}}</span>
+					<label>
+						<input type="radio" name="{{key}}" value="{{options.value}}">{{options.label}}
+					</label>
+					<label>
+						<input type="radio" name="{{key}}" value="{{options.value}}">{{options.label}}
+					</label>
+				</div>						
+			</div>
+		</script>
+		
+		<!-- checkbox -->
+		<script id="tmpl-read-checbox" type="text/html">
+			<div class="field" data-type="checkbox">
+				<div class="field-header js-drag-handler">
+					<h5>Checkbox</h5>
+				</div>
+				<div class="field-content">
+					<label>{{label}}</label>
+					<span class="help-block">{{description}}</span>
+					<label>
+						<input type="checkbox" name="{{key}}" value="{{options.value}}">{{options.label}}
+					</label>
+					<label>
+						<input type="checkbox" name="{{key}}" value="{{options.value}}">{{options.label}}
+					</label>
+				</div>						
+			</div>
+		</script>
 
 
+		<!-- write templates -->
+	
 
 
-	<!-- JS ASSETS -->
+	</div>
+ 
+
+
+	<!-- LIB JS -->
 	<script src="lib/jquery-1.11.1/dist/jquery.min.js"></script>
+	<script src="lib/jquery-ui/jquery-ui.min.js"></script>
+	<script src="lib/mustache.js/mustache.min.js"></script>
+	<script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
+
+	<!-- APP JS -->
+	<script src="js/app.js"></script>
 	
 	
 </body>

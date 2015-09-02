@@ -1,0 +1,115 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+li {
+	list-style: none;
+}
+
+
+/* General Styles */
+
+
+
+
+ /* Form Styles */
+.form {
+	display: block;
+	width: auto; 
+	height: auto;
+	margin-bottom: 10px;
+	border: 1px solid #aaa;
+	border-radius: 5px;
+	background-color: #fff;
+	overflow: hidden;
+	clear: both;
+}
+
+	.form-header {
+		display: block;
+		padding: 5px;
+		line-height: 1;
+		background-color: lightBlue;
+		cursor: move;
+	}
+
+	.form-content {
+		min-height: 100px;
+		padding: 5px;
+	} 
+
+
+
+/* Section Styles */
+.section {
+	display: block;
+	width: auto; 
+	height: auto;
+	margin-bottom: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	background-color: #fff;
+	overflow: hidden;
+}
+
+	.section-header {
+		display: block;
+		padding: 5px;
+		line-height: 1;
+		background-color: lightGreen;
+		cursor: move;
+	}
+
+		.section-header h5 {
+			font-weight: bolder;
+		}
+
+	.section-content {
+		min-height: 100px;
+		padding: 5px;
+	}
+
+
+/* Field Styles */
+.field {
+	display: block;
+	width: auto; 
+	height: auto;
+	margin-bottom: 10px;
+	border: 1px solid silver;
+	border-radius: 5px;
+	background-color: #fff;
+	overflow: hidden;
+}
+
+	.field-dragging {
+		box-shadow: 0 0 15px rgba(0,0,0,0.3);
+	}
+
+	.field-header {
+		display: block;
+		padding: 5px;
+		line-height: 1;
+		background-color: lightCyan;
+		cursor: move;
+	}
+
+	.field-content {
+		display: block;
+		padding: 10px;
+	}
+
+
+
+
+.field-heading {
+	
+}
+
+.js-section-fields{
+	display: block;
+	min-height: 50px;
+	padding: 20px 10px;
+}
