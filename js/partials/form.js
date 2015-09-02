@@ -36,10 +36,23 @@ App.createModule('form',(function (app,$) {
 	}
 
 	// Initializse jquery widgets
-	function initializeWidgets () {
+	function initializeSortable () {
 		$formContent.sortable({
 			handle 	: '.js-drag-handle'
 		});
+	}
+
+	// Adds a section to the form
+	function addSection (data) {
+
+		var newSection = Sections.create(data);
+			$formContent.append(newSection.$el);
+
+			// Initialize sortable on the new element
+			newSection.initializeSortable();
+
+			$form.trigger('addSection');
+		
 	}
 
 	// Binds events
@@ -47,36 +60,29 @@ App.createModule('form',(function (app,$) {
 
 		// bind custom addSection event
 		$form.on('addSection',function () {
-			initializeWidgets();
+			initializeSortable();
 		});
 
 		// bind add section click
 		$addSection.on('click',function (e) {
-			var $newSection = $(Sections.create(sampleData));
-			$formContent.append($newSection);
-
-			// Initialize sortable on the new element
-			$newSection.find('.js-section-content')
-				.sortable({
-					handle : '.js-drag-handle'
-				});
-
-			$form.trigger('addSection');
+			addSection(sampleData);
 		});
 	}
 
 
 	// define public application interface
 	// ====================================================================================
-
+	module.addSection = addSection;
 
 	// define module init
 	// ====================================================================================
 	
 	module.init = function () {
 
+		console.log('form module added');
+
 		defineVariables();
-		initializeWidgets();
+		initializeSortable();
 		bindHandlers();
 	};
 

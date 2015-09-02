@@ -23,7 +23,7 @@ App.createModule('fields',(function (app,$) {
 	// define private functions
 	// ====================================================================================
 	function fieldsHandler () {
-		console.log('fields module added');
+		
 	}
 
 
@@ -39,6 +39,9 @@ App.createModule('fields',(function (app,$) {
 	// define module init
 	// ====================================================================================
 	module.init = function () {
+
+		console.log('fileds module added');
+
 		fieldsHandler();
 	};
 
