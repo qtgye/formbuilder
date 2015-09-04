@@ -16,23 +16,25 @@ App.createModule('sections',(function (app,$) {
 
 	// define private variables
 	// ====================================================================================
-	var defaults = {
-			name 	: 'Sample Section'
-		},
-		template = '',
-		sections = [];
+	var Fields 		= app.fields,
+		template 	= '',
+		sections 	= {};
 
 	// Section object class
 	function Section (data) {
 		
 		var self 					= this,
-			id 						= Date.now(),
+			id 						= guid(),
 			isSortableInitialized 	= false;
 
-		self.id 	= id;
-		self.data 	= data;
-		self.$el 	= $(renderReadContent(data));
-		self.$sectionContent = self.$el.find('.js-section-content');
+		// Define props
+		self.id 				= id;
+		self.data 				= data;
+		self.$el 				= $(renderReadContent(data));
+		self.$sectionContent 	= self.$el.find('.js-section-content');
+
+		// Attach element id
+		self.$el.attr('id',self.id);
 
 		// initialize sortable
 		self.initializeSortable = function () {
@@ -41,7 +43,10 @@ App.createModule('sections',(function (app,$) {
 				connectWith : '.js-section-content',
 				create 		: function () {
 					isSortableInitialized = true;
-				}
+				},
+				start 		: onSortStart,
+				stop 		: onSortStop,
+				receive 	: onSortReceive
 			});
 
 		};
@@ -72,14 +77,7 @@ App.createModule('sections',(function (app,$) {
 
 	// searches and returns a section referenced by id
 	function getSection (sectionId) {
-		var section = null;
-		
-		while ( i < sections.length || sectionId != sections[i].id ) {
-			i++;
-		}
-
-		section = i != sections.length ? sections[i] : null;
-
+		return sections[sectionId];
 	}
 
 	// refreshes each section
@@ -89,6 +87,31 @@ App.createModule('sections',(function (app,$) {
 		});
 	}
 
+	// sort start handler
+	function onSortStart (e,ui) {
+		// get the helper's dimension for the item
+		ui.helper.width(ui.item.width()).addClass('field-dragging');
+	}
+
+	// sort stop handler
+	function onSortStop (e,ui) {
+		// remove class
+		(ui.helper || ui.item).removeClass('field-dragging');
+	}
+
+	// sortable list receive handler
+	function onSortReceive (e,ui) {
+
+		if ( ui.helper ) {
+			// The element is new
+			Fields.create(ui.helper);
+
+		} else {
+			// The element is existing field
+			console.log('moved');
+		}
+	}
+
 
 	// define public application interface
 	// ====================================================================================
@@ -96,7 +119,7 @@ App.createModule('sections',(function (app,$) {
 	module.create = function (data) {
 		var newSection = new Section(data);
 
-		sections.push(newSection);
+		sections[newSection.id] = newSection;
 		return newSection;
 	};
 

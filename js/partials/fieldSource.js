@@ -14,27 +14,31 @@ App.createModule('fieldSource',(function (app,$) {
 
 	// define private variables
 	// ====================================================================================
-	var $form, $fieldSource, $protoField;
+	var $form, $fieldSource, $protoField,
+		Fields 		= app.fields,
+		Defaults 	= app.defaults;
 
 	// define private functions
 	// ====================================================================================
 	
 	// Fills in predefined variables
 	function defineVariables () {
-		$fieldSource 	= $('.js-field-list'); 
-		$protoField 	= $fieldSource.find('.field');
+		$fieldSource 	= $('.js-field-list');
 		$form 			= app.form.$el;
 	}
 
-	// Binds event handlers
-	function bindHandlers () {
-		
+	// renders the fields with default data
+	function renderFields () {
+		for ( var key in Defaults.fields ) {
+			var data = Defaults.fields[key];
+			$fieldSource.append(Fields.renderData(data));
+		}
 	}
 
 	// Initializes the draggable widgets
 	function initializeDraggables () {
 
-		$protoField.draggable({
+		$fieldSource.find('.field').draggable({
 			handler 			: '.js-drag-handler',
 	    	connectToSortable 	: '.js-section-content',
 	    	helper				: "clone",
@@ -50,12 +54,10 @@ App.createModule('fieldSource',(function (app,$) {
 	// Handles onStart event of draggable
 	function draggableOnStart (e,ui) {
 		var $sample 	= $('.js-field-list .field'),
-			width 		= $sample.width(),
-			height 		= $sample.height();
+			width 		= $sample.outerWidth(true);
 
 		ui.helper.css({
-			width 	: width,
-			height 	: height
+			width 	: width
 		}).addClass('field-dragging');
 	}
 
@@ -70,7 +72,6 @@ App.createModule('fieldSource',(function (app,$) {
 		}
 		// console.log(e.target);
 		$(e.target).sortable({handle:'.js-drag-handle'});
-		console.log($(e.target).sortable({handle:'.js-drag-handle'}));
 		// $(e.target).sortable({
 		// 	''
 		// }).sortable('refresh');
@@ -87,7 +88,7 @@ App.createModule('fieldSource',(function (app,$) {
 	// ====================================================================================
 	module.init = function () {
 		defineVariables();
-		bindHandlers();
+		renderFields();
 		initializeDraggables();
 	};
 

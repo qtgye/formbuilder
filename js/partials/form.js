@@ -18,10 +18,7 @@ App.createModule('form',(function (app,$) {
 	// define private variables
 	// ====================================================================================
 	var $form, $formContent, $addSection,
-		Sections,
-		sampleData = {
-			name 	: 'Dummy Section'
-		};
+		Defaults, Sections;
 
 	// define private functions
 	// ====================================================================================
@@ -33,6 +30,7 @@ App.createModule('form',(function (app,$) {
 		$addSection 	= $form.find('.js-add-section');
 	
 		Sections = app.sections;
+		Defaults = app.defaults;
 	}
 
 	// Initializse jquery widgets
@@ -65,7 +63,7 @@ App.createModule('form',(function (app,$) {
 
 		// bind add section click
 		$addSection.on('click',function (e) {
-			addSection(sampleData);
+			addSection(Defaults.section);
 		});
 	}
 
