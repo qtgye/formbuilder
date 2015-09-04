@@ -24,19 +24,19 @@
 
 				<div class="fields-list js-field-list">
 					
-					<!-- singleline item -->
-					<div class="field" data-type="singleline">
+					
+					<!-- div class="field" data-type="singleline">
 						<div class="field-header js-drag-handle">
 							<h5>Single Line</h5>
 						</div>
 						<div class="field-content">
 							<label>{{label}}</label>
 							<input type="text" id="{{key}}" name="{{key}}" placeholder="{{placeholder}}" value="{{value}}" required>
-							<span class="help-block">{{description}}</span>
+							<span class="help-block field-description">{{description}}</span>
 						</div>						
 					</div>
 
-					<!-- date item -->
+					
 					<div class="field" data-type="date">
 						<div class="field-header js-drag-handle">
 							<h5>Date</h5>
@@ -44,22 +44,22 @@
 						<div class="field-content">
 							<label>{{label}}</label>
 							<input type="date" id="{{key}}" name="{{key}}" value="{{value}}" required>
-							<span class="help-block">{{description}}</span>
+							<span class="help-block field-description">{{description}}</span>
 						</div>						
 					</div>
 
-					<!-- entity item -->
+					
 					<div class="field" data-type="entity">
 						<div class="field-header js-drag-handle">
 							<h5>Entity</h5>
 						</div>
 						<div class="field-content">
 							<label>{{label}}</label>
-							<span class="help-block">{{description}}</span>
+							<span class="help-block field-description">{{description}}</span>
 						</div>						
 					</div>
 
-					<!-- multiline item -->
+					
 					<div class="field" data-type="multiline">
 						<div class="field-header js-drag-handle">
 							<h5>Multiline</h5>
@@ -67,11 +67,11 @@
 						<div class="field-content">
 							<label>{{label}}</label>
 							<textarea id="{{key}}" name="{{key}}" placeholder="{{placeholder}}" required>{{value}}</textarea>
-							<span class="help-block">{{description}}</span>
+							<span class="help-block field-description">{{description}}</span>
 						</div>						
 					</div>
 
-					<!-- selection item -->
+					
 					<div class="field" data-type="selection">
 						<div class="field-header js-drag-handle">
 							<h5>Selection</h5>
@@ -81,18 +81,18 @@
 							<select id="{{key}}" name="{{key}}" value="{{value}}">
 						    	<option value="{{options.value}}">{{options.label}}</option>
 							</select>
-							<span class="help-block">{{description}}</span>
+							<span class="help-block field-description">{{description}}</span>
 						</div>						
 					</div>
 
-					<!-- radio item -->
+					
 					<div class="field" data-type="radio">
 						<div class="field-header js-drag-handle">
 							<h5>Radio Box</h5>
 						</div>
 						<div class="field-content">
 							<label>{{label}}</label>
-							<span class="help-block">{{description}}</span>
+							<span class="help-block field-description">{{description}}</span>
 							<label>
 								<input type="radio" name="{{key}}" value="{{options.value}}">{{options.label}}
 							</label>
@@ -102,14 +102,14 @@
 						</div>						
 					</div>
 					
-					<!-- checkbox tem -->
+					
 					<div class="field" data-type="checkbox">
 						<div class="field-header js-drag-handle">
 							<h5>Checkbox</h5>
 						</div>
 						<div class="field-content">
 							<label>{{label}}</label>
-							<span class="help-block">{{description}}</span>
+							<span class="help-block field-description">{{description}}</span>
 							<label>
 								<input type="checkbox" name="{{key}}" value="{{options.value}}">{{options.label}}
 							</label>
@@ -117,7 +117,7 @@
 								<input type="checkbox" name="{{key}}" value="{{options.value}}">{{options.label}}
 							</label>
 						</div>						
-					</div>
+					</div -->
 
 				</div>
 			</div>
@@ -150,7 +150,7 @@
 		<!-- read templates -->
 
 		<!-- section -->
-		<script id="tmpl-read-section" type="text/html">
+		<script class="section-template" id="tmpl-read-section" type="text/html">
 			<div class="section">
 				<div class="section-header js-drag-handle">
 					<h5>{{name}}</h5>
@@ -162,48 +162,48 @@
 		</script>
 
 		<!-- singleline -->
-		<script id="tmpl-read-singleline" type="text/html">
-			<div class="field" data-type="singleline">
+		<script class="field-template" data-type="singleline" id="tmpl-read-singleline" type="text/html">
+			<div id="test" class="field" data-type="singleline" data-showif="{{showif}}" data-hideif="{{hideif}}" data-restriction="{{restriction}}" data-is-available="{{isAvailable}}">
 				<div class="field-header js-drag-handle">
 					<h5>Single Line</h5>
 				</div>
 				<div class="field-content">
 					<label>{{label}}</label>
-					<input type="text" id="{{key}}" name="{{key}}" placeholder="{{placeholder}}" value="{{value}}" required>
-					<span class="help-block">{{description}}</span>
+					<input type="text" id="{{key}}" name="{{key}}" placeholder="{{placeholder}}" value="{{value}}" length="{{length}}" required>
+					<span class="help-block field-description">{{description}}</span>
 				</div>						
 			</div>
 		</script>
 		
 		<!-- date -->
-		<script id="tmpl-read-date" type="text/html">
-			<div class="field" data-type="date">
+		<script class="field-template" data-type="date" id="tmpl-read-date" type="text/html">
+			<div class="field" data-type="date" data-is-available="{{isAvailable}}" data-format="{{format}}" data-showif="{{showif}}" data-hideif="{{hideif}}">
 				<div class="field-header js-drag-handle">
 					<h5>Date</h5>
 				</div>
 				<div class="field-content">
 					<label>{{label}}</label>
 					<input type="date" id="{{key}}" name="{{key}}" value="{{value}}" required>
-					<span class="help-block">{{description}}</span>
+					<span class="help-block field-description">{{description}}</span>
 				</div>						
 			</div>
 		</script>
 
 		<!-- entity -->
-		<script id="tmpl-read-entity" type="text/html">
+		<script class="field-template" data-type="entity" id="tmpl-read-entity" type="text/html">
 			<div class="field" data-type="entity">
 				<div class="field-header js-drag-handle">
 					<h5>Entity</h5>
 				</div>
 				<div class="field-content">
 					<label>{{label}}</label>
-					<span class="help-block">{{description}}</span>
+					<span class="help-block field-description">{{description}}</span>
 				</div>						
 			</div>
 		</script>
 
 		<!-- multiline -->
-		<script id="tmpl-read-multiline" type="text/html">
+		<script class="field-template" data-type="multiline" id="tmpl-read-multiline" type="text/html">
 			<div class="field" data-type="multiline">
 				<div class="field-header js-drag-handle">
 					<h5>Multiline</h5>
@@ -211,13 +211,13 @@
 				<div class="field-content">
 					<label>{{label}}</label>
 					<textarea id="{{key}}" name="{{key}}" placeholder="{{placeholder}}" required>{{value}}</textarea>
-					<span class="help-block">{{description}}</span>
+					<span class="help-block field-description">{{description}}</span>
 				</div>						
 			</div>
 		</script>		
 
 		<!-- selection -->
-		<script id="tmpl-read-selection" type="text/html">
+		<script class="field-template" data-type="selection" id="tmpl-read-selection" type="text/html">
 			<div class="field" data-type="selection">
 				<div class="field-header js-drag-handle">
 					<h5>Selection</h5>
@@ -225,47 +225,48 @@
 				<div class="field-content">
 					<label>{{label}}</label>
 					<select id="{{key}}" name="{{key}}" value="{{value}}">
-				    	<option value="{{options.value}}">{{options.label}}</option>
+						{{#options}}
+				    		<option value="{{value}}">{{label}}</option>
+						{{/options}}
 					</select>
-					<span class="help-block">{{description}}</span>
+					<span class="help-block field-description">{{description}}</span>
 				</div>						
 			</div>
 		</script>
 
 		<!-- radio -->
-		<script id="tmpl-read-radio" type="text/html">
+		<script class="field-template" data-type="radiobox" id="tmpl-read-radio" type="text/html">
 			<div class="field" data-type="radio">
 				<div class="field-header js-drag-handle">
 					<h5>Radio Box</h5>
 				</div>
 				<div class="field-content">
 					<label>{{label}}</label>
-					<span class="help-block">{{description}}</span>
-					<label>
-						<input type="radio" name="{{key}}" value="{{options.value}}">{{options.label}}
-					</label>
-					<label>
-						<input type="radio" name="{{key}}" value="{{options.value}}">{{options.label}}
-					</label>
+					<span class="help-block field-description">{{description}}</span>
+					{{#options}}
+						<label>
+							<input type="radio" name="{{key}}" value="{{value}}">{{label}}
+						</label>
+					{{/options}}
 				</div>						
 			</div>
 		</script>
 		
 		<!-- checkbox -->
-		<script id="tmpl-read-checbox" type="text/html">
+		<script class="field-template" data-type="checkbox" id="tmpl-read-checkbox" type="text/html">
 			<div class="field" data-type="checkbox">
 				<div class="field-header js-drag-handle">
 					<h5>Checkbox</h5>
 				</div>
 				<div class="field-content">
 					<label>{{label}}</label>
-					<span class="help-block">{{description}}</span>
-					<label>
-						<input type="checkbox" name="{{key}}" value="{{options.value}}">{{options.label}}
-					</label>
-					<label>
-						<input type="checkbox" name="{{key}}" value="{{options.value}}">{{options.label}}
-					</label>
+					<span class="help-block field-description">{{description}}</span>
+					{{#options}}
+						<label>
+							<input type="checkbox" name="{{key}}" value="{{value}}">{{label}}
+						</label>
+					{{/options}}
+					
 				</div>						
 			</div>
 		</script>
