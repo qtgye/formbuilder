@@ -5,9 +5,13 @@
 
 App.createModule('defaults',(function (app,$) {
 
+
+
 	// define module
 	// ====================================================================================
 	var module = {};
+
+
 
 	// define private variables
 	// ====================================================================================
@@ -25,8 +29,7 @@ App.createModule('defaults',(function (app,$) {
 			description 	: '',
 			showif 			: '',
 			hideif 			: '',
-			restriction 	: '',
-			length 			: 100
+			restriction 	: ''
 		},
 		'date'			: {
 			isDate 			: true,
@@ -34,6 +37,7 @@ App.createModule('defaults',(function (app,$) {
 			key 			: 'date',
 			required 		: false,
 			label 			: 'Date:',
+			value 			: '',
 			format 			: 'DD MMMM YYYY',
 			description 	: 'desc',
 			showif 			: 's if',
@@ -103,7 +107,7 @@ App.createModule('defaults',(function (app,$) {
 			min 			: 0,
 			max 			: 0,
 			label 			: 'Name',
-			value 			: 'Daniel',
+			value 			: 'option3',
 			description 	: '',
 			showif 			: '',
 			hideif 			: '',
@@ -123,15 +127,20 @@ App.createModule('defaults',(function (app,$) {
 		fields 	: []
 	};
 
+
+
+
 	// define private functions
 	// ====================================================================================
 	
+
 
 
 	// define public application interface
 	// ====================================================================================
 	module.fields 	= fields;
 	module.section 	= section;
+
 
 
 

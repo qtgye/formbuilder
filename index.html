@@ -24,7 +24,7 @@
 
 				<div class="fields-list js-field-list">
 				</div>
-				
+
 			</div>
 
 			<div class="col-md-6 clearfix">
@@ -44,7 +44,13 @@
 			</div>
 
 		</div>
-	</div>	
+	</div>
+
+	<div class="modal">
+		<div class="editor">
+			
+		</div>
+	</div>
 
 
 	<!--=============================================================
@@ -56,9 +62,9 @@
 
 		<!-- section -->
 		<script class="section-template" id="tmpl-read-section" type="text/html">
-			<div class="section">
-				<div class="section-header js-drag-handle">
-					<h5>{{name}}</h5>
+			<div class="section has-open-editor">
+				<div class="section-header js-section-header js-drag-handle">
+					<h5><%=name%></h5>
 				</div>
 				<div class="section-content js-section-content">
 					
@@ -68,121 +74,263 @@
 
 		<!-- singleline -->
 		<script class="field-template" data-type="singleline" id="tmpl-read-singleline" type="text/html">
-			<div id="test" class="field" data-type="singleline" data-showif="{{showif}}" data-hideif="{{hideif}}" data-restriction="{{restriction}}" data-is-available="{{isAvailable}}">
+			<div class="field has-open-editor" data-type="singleline" data-showif="<%=showif%>" data-hideif="<%=hideif%>" data-restriction="<%=restriction%>" data-is-available="<%=isAvailable%>">
 				<div class="field-header js-drag-handle">
 					<h5>Single Line</h5>
 				</div>
 				<div class="field-content">
-					<label>{{label}}</label>
-					<input type="text" id="{{key}}" name="{{key}}" placeholder="{{placeholder}}" value="{{value}}" length="{{length}}" required>
-					<span class="help-block field-description">{{description}}</span>
+					<label><%=label%></label>
+					<input type="text" id="<%=key%>" name="<%=key%>" placeholder="<%=placeholder%>" value="<%=value%>" required>
+					<span class="help-block field-description"><%=description%></span>
 				</div>						
 			</div>
 		</script>
 		
 		<!-- date -->
 		<script class="field-template" data-type="date" id="tmpl-read-date" type="text/html">
-			<div class="field" data-type="date" data-is-available="{{isAvailable}}" data-format="{{format}}" data-showif="{{showif}}" data-hideif="{{hideif}}">
+			<div class="field has-open-editor" data-type="date" data-is-available="<%=isAvailable%>" data-format="<%=format%>" data-showif="<%=showif%>" data-hideif="<%=hideif%>">
 				<div class="field-header js-drag-handle">
 					<h5>Date</h5>
 				</div>
 				<div class="field-content">
-					<label>{{label}}</label>
-					<input type="date" id="{{key}}" name="{{key}}" value="{{value}}" required>
-					<span class="help-block field-description">{{description}}</span>
+					<label><%=label%></label>
+					<input type="date" id="<%=key%>" name="<%=key%>" value="<%=value%>" required>
+					<span class="help-block field-description"><%=description%></span>
 				</div>						
 			</div>
 		</script>
 
 		<!-- entity -->
 		<script class="field-template" data-type="entity" id="tmpl-read-entity" type="text/html">
-			<div class="field" data-type="entity">
+			<div class="field has-open-editor" data-type="entity">
 				<div class="field-header js-drag-handle">
 					<h5>Entity</h5>
 				</div>
 				<div class="field-content">
-					<label>{{label}}</label>
-					<span class="help-block field-description">{{description}}</span>
+					<label><%=label%></label>
+					<span class="help-block field-description"><%=description%></span>
 				</div>						
 			</div>
 		</script>
 
 		<!-- multiline -->
 		<script class="field-template" data-type="multiline" id="tmpl-read-multiline" type="text/html">
-			<div class="field" data-type="multiline">
+			<div class="field has-open-editor" data-type="multiline">
 				<div class="field-header js-drag-handle">
 					<h5>Multiline</h5>
 				</div>
 				<div class="field-content">
-					<label>{{label}}</label>
-					<textarea id="{{key}}" name="{{key}}" placeholder="{{placeholder}}" required>{{value}}</textarea>
-					<span class="help-block field-description">{{description}}</span>
+					<label><%=label%></label>
+					<textarea id="<%=key%>" name="<%=key%>" placeholder="<%=placeholder%>" <%= (required?'required':'') %> ><%=value%></textarea>
+					<span class="help-block field-description"><%=description%></span>
 				</div>						
 			</div>
 		</script>		
 
 		<!-- selection -->
 		<script class="field-template" data-type="selection" id="tmpl-read-selection" type="text/html">
-			<div class="field" data-type="selection">
+			<div class="field has-open-editor" data-type="selection">
 				<div class="field-header js-drag-handle">
 					<h5>Selection</h5>
 				</div>
 				<div class="field-content">
-					<label>{{label}}</label>
-					<select id="{{key}}" name="{{key}}" value="{{value}}">
-						{{#options}}
-				    		<option value="{{value}}">{{label}}</option>
-						{{/options}}
+					<label><%=label%></label>
+					<select id="<%=key%>" name="<%=key%>" value="<%=value%>">
+						<% options.forEach(function(option){ %>
+				    		<option value="<%=option.value%>" <%= ( value == option.value ? 'selected' : '' ) %> ><%=option.label%></option>
+						<% }); %>
 					</select>
-					<span class="help-block field-description">{{description}}</span>
+					<span class="help-block field-description"><%=description%></span>
 				</div>						
 			</div>
 		</script>
 
 		<!-- radio -->
 		<script class="field-template" data-type="radiobox" id="tmpl-read-radio" type="text/html">
-			<div class="field" data-type="radio">
+			<div class="field has-open-editor" data-type="radio">
 				<div class="field-header js-drag-handle">
 					<h5>Radio Box</h5>
 				</div>
 				<div class="field-content">
-					<label>{{label}}</label>
-					<span class="help-block field-description">{{description}}</span>
-					{{#options}}
+					<label><%=label%></label>
+					<span class="help-block field-description"><%=description%></span>
+					<% options.forEach(function(option){ %>
 						<label>
-							<input type="radio" name="{{key}}" value="{{value}}">{{label}}
+							<input type="radio" name="<%=option.key%>" value="<%=option.value%>" <%= ( value == option.value ? 'checked' : '' ) %>><%=option.label%>
 						</label>
-					{{/options}}
+					<% }); %>
 				</div>						
 			</div>
 		</script>
 		
 		<!-- checkbox -->
 		<script class="field-template" data-type="checkbox" id="tmpl-read-checkbox" type="text/html">
-			<div class="field" data-type="checkbox">
+			<div class="field has-open-editor" data-type="checkbox">
 				<div class="field-header js-drag-handle">
 					<h5>Checkbox</h5>
 				</div>
 				<div class="field-content">
-					<label>{{label}}</label>
-					<span class="help-block field-description">{{description}}</span>
-					{{#options}}
+					<label><%=label%></label>
+					<span class="help-block field-description"><%=description%></span>
+					<% options.forEach(function(option) { %>
 						<label>
-							<input type="checkbox" name="{{key}}" value="{{value}}">{{label}}
+							<input type="checkbox" name="<%=option.key%>" value="<%=option.value%>" <%= ( value == option.value ? 'checked' : '' ) %> ><%=option.label%>
 						</label>
-					{{/options}}
+					<% }); %>
 					
 				</div>						
 			</div>
 		</script>
 
 
-		<!-- write templates -->
-	
+		<!-- action buttons -->
+		<script class="actions-template" id="tmpl-actions" type="text/html">
+			<div class="actions">
+				<div class="btn btn-default field-edit">
+					edit
+				</div>
+				<div class="btn btn-default field-remove">
+					&times;
+				</div>
+			</div>
+		</script>
 
 
-	</div>
- 
+		<!-- editor template -->
+		<script class="editor-template" id="tmpl-editor" type="text/html">
+			<div class="editor" data-id="<%=id%>">
+				<form action="" method="post" class="editor-form js-editor-form">
+					
+					<% for ( key in data ) { %>
+						<% if ( key == 'isAvailable' ) {%>
+							<div class="prop" data-key"isAvailable">
+								<div class="prop-col">
+									<label for="">Is available :</label>
+								</div>
+								<div class="prop-col">
+									<label for="<%=id%>_isAvailable_radio_true">
+										<input <%= ( data[key] === true ? 'checked' : '' ) %> type="radio" name="isAvailable" value="true" id="<%=id%>_isAvailable_radio_true">
+										True
+									</label>
+									<label for="<%=id%>_isAvailable_radio_false">
+										<input <%= ( data[key] === false ? 'checked' : '' ) %> type="radio" name="isAvailable" value="true" id="<%=id%>_isAvailable_radio_false">
+										False
+									</label>
+								</div>																
+							</div>
+						<% } %>
+						<% if ( key == 'name' ) { %>
+							<div class="prop" data-key="name">
+								<div class="prop-col">
+									<label>Name :</label>
+								</div>
+								<div class="prop-col">
+									<input type="text" name="name" value="<%=data[key]%>">
+								</div>								
+							</div>
+						<% } %>
+						<% if ( key == 'key' ) { %>
+							<div class="prop" data-key"key">
+								<div class="prop-col">
+									<label for="">Key :</label>
+								</div>
+								<div class="prop-col">
+									<input type="text" name="key" value="<%=data[key]%>">
+								</div>								
+							</div>
+						<% } %>
+						<% if ( key == 'required' ) {%>
+							<div class="prop" data-key"required">
+								<div class="prop-col">
+									<label for="">Required :</label>	
+								</div>
+								<div class="prop-col">
+									<label for="<%=id%>_required_radio_true">
+										<input <%= ( data[key] === true ? 'checked' : '' ) %> type="radio" name="required" value="true" id="<%=id%>_required_radio_true">
+										True
+									</label>
+									<label for="<%=id%>_required_radio_false">
+										<input <%= ( data[key] === false ? 'checked' : '' ) %> type="radio" name="required" value="true" id="<%=id%>_required_radio_false">
+										False
+									</label>
+								</div>																
+							</div>
+						<% } %>
+						<% if ( key == 'label' ) { %>
+							<div class="prop" data-key"label">
+								<div class="prop-col">
+									<label for="">Label :</label>
+								</div>
+								<div class="prop-col">
+									<input type="text" name="label" value="<%=data[key]%>">
+								</div>								
+							</div>
+						<% } %>
+						<% if ( key == 'placeholder' ) { %>
+							<div class="prop" data-key"placeholder">
+								<div class="prop-col">
+									<label for="">Placeholder :</label>
+								</div>
+								<div class="prop-col">
+									<input type="text" name="placeholder" value="<%=data[key]%>">
+								</div>								
+							</div>
+						<% } %>
+						<% if ( key == 'value' ) { %>
+							<div class="prop" data-key"value">
+								<div class="prop-col">
+									<label for="">Value :</label>
+								</div>
+								<div class="prop-col">
+									<input type="text" name="value" value="<%=data[key]%>">
+								</div>								
+							</div>
+						<% } %>
+						<% if ( key == 'description' ) { %>
+							<div class="prop" data-key"description">
+								<div class="prop-col">
+									<label for="">Description :</label>
+								</div>
+								<div class="prop-col">
+									<textarea name="description" cols="30" rows="5"><%= data[key] %></textarea>
+								</div>								
+							</div>
+						<% } %>
+						<% if ( key == 'options' ) { %>
+							<div class="prop" data-key"options">
+								<div class="prop-col">
+									<label for="">Options :</label>
+								</div>
+								<div class="prop-col">
+									<textarea name="options" cols="30" rows="5"><%= data[key] %></textarea>
+								</div>								
+							</div>
+						<% } %>
+					<% }; %>
+				</form>	
+				<div class="pull-right">					
+					<div class="btn btn-default editor-save">Save</div>
+					<div class="btn btn-default editor-close">Cancel</div>
+				</div>		
+			</div>
+		</script>
+
+
+			
+
+	<!-- 	isAvailable 	: true,
+			key 			: 'name',
+			required 		: false,
+			label 			: 'Text Input:',
+			placeholder 	: 'placeholder',
+			value 			: '',
+			description 	: '',
+			showif 			: '',
+			hideif 			: '',
+			restriction 	: '' -->
+
+
+	</div> 
 
 
 	<!-- LIB JS -->

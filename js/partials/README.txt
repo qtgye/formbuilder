@@ -1,6 +1,6 @@
 // Use this template when creating a new module.
-// Add the file path to the scripts task in gulpfile.js
-// Restart gulp watch to apply the changes
+// Add the file path to the manifest.json file.
+// Restart gulp watch to apply the changes.
 
 /*
 ** Module name and description

@@ -5,20 +5,29 @@
 ** 
 ** Dependency:
 ** - main app
+** - fields module
 **
 */
 
 App.createModule('sections',(function (app,$) {
 
+
+
 	// define module
 	// ====================================================================================
 	var module = {};
 
+
+
 	// define private variables
 	// ====================================================================================
-	var Fields 		= app.fields,
-		template 	= '',
-		sections 	= {};
+	var Fields 			= app.fields,
+		Editor 			= app.editor,
+		template 		= '',
+		actionsTemplate	= '',
+		sections 		= {},
+		helperWidth;
+
 
 	// Section object class
 	function Section (data) {
@@ -27,16 +36,19 @@ App.createModule('sections',(function (app,$) {
 			id 						= guid(),
 			isSortableInitialized 	= false;
 
+		console.log('New Section : ' + id);
+
 		// Define props
 		self.id 				= id;
 		self.data 				= data;
-		self.$el 				= $(renderReadContent(data));
+		self.$el 				= $(renderData(data));
+		self.$sectionHeader 	= self.$el.find('.js-section-header');
 		self.$sectionContent 	= self.$el.find('.js-section-content');
 
 		// Attach element id
 		self.$el.attr('id',self.id);
 
-		// initialize sortable
+		// initializes sortable
 		self.initializeSortable = function () {
 			self.$sectionContent.sortable({
 				handle 		: '.js-drag-handle',
@@ -46,9 +58,9 @@ App.createModule('sections',(function (app,$) {
 				},
 				start 		: onSortStart,
 				stop 		: onSortStop,
-				receive 	: onSortReceive
+				receive 	: onSortReceive,
+				remove 		: onSortRemove
 			});
-
 		};
 
 		// refreshes sortable to find added elements
@@ -58,21 +70,92 @@ App.createModule('sections',(function (app,$) {
 			}
 		};
 
+		// gets the field objects
+		self.getContentObjects = function () {
+			var fieldObjects = [];
+
+			self.$sectionContent.find('.field')
+				.each(function (key,field) {
+					var id 		= field.id,
+						_field 	= Fields.getField(id);
+					fieldObjects.push(_field);
+				});
+
+			return fieldObjects;
+		};
+
+		// extracts the content data
+		self.extractContentData = function () {
+			var fieldsData 		= [],
+				contentObjects	= self.getContentObjects();
+
+			contentObjects.forEach(function (_field) {
+				fieldsData[key] = _field.data;
+			});
+
+			return fieldsData;
+		};
+
+		// update the section's fields data
+		self.updateFieldsData = function () {
+			self.data.fields = self.extractContentData();
+		};
+
+		// removes the dom element and the object entirely
+		// including its fields
+		self.remove = function () {
+			self.$el.slideUp(300,function () {
+				self.getContentObjects()
+					.forEach(function (_field) {
+						_field.remove();
+					});
+				self.$el.slideUp(300,function () {
+					self.$el.remove();
+					delete sections[self.id];
+				});				
+			});
+		};
+
+		// add action buttons
+		self.$sectionHeader.prepend($(tmpl(actionsTemplate,self)));
+		self.$edit 		= self.$el.find('.field-edit');
+		self.$remove 	= self.$el.find('.field-remove');
+		self.$remove.on('click',self.remove);
+
+		// setup editor
+		self.editor 	= Editor.create(self);
+		self.$el.append(self.editor.$el);
+		self.$edit.on('click',function () {
+			self.editor.toggle();
+		});
+
+
+		// add to store
+		sections[self.id] = self;
 
 	}
+
+
 
 	// define private functions
 	// ====================================================================================
 	
 	// One time called template preparation
 	function prepareTemplate () {
-		template = $('#tmpl-read-section').html();
+		template 		= $('#tmpl-read-section').html().trim();
+		actionsTemplate = $('#templates').find('#tmpl-actions').html().trim();
 	}
 
 	// get a rendered html of the data
-	function renderReadContent(data) {
-		var output = Mustache.render(template,data);
+	function renderData(data) {
+		var output = tmpl(template,data);
 		return output;
+	}
+
+	// creates a section object from data
+	function createSection (data) {
+		var newSection = new Section(data);
+		return newSection;
 	}
 
 	// searches and returns a section referenced by id
@@ -89,8 +172,12 @@ App.createModule('sections',(function (app,$) {
 
 	// sort start handler
 	function onSortStart (e,ui) {
+
 		// get the helper's dimension for the item
-		ui.helper.width(ui.item.width()).addClass('field-dragging');
+		ui.helper
+			.width( helperWidth ? helperWidth : ui.item.width() )
+			.addClass('field-dragging');
+
 	}
 
 	// sort stop handler
@@ -104,27 +191,34 @@ App.createModule('sections',(function (app,$) {
 
 		if ( ui.helper ) {
 			// The element is new
-			Fields.create(ui.helper);
+			var _newField = Fields.create(ui.helper);
 
-		} else {
-			// The element is existing field
-			console.log('moved');
+			// Update vars
+			helperWidth = _newField.$el.width();
+
 		}
+
+		Fields.getField((ui.helper||ui.item)[0].id).sectionId = self.id;
+		// update receiving section's fields data
+		sections[$(e.target).parent()[0].id].updateFieldsData();	
 	}
+
+	// sortable list remove handler
+	function onSortRemove (e,ui) {
+		// update source section's fields data
+		sections[$(e.target).parent()[0].id].updateFieldsData();
+		console.log('removed');
+	}
+
+
 
 
 	// define public application interface
 	// ====================================================================================
 
-	module.create = function (data) {
-		var newSection = new Section(data);
-
-		sections[newSection.id] = newSection;
-		return newSection;
-	};
-
-	module.refreshAll = refreshAll;
-	module.getSection = getSection;
+	module.create 		= createSection;
+	module.refreshAll 	= refreshAll;
+	module.getSection 	= getSection;
 
 
 	// define module init

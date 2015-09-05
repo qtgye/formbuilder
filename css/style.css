@@ -2,6 +2,7 @@
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
+	vertical-align: top;
 }
 
 li {
@@ -23,7 +24,7 @@ li {
 	border: 1px solid #aaa;
 	border-radius: 5px;
 	background-color: #fff;
-	overflow: hidden;
+	overflow: visible;
 	clear: both;
 }
 
@@ -33,6 +34,7 @@ li {
 		line-height: 1;
 		background-color: lightBlue;
 		cursor: move;
+		overflow: hidden;
 	}
 
 	.form-content {
@@ -44,6 +46,7 @@ li {
 
 /* Section Styles */
 .section {
+	position: relative;
 	display: block;
 	width: auto; 
 	height: auto;
@@ -51,7 +54,7 @@ li {
 	border: 1px solid #ccc;
 	border-radius: 5px;
 	background-color: #fff;
-	overflow: hidden;
+	overflow: visible;
 }
 
 	.section-header {
@@ -60,10 +63,12 @@ li {
 		line-height: 1;
 		background-color: lightGreen;
 		cursor: move;
+		overflow: hidden;
 	}
 
 		.section-header h5 {
 			font-weight: bolder;
+			margin: 0;
 		}
 
 	.section-content {
@@ -77,11 +82,12 @@ li {
 	display: block;
 	width: auto; 
 	height: auto;
+	position: relative;
 	margin-bottom: 10px;
 	border: 1px solid silver;
 	border-radius: 5px;
 	background-color: #fff;
-	overflow: hidden;
+	overflow: visible;
 }
 
 	.field-dragging {
@@ -94,7 +100,12 @@ li {
 		line-height: 1;
 		background-color: lightCyan;
 		cursor: move;
+		overflow: hidden;
 	}
+
+		.field-header h5 {
+			margin: 0;
+		}
 
 	.field-content {
 		display: block;
@@ -102,6 +113,72 @@ li {
 	}
 
 
+/* Action buttons styles */
+.actions {
+	display: table;
+	position: absolute;
+	top: 0;
+	right: 0;
+	opacity: 0;
+	transform: translateY(-10%);
+	transition: all 0.3s;
+	z-index: 100;
+}
+.section-header:hover > .actions,
+.field-header:hover > .actions {
+	transform: translateY(0);
+	opacity: 1;
+}
+
+
+/* Editor styles */
+.editor {
+	display: none;
+	position: absolute;
+	right: 95%;
+	top: 0;
+	right: 100%;
+	margin-right: 10px;
+	z-index: 0;
+	padding: 10px;
+	background-color: #fff;
+	-webkit-box-shadow: 3px 3px 15px rgba(0,0,0,0.5);
+	box-shadow: 3px 3px 15px rgba(0,0,0,0.5);
+	transition: right 0.2s;
+}
+
+.has-open-editor > .editor {
+	display: table;
+}
+
+	.editor:after {
+		display: table;
+		content: '';
+		position: absolute;
+		top: 10px;
+		left: 100%;
+		border-left: 10px solid #fff;
+		border-top: 10px solid transparent;
+		border-bottom: 10px solid transparent;
+	}
+
+	.editor-form {
+		display: table;
+	}
+
+		.prop {
+			display: table-row;
+		}
+
+		.prop-col {
+			display: table-cell;
+			padding: 5px 10px;
+		}
+
+		.prop-col:first-child {
+			white-space: nowrap;
+			text-align: right;
+		}
 
 
 .field-heading {

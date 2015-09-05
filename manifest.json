@@ -1,7 +1,8 @@
 {
 	"files" : [		
 		"js/partials/helpers.js",
-		"js/partials/main.js",
+		"js/partials/main.js",		
+		"js/partials/editor.js",
 		"js/partials/defaults.js",	
 		"js/partials/fields.js",
 		"js/partials/sections.js",

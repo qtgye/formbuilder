@@ -20,6 +20,8 @@ App.createModule('fields',(function (app,$) {
 	// ====================================================================================
 	var fields 		= {},
 		templates 	= {},
+		Defaults 	= app.defaults,
+		Editor 		= app.editor,
 		checker 	= {
 				isSingleline	: 'singleline'	,
 				isDate 			: 'date'		,
@@ -28,42 +30,7 @@ App.createModule('fields',(function (app,$) {
 				isSelect 		: 'selection'	,
 				isRadiobox 		: 'radiobox'	,
 				isCheckbox 		: 'checkbox'
-			},
-		// contains function return appropriate data structures acc. to field type
-		dataExtractor = {
-			'singleline' : function ($el) {
-				var $input = $el.find('input');
-				return  {
-					isSingleline	: true,
-					isAvailable 	: $el.data('isAvailable'),
-					key 			: $input.attr('name'),
-					required 		: $input.attr('required') || false,
-					label 			: $el.find('label').text(),
-					placeholder 	: $input.attr('placeholder') || false,
-					value 			: $input.val(),
-					description 	: $el.find('.field-description').text(),
-					showif 			: $el.data('showif'),
-					hideif 			: $el.data('hideif'),
-					restriction 	: $el.data('restriction'),
-					length 			: $input.attr('length')
-				};
-			},
-			'date' 		: function ($el) {
-				var $input = $el.find('input');
-				return {
-					isDate 			: true,
-					isAvailable 	: $el.data('isAvailable'),
-					key 			: $input.attr('name'),
-					required 		: $input.attr('required') || false,
-					label 			: $el.find('label').text(),
-					format		 	: $el.data('format'),
-					description 	: $el.find('.field-description').text(),
-					showif 			: $el.data('showif'),
-					hideif 			: $el.data('hideif')
-				}
-			}
-		};
-
+			};
 
 
 	// The Field Class
@@ -71,23 +38,66 @@ App.createModule('fields',(function (app,$) {
 
 		var self 		= this;
 
-		if (  arg.context ) {
-		// if the arg is a jquery object
-			self.data 	= extractData(arg);
-			self.$el 	= arg;
-		} else {
-		// if the arg is a data object
-			self.data 	= arg;
-			self.$el 	= $(renderData(arg));
-		}
+		// construct
+		(function () {
 
-		self.id = guid();
-		self.$el.attr('id',self.id);
+			if (  arg.context ) {
+				// if the arg is a jquery object (new field)
+				self.data 	= Defaults.fields[arg.data('type')];
+				self.$el 	= arg;
+			} else {
+				// if the arg is a data object
+				self.data 	= arg;
+				self.$el 	= $(renderData(arg));
+			}
 
-		fields[self.id] = self;
+			self.data 			= cloneObject(self.data); // make sure data is not a reference
+			self.id 			= guid();
+			self.type 			= arg.data('type');
+			self.$fieldHeader 	= self.$el.find('.field-header');
+			self.$fieldContent 	= self.$el.find('.field-content');
+			self.sectionId 		= null; // will hold containing section's id
 
-		console.log(self);
+			self.$el.attr('id',self.id);
+			// add action buttons
+			self.$fieldHeader.prepend($(tmpl(templates.actions,self)));
+			self.$edit 		= self.$el.find('.field-edit');
+			self.$remove 	= self.$el.find('.field-remove');
 
+			// methods
+			self.update = function (newData) {
+				
+				for ( var key in self.data ) {
+					self.data[key] = newData[key];
+				}
+
+				updateFieldDOM(self,self.data);
+			};
+			// removes the dom element and the object entirely
+			self.remove = function () {
+				self.$el.slideUp(300,function () {
+					self.$el.remove();
+					delete fields[self.id];
+				});
+			};
+
+			// setup editor
+			self.editor 	= Editor.create(self);
+			self.$el.append(self.editor.$el);
+			self.$edit.on('click',function () {
+				self.editor.toggle();
+			});
+			self.editor.$save.on('click',function () {
+				var newData = self.editor.extractData();
+				self.update(newData);
+			});
+			self.$remove.on('click',self.remove);
+
+			// add to store
+			fields[self.id] = self;
+
+		})();
+		
 	}
 
 	// define private functions
@@ -99,12 +109,21 @@ App.createModule('fields',(function (app,$) {
 			.each(function (i,tmpl) {
 				templates[this.getAttribute('data-type')] = this.innerHTML.trim();
 			});
+		templates.actions = $('#templates').find('#tmpl-actions').html().trim();
 	}
 
 	// renders a dom structure of the data
 	function renderData (data) {	
 		var dataType = getFieldType(data);
-		return Mustache.render(templates[dataType],data);
+		return tmpl(templates[dataType],data);
+	}
+
+	function updateFieldDOM (_field,data) {
+		var $rendered = $(renderData(data));
+
+		_field.$fieldContent
+			.empty()
+			.html($rendered.find('.field-content').html());
 	}
 
 	// returns the fieldType
@@ -112,19 +131,17 @@ App.createModule('fields',(function (app,$) {
 		return checker[Object.keys(data)[0]];
 	}
 
-	// gets the data from a jquery dom object
-	function extractData ($el) {
-		var type = $el.data('type');
-		return dataExtractor[type]($el);
+	// get a field object
+	function getField (id) {
+		return fields[id];		
 	}
 
 	// Create a field object
 	function create (arg) {
 		var _newField = new Field(arg);
 
-		
-
 		console.log('created a new field');
+		return _newField;
 		// console.log(_newField);
 	}
 
@@ -135,8 +152,7 @@ App.createModule('fields',(function (app,$) {
 
 	module.renderData 	= renderData	;
 	module.create 		= create 		;
-	// test
-	module.extractData = extractData;
+	module.getField 	= getField 		;
 
 
 	// define module init
