@@ -1,10 +1,12 @@
-var gulp 		= require('gulp'),
-	concat 		= require('gulp-concat'),
-	jshint 		= require('gulp-jshint'),
-	browserSync = require('browser-sync').create(),
-	del 		= require('del'),
-	fs 			= require('fs'),
-	jsFiles 	= [];
+var gulp 			= require('gulp'),
+	autoprefixer 	= require('gulp-autoprefixer'),
+	rename 			= require('gulp-rename'),
+	concat 			= require('gulp-concat'),
+	jshint 			= require('gulp-jshint'),
+	browserSync 	= require('browser-sync').create(),
+	del 			= require('del'),
+	fs 				= require('fs'),
+	jsFiles 		= [];
 
 
 // handles pipe error
@@ -54,6 +56,14 @@ gulp.task('jshint',function () {
 		.pipe(jshint.reporter('jshint-stylish'));
 });
 
+// css
+gulp.task('css',function () {
+	gulp.src('./css/dev.css')
+		.pipe(autoprefixer())
+		.pipe(rename('style.css'))
+		.pipe(gulp.dest('./css/'));
+});
+
 // scripts
 gulp.task('scripts',['del','jshint'],function () {
 	gulp.src(jsFiles)
@@ -64,11 +74,16 @@ gulp.task('scripts',['del','jshint'],function () {
 });
 
 // watch
-gulp.task('watch',['manifest','browser-sync'],function () {
-
-	// initial load of tasks
+gulp.task('watch',
+	[
+		'manifest',
+		'css',
+		'scripts',
+		'browser-sync'
+	],function () {
 
 	// watch
+	gulp.watch('./css/dev.css',['css']);
 	gulp.watch('./js/partials/**/*',['scripts']);
 	gulp.watch('./manifest.json',['manifest']);
 	gulp.watch('./**/*.html').on('change',browserSync.reload);
