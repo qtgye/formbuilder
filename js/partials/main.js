@@ -40,3 +40,10 @@ var App = window.App || (function (W,D,$) {
 
 })(window,document,jQuery);
 
+
+/*
+** DEFINE MODULES AFTER THIS SEPARATOR
+** =============================================================================================
+*/
+
+
