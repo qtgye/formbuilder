@@ -64,7 +64,7 @@
 		<script class="section-template" id="tmpl-read-section" type="text/html">
 			<div class="section has-open-editor">
 				<div class="section-header js-section-header js-drag-handle">
-					<h5><%=name%></h5>
+					<h5 class="js-section-name"><%=name%></h5>
 				</div>
 				<div class="section-content js-section-content">
 					
@@ -388,6 +388,23 @@
 								<div class="prop-col">
 									<textarea name="restriction" cols="30" rows="5"><%= data[key] %></textarea>
 								</div>								
+							</div>
+						<% } %>
+						<% if ( key == 'isBatch' ) {%>
+							<div class="prop" data-key"isBatch">
+								<div class="prop-col">
+									<label for="">Is Batch :</label>	
+								</div>
+								<div class="prop-col">
+									<label for="<%=id%>_isBatch_radio_true">
+										<input <%= ( data[key] === true ? 'checked' : '' ) %> type="radio" name="isBatch" value="true" id="<%=id%>_isBatch_radio_true">
+										True
+									</label>
+									<label for="<%=id%>_isBatch_radio_false">
+										<input <%= ( data[key] === false ? 'checked' : '' ) %> type="radio" name="isBatch" value="false" id="<%=id%>_isBatch_radio_false">
+										False
+									</label>
+								</div>																
 							</div>
 						<% } %>
 						<% if ( key == 'options' ) { %>
