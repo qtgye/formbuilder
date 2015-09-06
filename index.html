@@ -135,7 +135,7 @@
 				</div>
 				<div class="field-content">
 					<label><%=label%></label>
-					<select id="<%=key%>" name="<%=key%>" value="<%=value%>">
+					<select id="<%=key%>" name="<%=key%>" value="<%=value%>" <%= ( multiple ? 'multiple' : '' ) %> >
 						<% options.forEach(function(option){ %>
 				    		<option value="<%=option.value%>" <%= ( value == option.value ? 'selected' : '' ) %> ><%=option.label%></option>
 						<% }); %>
@@ -218,7 +218,7 @@
 										True
 									</label>
 									<label for="<%=id%>_isAvailable_radio_false">
-										<input <%= ( data[key] === false ? 'checked' : '' ) %> type="radio" name="isAvailable" value="true" id="<%=id%>_isAvailable_radio_false">
+										<input <%= ( data[key] === false ? 'checked' : '' ) %> type="radio" name="isAvailable" value="false" id="<%=id%>_isAvailable_radio_false">
 										False
 									</label>
 								</div>																
@@ -255,7 +255,7 @@
 										True
 									</label>
 									<label for="<%=id%>_required_radio_false">
-										<input <%= ( data[key] === false ? 'checked' : '' ) %> type="radio" name="required" value="true" id="<%=id%>_required_radio_false">
+										<input <%= ( data[key] === false ? 'checked' : '' ) %> type="radio" name="required" value="false" id="<%=id%>_required_radio_false">
 										False
 									</label>
 								</div>																
@@ -282,14 +282,26 @@
 							</div>
 						<% } %>
 						<% if ( key == 'value' ) { %>
-							<div class="prop" data-key"value">
-								<div class="prop-col">
-									<label for="">Value :</label>
+							<% if ( type.match(/(singleline|date|entity|select|radiobox|checkbox)/) ) { %>
+								<div class="prop" data-key"value">
+									<div class="prop-col">
+										<label for="">Default value :</label>
+									</div>
+									<div class="prop-col">
+										<input type="text" name="value" value="<%=data[key]%>">
+									</div>								
 								</div>
-								<div class="prop-col">
-									<input type="text" name="value" value="<%=data[key]%>">
-								</div>								
-							</div>
+							<% } %>
+							<% if ( type.match(/(multiline)/) ) { %>
+								<div class="prop" data-key"value">
+									<div class="prop-col">
+										<label for="">Value :</label>
+									</div>
+									<div class="prop-col">
+										<textarea name="value" cols="30" rows="5"><%= data[key] %></textarea>
+									</div>								
+								</div>
+							<% } %>
 						<% } %>
 						<% if ( key == 'format' ) { %>
 							<div class="prop" data-key"format">
@@ -319,6 +331,23 @@
 								<div class="prop-col">
 									<input type="number" name="max" value="<%=data[key]%>">
 								</div>								
+							</div>
+						<% } %>
+						<% if ( key == 'multiple' ) {%>
+							<div class="prop" data-key"multiple">
+								<div class="prop-col">
+									<label for="">Allow multiple :</label>	
+								</div>
+								<div class="prop-col">
+									<label for="<%=id%>_multiple_radio_true">
+										<input <%= ( data[key] === true ? 'checked' : '' ) %> type="radio" name="multiple" value="true" id="<%=id%>_multiple_radio_true">
+										True
+									</label>
+									<label for="<%=id%>_multiple_radio_false">
+										<input <%= ( data[key] === false ? 'checked' : '' ) %> type="radio" name="multiple" value="false" id="<%=id%>_multiple_radio_false">
+										False
+									</label>
+								</div>																
 							</div>
 						<% } %>
 						<% if ( key == 'description' ) { %>
@@ -378,20 +407,6 @@
 				</div>		
 			</div>
 		</script>
-
-
-			
-
-	<!-- 	isAvailable 	: true,
-			key 			: 'name',
-			required 		: false,
-			label 			: 'Text Input:',
-			placeholder 	: 'placeholder',
-			value 			: '',
-			description 	: '',
-			showif 			: '',
-			hideif 			: '',
-			restriction 	: '' -->
 
 
 	</div> 
