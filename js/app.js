@@ -796,9 +796,10 @@ App.createModule('sections',(function (app,$) {
 
 		// Define props
 		self.id 				= id;
-		self.data 				= data;
+		self.data 				= cloneObject(data);
 		self.$el 				= $(renderData(data));
 		self.$sectionHeader 	= self.$el.find('.js-section-header');
+		self.$sectionName	 	= self.$el.find('.js-section-name');
 		self.$sectionContent 	= self.$el.find('.js-section-content');
 
 		// Attach element id
@@ -852,6 +853,18 @@ App.createModule('sections',(function (app,$) {
 			return fieldsData;
 		};
 
+		// updates section data and dom
+		self.update = function (newData) {
+			
+			for ( var key in self.data ) {
+				if ( key in newData ) {
+					self.data[key] = newData[key];
+				}				
+			}
+
+			self.$sectionName.text(self.data.name);
+		};
+
 		// update the section's fields data
 		self.updateFieldsData = function () {
 			self.data.fields = self.extractContentData();
@@ -861,12 +874,25 @@ App.createModule('sections',(function (app,$) {
 		// including its fields
 		self.remove = function () {
 			delete sections[self.id];
-		};
+		};		
+
+		// setup editor
+		self.editor 	= Editor.create(self);
+		self.$el.append(self.editor.$el);	
+
+		self.editor.$form.on('keyup change',function () {
+			var newData = self.editor.extractData();
+			self.update(newData);
+		});
 
 		// add action buttons
 		self.$sectionHeader.prepend($(tmpl(actionsTemplate,self)));
 		self.$edit 		= self.$el.find('.field-edit');
 		self.$remove 	= self.$el.find('.field-remove');
+		// bind buttons
+		self.$edit.on('click',function () {
+			self.editor.toggle();
+		});
 		self.$remove.on('click',function () {
 			self.$el.addClass('section-removing');
 			setTimeout(function () {
@@ -878,13 +904,6 @@ App.createModule('sections',(function (app,$) {
 					});
 				self.remove();
 			},500);
-		});
-
-		// setup editor
-		self.editor 	= Editor.create(self);
-		self.$el.append(self.editor.$el);
-		self.$edit.on('click',function () {
-			self.editor.toggle();
 		});
 
 
