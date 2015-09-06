@@ -34,71 +34,95 @@ App.createModule('fields',(function (app,$) {
 
 
 	// The Field Class
+	// @param arg = either a field data or jquery dom object
 	function Field (arg) {
 
+		
 		var self 		= this;
 
-		// construct
-		(function () {
+		// private variables
+		// ------------------------
+		var	template; // will hold the template for this field object
 
-			if (  arg.context ) {
-				// if the arg is a jquery object (new field)
-				self.data 	= Defaults.fields[arg.data('type')];
-				self.$el 	= arg;
-			} else {
-				// if the arg is a data object
-				self.data 	= arg;
-				self.$el 	= $(renderData(arg));
+		// Construct
+		// -----------------------
+		if (  arg.context ) {
+			// if the arg is a jquery object (new field)
+			self.type 	= arg.data('type');
+			self.data 	= Defaults.fields[self.type];
+			self.$el 	= arg;
+			template 	= getTemplateString(self.type);
+		} else {
+			// if the arg is a data object
+			self.data 	= arg;
+			self.type 	= getFieldType(self.data);
+			template 	= getTemplateString(self.type);
+			self.$el 	= renderData();
+		}
+
+		self.data 			= cloneObject(self.data); // make sure data is not a reference
+		self.id 			= guid();
+		self.type 			= arg.data('type');
+		self.$fieldHeader 	= self.$el.find('.field-header');
+		self.$fieldContent 	= self.$el.find('.field-content');
+		self.sectionId 		= null; // will hold containing section's id
+
+		self.$el.attr('id',self.id);		
+
+		// private methods
+		// ------------------------
+
+		// get a jquery dom object of rendered data
+		function renderData () {
+			return $(tmpl(template,self.data));
+		}
+		// removes the dom element and the object entirely
+		function remove () {
+			self.$el.addClass('field-removing');
+			setTimeout(function () {
+				self.$el.remove();
+				delete fields[self.id];
+			});
+		}
+
+		// public methods
+		// ------------------------
+		self.update = function (newData) {
+			
+			for ( var key in self.data ) {
+				if ( key in newData ) {
+					self.data[key] = newData[key];
+				}				
 			}
 
-			self.data 			= cloneObject(self.data); // make sure data is not a reference
-			self.id 			= guid();
-			self.type 			= arg.data('type');
-			self.$fieldHeader 	= self.$el.find('.field-header');
-			self.$fieldContent 	= self.$el.find('.field-content');
-			self.sectionId 		= null; // will hold containing section's id
+			updateFieldDOM(self,self.data);
+		};
 
-			self.$el.attr('id',self.id);
-			// add action buttons
-			self.$fieldHeader.prepend($(tmpl(templates.actions,self)));
-			self.$edit 		= self.$el.find('.field-edit');
-			self.$remove 	= self.$el.find('.field-remove');
+		// setup editor
+		// ------------------------
+		self.editor 	= Editor.create(self);
+		self.$el.append(self.editor.$el);
+		
+		self.editor.$form.on('keyup change',function () {
+			var newData = self.editor.extractData();
+			self.update(newData);
+		});
 
-			// methods
-			self.update = function (newData) {
-				
-				for ( var key in self.data ) {
-					self.data[key] = newData[key];
-				}
+		// add action buttons
+		// ------------------------
+		self.$fieldHeader.prepend($(tmpl(templates.actions,self)));
+		self.$edit 		= self.$el.find('.field-edit');
+		self.$remove 	= self.$el.find('.field-remove');
+		self.$edit.on('click',self.editor.toggle);
+		self.$remove.on('click',remove);
 
-				updateFieldDOM(self,self.data);
-			};
-			// removes the dom element and the object entirely
-			self.remove = function () {
-				self.$el.slideUp(300,function () {
-					self.$el.remove();
-					delete fields[self.id];
-				});
-			};
-
-			// setup editor
-			self.editor 	= Editor.create(self);
-			self.$el.append(self.editor.$el);
-			self.$edit.on('click',function () {
-				self.editor.toggle();
-			});
-			self.editor.$save.on('click',function () {
-				var newData = self.editor.extractData();
-				self.update(newData);
-			});
-			self.$remove.on('click',self.remove);
-
-			// add to store
-			fields[self.id] = self;
-
-		})();
+		// add to store
+		// ------------------------
+		fields[self.id] = self;
 		
 	}
+
+
 
 	// define private functions
 	// ====================================================================================
@@ -118,6 +142,12 @@ App.createModule('fields',(function (app,$) {
 		return tmpl(templates[dataType],data);
 	}
 
+	// gets the template string for a Field instance data
+	function getTemplateString (type) {
+		return templates[type];
+	}
+
+	// updates a the field dom with given data
 	function updateFieldDOM (_field,data) {
 		var $rendered = $(renderData(data));
 

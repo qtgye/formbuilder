@@ -28,7 +28,7 @@ App.createModule('editor',(function (app,$) {
 		var self = this;
 
 		var editorData = {
-			id : object.$el[0].id,
+			id 		: object.$el[0].id, // the field id
 			data 	: prepareData(object.data)
 		};
 
@@ -36,7 +36,6 @@ App.createModule('editor',(function (app,$) {
 		self.$el 		= $(tmpl(editorTemplate,editorData));
 		self.$form 		= self.$el.find('form');
 		self.$close 	= self.$el.find('.editor-close');
-		self.$save 		= self.$el.find('.editor-save');
 
 		// opens the editor
 		function open () {
@@ -65,8 +64,6 @@ App.createModule('editor',(function (app,$) {
 					});
 					pair.value = arr;
 				}
-
-
 				newData[pair.name] = pair.value;
 			});
 
@@ -79,7 +76,6 @@ App.createModule('editor',(function (app,$) {
 		self.extractData 	= extractData;
 
 		self.$close.on('click',close);
-		self.$save.on('click',close);
 
 		return self;
 	}
