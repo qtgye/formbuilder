@@ -97,3 +97,10 @@ App.createModule('fieldSource',(function (app,$) {
 	return module;
 
 })(window.App,jQuery));
+
+/*
+** MODULE END
+** =============================================================================================
+*/
+
+

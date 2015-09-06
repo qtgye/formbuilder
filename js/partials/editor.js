@@ -135,3 +135,13 @@ App.createModule('editor',(function (app,$) {
 	return module;
 
 })(window.App,jQuery));
+
+
+/*
+** MODULE END
+** =============================================================================================
+*/
+
+
+
+
