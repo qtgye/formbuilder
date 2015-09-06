@@ -80,7 +80,7 @@
 				</div>
 				<div class="field-content">
 					<label><%=label%></label>
-					<input type="text" id="<%=key%>" name="<%=key%>" placeholder="<%=placeholder%>" value="<%=value%>" required>
+					<input type="text" id="<%=key%>" name="<%=key%>" placeholder="<%=placeholder%>" value="<%=value%>" <%=( required? 'required' : '' )%> >
 					<span class="help-block field-description"><%=description%></span>
 				</div>						
 			</div>
@@ -94,7 +94,7 @@
 				</div>
 				<div class="field-content">
 					<label><%=label%></label>
-					<input type="date" id="<%=key%>" name="<%=key%>" value="<%=value%>" required>
+					<input type="date" id="<%=key%>" name="<%=key%>" <%=( required? 'required' : '' )%> >
 					<span class="help-block field-description"><%=description%></span>
 				</div>						
 			</div>
@@ -147,7 +147,7 @@
 
 		<!-- radio -->
 		<script class="field-template" data-type="radiobox" id="tmpl-read-radio" type="text/html">
-			<div class="field has-open-editor" data-type="radio">
+			<div class="field has-open-editor" data-type="radiobox">
 				<div class="field-header js-drag-handle">
 					<h5>Radio Box</h5>
 				</div>
@@ -186,10 +186,10 @@
 		<!-- action buttons -->
 		<script class="actions-template" id="tmpl-actions" type="text/html">
 			<div class="actions">
-				<div class="btn btn-default field-edit">
+				<div class="btn btn-primary field-edit">
 					edit
 				</div>
-				<div class="btn btn-default field-remove">
+				<div class="btn btn-warning field-remove">
 					&times;
 				</div>
 			</div>
@@ -199,13 +199,18 @@
 		<!-- editor template -->
 		<script class="editor-template" id="tmpl-editor" type="text/html">
 			<div class="editor" data-id="<%=id%>">
+
+				<div class="clearfix">
+					<div class="btn btn-warning pull-right editor-close">&times;</div>
+				</div>				
+
 				<form action="" method="post" class="editor-form js-editor-form">
 					
 					<% for ( key in data ) { %>
 						<% if ( key == 'isAvailable' ) {%>
 							<div class="prop" data-key"isAvailable">
 								<div class="prop-col">
-									<label for="">Is available :</label>
+									<label for="">Show on start :</label>
 								</div>
 								<div class="prop-col">
 									<label for="<%=id%>_isAvailable_radio_true">
@@ -286,6 +291,36 @@
 								</div>								
 							</div>
 						<% } %>
+						<% if ( key == 'format' ) { %>
+							<div class="prop" data-key"format">
+								<div class="prop-col">
+									<label for="">Format :</label>
+								</div>
+								<div class="prop-col">
+									<input type="text" name="format" value="<%=data[key]%>">
+								</div>								
+							</div>
+						<% } %>
+						<% if ( key == 'min' ) { %>
+							<div class="prop" data-key"min">
+								<div class="prop-col">
+									<label for="">Min :</label>
+								</div>
+								<div class="prop-col">
+									<input type="number" name="min" value="<%=data[key]%>">
+								</div>								
+							</div>
+						<% } %>
+						<% if ( key == 'max' ) { %>
+							<div class="prop" data-key"max">
+								<div class="prop-col">
+									<label for="">Max :</label>
+								</div>
+								<div class="prop-col">
+									<input type="number" name="max" value="<%=data[key]%>">
+								</div>								
+							</div>
+						<% } %>
 						<% if ( key == 'description' ) { %>
 							<div class="prop" data-key"description">
 								<div class="prop-col">
@@ -293,6 +328,36 @@
 								</div>
 								<div class="prop-col">
 									<textarea name="description" cols="30" rows="5"><%= data[key] %></textarea>
+								</div>								
+							</div>
+						<% } %>
+						<% if ( key == 'showif' ) { %>
+							<div class="prop" data-key"showif">
+								<div class="prop-col">
+									<label for="">Show if :</label>
+								</div>
+								<div class="prop-col">
+									<textarea name="showif" cols="30" rows="5"><%= data[key] %></textarea>
+								</div>								
+							</div>
+						<% } %>
+						<% if ( key == 'hideif' ) { %>
+							<div class="prop" data-key"hideif">
+								<div class="prop-col">
+									<label for="">Hide if :</label>
+								</div>
+								<div class="prop-col">
+									<textarea name="hideif" cols="30" rows="5"><%= data[key] %></textarea>
+								</div>								
+							</div>
+						<% } %>
+						<% if ( key == 'restriction' ) { %>
+							<div class="prop" data-key"restriction">
+								<div class="prop-col">
+									<label for="">Restriction :</label>
+								</div>
+								<div class="prop-col">
+									<textarea name="restriction" cols="30" rows="5"><%= data[key] %></textarea>
 								</div>								
 							</div>
 						<% } %>
@@ -308,9 +373,8 @@
 						<% } %>
 					<% }; %>
 				</form>	
-				<div class="pull-right">					
-					<div class="btn btn-default editor-save">Save</div>
-					<div class="btn btn-default editor-close">Cancel</div>
+				<div class="pull-right">
+					<div class="btn btn-default editor-close">OK</div>
 				</div>		
 			</div>
 		</script>
