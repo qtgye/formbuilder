@@ -37,7 +37,6 @@ App.createModule('defaults',(function (app,$) {
 			key 			: 'date',
 			required 		: false,
 			label 			: 'Date:',
-			value 			: '',
 			format 			: 'DD MMMM YYYY',
 			description 	: 'desc',
 			showif 			: 's if',
