@@ -75,15 +75,7 @@ App.createModule('fields',(function (app,$) {
 		// get a jquery dom object of rendered data
 		function renderData () {
 			return $(tmpl(template,self.data));
-		}
-		// removes the dom element and the object entirely
-		function remove () {
-			self.$el.addClass('field-removing');
-			setTimeout(function () {
-				self.$el.remove();
-				delete fields[self.id];
-			});
-		}
+		}		
 
 		// public methods
 		// ------------------------
@@ -97,6 +89,10 @@ App.createModule('fields',(function (app,$) {
 
 			updateFieldDOM(self,self.data);
 		};
+		// removes the field object entirely
+		self.remove = function () {			
+			delete fields[self.id];			
+		}
 
 		// setup editor
 		// ------------------------
@@ -114,7 +110,13 @@ App.createModule('fields',(function (app,$) {
 		self.$edit 		= self.$el.find('.field-edit');
 		self.$remove 	= self.$el.find('.field-remove');
 		self.$edit.on('click',self.editor.toggle);
-		self.$remove.on('click',remove);
+		self.$remove.on('click', function () {
+			self.$el.addClass('field-removing');
+			setTimeout(function () {
+				self.$el.remove();
+				self.remove();
+			},500);
+		});
 
 		// add to store
 		// ------------------------

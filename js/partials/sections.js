@@ -104,23 +104,25 @@ App.createModule('sections',(function (app,$) {
 		// removes the dom element and the object entirely
 		// including its fields
 		self.remove = function () {
-			self.$el.slideUp(300,function () {
-				self.getContentObjects()
-					.forEach(function (_field) {
-						_field.remove();
-					});
-				self.$el.slideUp(300,function () {
-					self.$el.remove();
-					delete sections[self.id];
-				});				
-			});
+			delete sections[self.id];
 		};
 
 		// add action buttons
 		self.$sectionHeader.prepend($(tmpl(actionsTemplate,self)));
 		self.$edit 		= self.$el.find('.field-edit');
 		self.$remove 	= self.$el.find('.field-remove');
-		self.$remove.on('click',self.remove);
+		self.$remove.on('click',function () {
+			self.$el.addClass('section-removing');
+			setTimeout(function () {
+				self.$el.remove();
+				// remove the fields content
+				self.getContentObjects()
+					.forEach(function (_field) {
+						_field.remove();
+					});
+				self.remove();
+			},500);
+		});
 
 		// setup editor
 		self.editor 	= Editor.create(self);
@@ -235,3 +237,13 @@ App.createModule('sections',(function (app,$) {
 	return module;
 
 })(window.App,jQuery));
+
+
+/*
+** MODULE END
+** =============================================================================================
+*/
+
+
+
+
