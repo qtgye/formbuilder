@@ -65,6 +65,12 @@ App.createModule('editor',(function (app,$) {
 					});
 					pair.value = arr;
 				}
+				// Convert to boolean
+				if ( pair.value == "true" ) {
+					pair.value = true;
+				} else if ( pair.value == "false" ) {
+					pair.value = false;
+				}
 				newData[pair.name] = pair.value;
 			});
 
