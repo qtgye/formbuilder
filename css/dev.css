@@ -88,10 +88,15 @@ li {
 	border-radius: 5px;
 	background-color: #fff;
 	overflow: visible;
+	transition: transform 0.3s;
 }
 
 	.field-dragging {
 		box-shadow: 0 0 15px rgba(0,0,0,0.3);
+	}
+
+	.field-removing {
+		transform: translateX(20px);
 	}
 
 	.field-header {
@@ -138,17 +143,19 @@ li {
 	right: 95%;
 	top: 0;
 	right: 100%;
-	margin-right: 10px;
+	margin-right: 10px;	
 	z-index: 0;
 	padding: 10px;
 	background-color: #fff;
-	-webkit-box-shadow: 3px 3px 15px rgba(0,0,0,0.5);
 	box-shadow: 3px 3px 15px rgba(0,0,0,0.5);
 	transition: right 0.2s;
 }
 
 .has-open-editor > .editor {
-	display: table;
+	display: block;
+	max-height: 400px;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 	.editor:after {
@@ -179,3 +186,8 @@ li {
 			white-space: nowrap;
 			text-align: right;
 		}
+
+.editor textarea {
+	resize: vertical;
+	overflow-y: auto;
+}
