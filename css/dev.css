@@ -55,7 +55,14 @@ li {
 	border-radius: 5px;
 	background-color: #fff;
 	overflow: visible;
+	transition: opacity 0.5s,
+				transform 0.5s;
 }
+
+	.section-removing {
+		transform: translateX(20px);
+		opacity: 0;
+	}
 
 	.section-header {
 		display: block;
@@ -80,6 +87,7 @@ li {
 /* Field Styles */
 .field {
 	display: block;
+	opacity: 1;
 	width: auto; 
 	height: auto;
 	position: relative;
@@ -88,7 +96,8 @@ li {
 	border-radius: 5px;
 	background-color: #fff;
 	overflow: visible;
-	transition: transform 0.3s;
+	transition: opacity 0.5s,
+				transform 0.5s;
 }
 
 	.field-dragging {
@@ -97,6 +106,7 @@ li {
 
 	.field-removing {
 		transform: translateX(20px);
+		opacity: 0;
 	}
 
 	.field-header {
