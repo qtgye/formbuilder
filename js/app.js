@@ -538,7 +538,7 @@ App.createModule('fields',(function (app,$) {
 		// removes the field object entirely
 		self.remove = function () {			
 			delete fields[self.id];			
-		}
+		};
 
 		// setup editor
 		// ------------------------
@@ -618,9 +618,8 @@ App.createModule('fields',(function (app,$) {
 	function create (arg) {
 		var _newField = new Field(arg);
 
-		console.log('created a new field');
+		console.log('New field : ' + _newField.id);
 		return _newField;
-		// console.log(_newField);
 	}
 
 
@@ -716,6 +715,7 @@ App.createModule('form',(function (app,$) {
 		form.$formTitle 	= form.$el.find('.js-form-title');
 		form.$formContent 	= form.$el.find('.js-form-content');
 		form.$addSectionBtn = form.$el.find('.js-add-section');
+		form.$saveBtn 		= form.$el.find('.js-form-save');
 
 		bindFormHandlers();
 
@@ -759,6 +759,40 @@ App.createModule('form',(function (app,$) {
 		form.$addSectionBtn.on('click',function (e) {
 			addSection(Defaults.section);
 		});
+		// get the form contents data
+		form.$saveBtn.on('click',function () {
+			var formData = extractContentData();
+			console.log(formData);
+		});
+	}
+
+	// gets the section objects
+	function getContentObjects () {
+		var sectionObjects = [];
+
+		form.$formContent.find('.section')
+			.each(function (key,section) {
+					var id 			= section.id,
+						_section	= Sections.getSection(id);
+					sectionObjects.push(_section);
+				});
+
+		return sectionObjects;
+
+	}
+
+	// get the data of the sections
+	function extractContentData () {
+		var sectionsData 	= [],
+			sectionObjects 	= getContentObjects();
+
+		sectionObjects.forEach(function (_section) {
+			// return only a copy of the data
+			var sectionData = cloneObject(_section.extractData());
+			sectionsData.push(sectionData);
+		});
+
+		return sectionsData;
 	}
 
 
@@ -767,6 +801,7 @@ App.createModule('form',(function (app,$) {
 	module.create 				= create;
 	module.addSection 			= addSection;
 	module.initializeSortable 	= initializeSortable;
+	module.extractContentData 	= extractContentData;
 
 	// define module init
 	// ====================================================================================
@@ -889,11 +924,19 @@ App.createModule('sections',(function (app,$) {
 			var fieldsData 		= [],
 				contentObjects	= self.getContentObjects();
 
-			contentObjects.forEach(function (_field) {
-				fieldsData[key] = _field.data;
+			contentObjects.forEach(function (_field,index) {
+				fieldsData[index] = _field.data;
 			});
 
 			return fieldsData;
+		};
+
+		// extracts the full data including the fields
+		// this does not update the data, but returns a clone of it
+		self.extractData = function () {			
+			var data = cloneObject(self.data);
+			data.fields = self.extractContentData();
+			return data;
 		};
 
 		// updates section data and dom
@@ -1027,7 +1070,6 @@ App.createModule('sections',(function (app,$) {
 	function onSortRemove (e,ui) {
 		// update source section's fields data
 		sections[$(e.target).parent()[0].id].updateFieldsData();
-		console.log('removed');
 	}
 
 
@@ -1045,7 +1087,7 @@ App.createModule('sections',(function (app,$) {
 	// ====================================================================================
 	module.init = function () {
 
-		console.log('sectionsmodule added');
+		console.log('sections module added');
 		
 		prepareTemplate();
 	};

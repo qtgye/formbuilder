@@ -90,11 +90,19 @@ App.createModule('sections',(function (app,$) {
 			var fieldsData 		= [],
 				contentObjects	= self.getContentObjects();
 
-			contentObjects.forEach(function (_field) {
-				fieldsData[key] = _field.data;
+			contentObjects.forEach(function (_field,index) {
+				fieldsData[index] = _field.data;
 			});
 
 			return fieldsData;
+		};
+
+		// extracts the full data including the fields
+		// this does not update the data, but returns a clone of it
+		self.extractData = function () {			
+			var data = cloneObject(self.data);
+			data.fields = self.extractContentData();
+			return data;
 		};
 
 		// updates section data and dom
@@ -228,7 +236,6 @@ App.createModule('sections',(function (app,$) {
 	function onSortRemove (e,ui) {
 		// update source section's fields data
 		sections[$(e.target).parent()[0].id].updateFieldsData();
-		console.log('removed');
 	}
 
 
@@ -246,7 +253,7 @@ App.createModule('sections',(function (app,$) {
 	// ====================================================================================
 	module.init = function () {
 
-		console.log('sectionsmodule added');
+		console.log('sections module added');
 		
 		prepareTemplate();
 	};

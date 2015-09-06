@@ -56,6 +56,7 @@ App.createModule('form',(function (app,$) {
 		form.$formTitle 	= form.$el.find('.js-form-title');
 		form.$formContent 	= form.$el.find('.js-form-content');
 		form.$addSectionBtn = form.$el.find('.js-add-section');
+		form.$saveBtn 		= form.$el.find('.js-form-save');
 
 		bindFormHandlers();
 
@@ -99,6 +100,40 @@ App.createModule('form',(function (app,$) {
 		form.$addSectionBtn.on('click',function (e) {
 			addSection(Defaults.section);
 		});
+		// get the form contents data
+		form.$saveBtn.on('click',function () {
+			var formData = extractContentData();
+			console.log(formData);
+		});
+	}
+
+	// gets the section objects
+	function getContentObjects () {
+		var sectionObjects = [];
+
+		form.$formContent.find('.section')
+			.each(function (key,section) {
+					var id 			= section.id,
+						_section	= Sections.getSection(id);
+					sectionObjects.push(_section);
+				});
+
+		return sectionObjects;
+
+	}
+
+	// get the data of the sections
+	function extractContentData () {
+		var sectionsData 	= [],
+			sectionObjects 	= getContentObjects();
+
+		sectionObjects.forEach(function (_section) {
+			// return only a copy of the data
+			var sectionData = cloneObject(_section.extractData());
+			sectionsData.push(sectionData);
+		});
+
+		return sectionsData;
 	}
 
 
@@ -107,6 +142,7 @@ App.createModule('form',(function (app,$) {
 	module.create 				= create;
 	module.addSection 			= addSection;
 	module.initializeSortable 	= initializeSortable;
+	module.extractContentData 	= extractContentData;
 
 	// define module init
 	// ====================================================================================

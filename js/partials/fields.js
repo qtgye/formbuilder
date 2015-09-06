@@ -92,7 +92,7 @@ App.createModule('fields',(function (app,$) {
 		// removes the field object entirely
 		self.remove = function () {			
 			delete fields[self.id];			
-		}
+		};
 
 		// setup editor
 		// ------------------------
@@ -172,9 +172,8 @@ App.createModule('fields',(function (app,$) {
 	function create (arg) {
 		var _newField = new Field(arg);
 
-		console.log('created a new field');
+		console.log('New field : ' + _newField.id);
 		return _newField;
-		// console.log(_newField);
 	}
 
 
