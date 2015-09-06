@@ -110,142 +110,12 @@ var App = window.App || (function (W,D,$) {
 
 
 /*
-** Editor module
-**
-** handles editors
-**
+** DEFINE MODULES AFTER THIS SEPARATOR
+** =============================================================================================
 */
 
-App.createModule('editor',(function (app,$) {
 
 
-
-	// define module
-	// ====================================================================================
-	var module = {};
-
-
-
-	// define private variables
-	// ====================================================================================
-	
-	var editorTemplate;
-
-
-	// Editor Class
-	// @param object : the Form/Section/Field object instance
-	function Editor (object) {
-		
-		var self = this;
-
-		var editorData = {
-			id 		: object.$el[0].id, // the field id
-			data 	: prepareData(object.data)
-		};
-
-		self.$parent 	= object.$el;
-		self.$el 		= $(tmpl(editorTemplate,editorData));
-		self.$form 		= self.$el.find('form');
-		self.$close 	= self.$el.find('.editor-close');
-
-		// opens the editor
-		function open () {
-			self.$parent.addClass('has-open-editor');
-		}
-		// closes the editor
-		function close () {
-			self.$parent.removeClass('has-open-editor');
-		}
-		// toggles the editor
-		function toggle () {
-			self.$parent.toggleClass('has-open-editor');
-		}
-		// extracts the changes
-		function extractData () {
-
-			var newData 	= {},
-				formData 	= self.$form.serializeArray();
-			
-			formData.forEach(function (pair) {
-				// Convert options into array
-				if ( pair.name == 'options' ) {
-					var arr = pair.value.split('\r\n').map(function (option) {
-						var opt = option.split(',');
-						return { label: opt[0], value: opt[1]};
-					});
-					pair.value = arr;
-				}
-				newData[pair.name] = pair.value;
-			});
-
-			return newData;
-			
-		}
-		self.open 			= open;
-		self.close 			= close;
-		self.toggle 		= toggle;
-		self.extractData 	= extractData;
-
-		self.$close.on('click',close);
-
-		return self;
-	}
-
-
-
-	// define private functions
-	// ====================================================================================
-	
-	// Fills the predefined variables
-	function defineVariables () {
-		editorTemplate = $('#templates').find('#tmpl-editor').html();
-	}
-
-	// prepares the data to be rendered in the editor template
-	function prepareData (fieldData) {
-
-		// converts array to string in specified format
-		if (fieldData.options) {
-			fieldData.options = (function (options) {
-				console.log(options);
-				return options.map(function (pair) {
-					return pair.label + ',' + pair.value;
-				}).join('\r\n');
-			})(fieldData.options);
-		}	
-
-		return fieldData;
-	}
-
-	// creates an Editor instance
-	function create (object) {
-		return new Editor(object);
-	}
-
-
-
-
-	// define public application interface
-	// ====================================================================================
-
-	module.create 		= create;
-
-
-	// define module init
-	// ====================================================================================
-	module.init = function () {
-		
-		defineVariables();
-
-	};
-
-
-
-	// retrn module object
-	// ====================================================================================
-	return module;
-
-})(window.App,jQuery));
 /*
 ** Default data
 **
@@ -402,6 +272,173 @@ App.createModule('defaults',(function (app,$) {
 	return module;
 
 })(window.App,jQuery));
+
+
+/*
+** MODULE END
+** =============================================================================================
+*/
+
+
+
+
+
+
+/*
+** Editor module
+**
+** handles editors
+**
+*/
+
+App.createModule('editor',(function (app,$) {
+
+
+
+	// define module
+	// ====================================================================================
+	var module = {};
+
+
+
+	// define private variables
+	// ====================================================================================
+	
+	var editorTemplate;
+
+
+	// Editor Class
+	// @param object : the Form/Section/Field object instance
+	function Editor (object) {
+		
+		var self = this;
+
+		var editorData = {
+			id 		: object.$el[0].id, // the field id
+			type 	: object.type,
+			data 	: prepareData(object.data)
+		};
+
+		self.$parent 	= object.$el;
+		self.$el 		= $(tmpl(editorTemplate,editorData));
+		self.$form 		= self.$el.find('form');
+		self.$close 	= self.$el.find('.editor-close');
+
+		// opens the editor
+		function open () {
+			self.$parent.addClass('has-open-editor');
+		}
+		// closes the editor
+		function close () {
+			self.$parent.removeClass('has-open-editor');
+		}
+		// toggles the editor
+		function toggle () {
+			self.$parent.toggleClass('has-open-editor');
+		}
+		// extracts the changes
+		function extractData () {
+
+			var newData 	= {},
+				formData 	= self.$form.serializeArray();
+			
+			formData.forEach(function (pair) {
+				// Convert options into array
+				if ( pair.name == 'options' ) {
+					var arr = pair.value.split('\r\n').map(function (option) {
+						var opt = option.split(',');
+						return { label: opt[0], value: opt[1]};
+					});
+					pair.value = arr;
+				}
+				// Convert to boolean
+				if ( pair.value == "true" ) {
+					pair.value = true;
+				} else if ( pair.value == "false" ) {
+					pair.value = false;
+				}
+				newData[pair.name] = pair.value;
+			});
+
+			return newData;
+			
+		}
+		self.open 			= open;
+		self.close 			= close;
+		self.toggle 		= toggle;
+		self.extractData 	= extractData;
+
+		self.$close.on('click',close);
+
+		return self;
+	}
+
+
+
+	// define private functions
+	// ====================================================================================
+	
+	// Fills the predefined variables
+	function defineVariables () {
+		editorTemplate = $('#templates').find('#tmpl-editor').html();
+	}
+
+	// prepares the data to be rendered in the editor template
+	function prepareData (fieldData) {
+
+		// converts array to string in specified format
+		if (fieldData.options) {
+			fieldData.options = (function (options) {
+				console.log(options);
+				return options.map(function (pair) {
+					return pair.label + ',' + pair.value;
+				}).join('\r\n');
+			})(fieldData.options);
+		}	
+
+		return fieldData;
+	}
+
+	// creates an Editor instance
+	function create (object) {
+		return new Editor(object);
+	}
+
+
+
+
+	// define public application interface
+	// ====================================================================================
+
+	module.create 		= create;
+
+
+	// define module init
+	// ====================================================================================
+	module.init = function () {
+		
+		defineVariables();
+
+	};
+
+
+
+	// retrn module object
+	// ====================================================================================
+	return module;
+
+})(window.App,jQuery));
+
+
+/*
+** MODULE END
+** =============================================================================================
+*/
+
+
+
+
+
 /*
 ** Fields module
 **
@@ -479,15 +516,7 @@ App.createModule('fields',(function (app,$) {
 		// get a jquery dom object of rendered data
 		function renderData () {
 			return $(tmpl(template,self.data));
-		}
-		// removes the dom element and the object entirely
-		function remove () {
-			self.$el.addClass('field-removing');
-			setTimeout(function () {
-				self.$el.remove();
-				delete fields[self.id];
-			});
-		}
+		}		
 
 		// public methods
 		// ------------------------
@@ -501,6 +530,10 @@ App.createModule('fields',(function (app,$) {
 
 			updateFieldDOM(self,self.data);
 		};
+		// removes the field object entirely
+		self.remove = function () {			
+			delete fields[self.id];			
+		}
 
 		// setup editor
 		// ------------------------
@@ -518,7 +551,13 @@ App.createModule('fields',(function (app,$) {
 		self.$edit 		= self.$el.find('.field-edit');
 		self.$remove 	= self.$el.find('.field-remove');
 		self.$edit.on('click',self.editor.toggle);
-		self.$remove.on('click',remove);
+		self.$remove.on('click', function () {
+			self.$el.addClass('field-removing');
+			setTimeout(function () {
+				self.$el.remove();
+				self.remove();
+			},500);
+		});
 
 		// add to store
 		// ------------------------
@@ -603,6 +642,118 @@ App.createModule('fields',(function (app,$) {
 	return module;
 
 })(window.App,jQuery));
+
+/*
+** MODULE END
+** =============================================================================================
+*/
+
+
+
+
+
+
+/*
+** Form module
+**
+** Handles the form
+** 
+** Dependency:
+** - main app
+** - sections module
+**
+*/
+
+App.createModule('form',(function (app,$) {
+
+	// define module
+	// ====================================================================================
+	var module = {};
+
+	// define private variables
+	// ====================================================================================
+	var $form, $formContent, $addSection,
+		Defaults, Sections;
+
+	// define private functions
+	// ====================================================================================
+	
+	// Fills in the predefined variables
+	function defineVariables () {
+		$form = module.$el= $('.form');
+		$formContent 	= $form.find('.js-form-content');
+		$addSection 	= $form.find('.js-add-section');
+	
+		Sections = app.sections;
+		Defaults = app.defaults;
+	}
+
+	// Initializse jquery widgets
+	function initializeSortable () {
+		$formContent.sortable({
+			handle 	: '.js-drag-handle'
+		});
+	}
+
+	// Adds a section to the form
+	function addSection (data) {
+
+		var newSection = Sections.create(data);
+			$formContent.append(newSection.$el);
+
+			// Initialize sortable on the new element
+			newSection.initializeSortable();
+
+			$form.trigger('addSection');
+		
+	}
+
+	// Binds events
+	function bindHandlers () {
+
+		// bind custom addSection event
+		$form.on('addSection',function () {
+			initializeSortable();
+		});
+
+		// bind add section click
+		$addSection.on('click',function (e) {
+			addSection(Defaults.section);
+		});
+	}
+
+
+	// define public application interface
+	// ====================================================================================
+	module.addSection = addSection;
+
+	// define module init
+	// ====================================================================================
+	
+	module.init = function () {
+
+		console.log('form module added');
+
+		defineVariables();
+		initializeSortable();
+		bindHandlers();
+	};
+
+	// retrn module object
+	// ====================================================================================
+	return module;
+
+})(window.App,jQuery));
+
+
+/*
+** MODULE END
+** =============================================================================================
+*/
+
+
+
+
 /*
 ** Sections module
 **
@@ -709,23 +860,25 @@ App.createModule('sections',(function (app,$) {
 		// removes the dom element and the object entirely
 		// including its fields
 		self.remove = function () {
-			self.$el.slideUp(300,function () {
-				self.getContentObjects()
-					.forEach(function (_field) {
-						_field.remove();
-					});
-				self.$el.slideUp(300,function () {
-					self.$el.remove();
-					delete sections[self.id];
-				});				
-			});
+			delete sections[self.id];
 		};
 
 		// add action buttons
 		self.$sectionHeader.prepend($(tmpl(actionsTemplate,self)));
 		self.$edit 		= self.$el.find('.field-edit');
 		self.$remove 	= self.$el.find('.field-remove');
-		self.$remove.on('click',self.remove);
+		self.$remove.on('click',function () {
+			self.$el.addClass('section-removing');
+			setTimeout(function () {
+				self.$el.remove();
+				// remove the fields content
+				self.getContentObjects()
+					.forEach(function (_field) {
+						_field.remove();
+					});
+				self.remove();
+			},500);
+		});
 
 		// setup editor
 		self.editor 	= Editor.create(self);
@@ -840,97 +993,17 @@ App.createModule('sections',(function (app,$) {
 	return module;
 
 })(window.App,jQuery));
+
+
 /*
-** Form module
-**
-** Handles the form
-** 
-** Dependency:
-** - main app
-** - sections module
-**
+** MODULE END
+** =============================================================================================
 */
 
-App.createModule('form',(function (app,$) {
-
-	// define module
-	// ====================================================================================
-	var module = {};
-
-	// define private variables
-	// ====================================================================================
-	var $form, $formContent, $addSection,
-		Defaults, Sections;
-
-	// define private functions
-	// ====================================================================================
-	
-	// Fills in the predefined variables
-	function defineVariables () {
-		$form = module.$el= $('.form');
-		$formContent 	= $form.find('.js-form-content');
-		$addSection 	= $form.find('.js-add-section');
-	
-		Sections = app.sections;
-		Defaults = app.defaults;
-	}
-
-	// Initializse jquery widgets
-	function initializeSortable () {
-		$formContent.sortable({
-			handle 	: '.js-drag-handle'
-		});
-	}
-
-	// Adds a section to the form
-	function addSection (data) {
-
-		var newSection = Sections.create(data);
-			$formContent.append(newSection.$el);
-
-			// Initialize sortable on the new element
-			newSection.initializeSortable();
-
-			$form.trigger('addSection');
-		
-	}
-
-	// Binds events
-	function bindHandlers () {
-
-		// bind custom addSection event
-		$form.on('addSection',function () {
-			initializeSortable();
-		});
-
-		// bind add section click
-		$addSection.on('click',function (e) {
-			addSection(Defaults.section);
-		});
-	}
 
 
-	// define public application interface
-	// ====================================================================================
-	module.addSection = addSection;
 
-	// define module init
-	// ====================================================================================
-	
-	module.init = function () {
 
-		console.log('form module added');
-
-		defineVariables();
-		initializeSortable();
-		bindHandlers();
-	};
-
-	// retrn module object
-	// ====================================================================================
-	return module;
-
-})(window.App,jQuery));
 /*
 ** Handles interactions in the fields source area
 **
@@ -1030,3 +1103,10 @@ App.createModule('fieldSource',(function (app,$) {
 	return module;
 
 })(window.App,jQuery));
+
+/*
+** MODULE END
+** =============================================================================================
+*/
+
+
