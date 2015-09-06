@@ -29,6 +29,7 @@ App.createModule('editor',(function (app,$) {
 
 		var editorData = {
 			id 		: object.$el[0].id, // the field id
+			type 	: object.type,
 			data 	: prepareData(object.data)
 		};
 
