@@ -119,11 +119,15 @@ App.createModule('defaults',(function (app,$) {
 	},
 
 	section = {
-		name 	: "Sample Section",
-		showif 	: "xxx",
-		hideif 	: "xxx",
+		name 	: "New Section",
+		showif 	: "",
+		hideif 	: "",
 		isBatch : true,
 		fields 	: []
+	},
+
+	form 	= {
+		name 	: 'Form'
 	};
 
 
@@ -139,6 +143,7 @@ App.createModule('defaults',(function (app,$) {
 	// ====================================================================================
 	module.fields 	= fields;
 	module.section 	= section;
+	module.form 	= form;
 
 
 

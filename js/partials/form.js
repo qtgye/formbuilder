@@ -17,52 +17,86 @@ App.createModule('form',(function (app,$) {
 
 	// define private variables
 	// ====================================================================================
-	var $form, $formContent, $addSection,
-		Defaults, Sections;
+	var sortableInitialized = false,
+
+		data,
+		template,
+		form;
+
+
+
 
 	// define private functions
 	// ====================================================================================
 	
 	// Fills in the predefined variables
 	function defineVariables () {
-		$form = module.$el= $('.form');
-		$formContent 	= $form.find('.js-form-content');
-		$addSection 	= $form.find('.js-add-section');
-	
-		Sections = app.sections;
-		Defaults = app.defaults;
+
+		Defaults 	= app.defaults 	;
+		Editor 		= app.editor 	;
+		Sections 	= app.sections 	;
+		Fields 		= app.fields 	;
+
+		data 		= cloneObject(Defaults.form);
+		template 	= $('#tmpl-read-form')[0].innerHTML;
+
+	}
+
+	// creates the form object using default data
+	function create () {
+		
+		form  = {
+			name  	: data.name,
+			id 		: guid(),
+			data 	: data,
+			$el 	: $(tmpl(template,data))
+		};
+		
+		form.$formHeader 	= form.$el.find('.js-form-header');
+		form.$formTitle 	= form.$el.find('.js-form-title');
+		form.$formContent 	= form.$el.find('.js-form-content');
+		form.$addSectionBtn = form.$el.find('.js-add-section');
+
+		bindFormHandlers();
+
+		return form;
+
 	}
 
 	// Initializse jquery widgets
 	function initializeSortable () {
-		$formContent.sortable({
+		form.$formContent.sortable({
 			handle 	: '.js-drag-handle'
 		});
+		sortableInitialized = true;
+	}
+
+	// Refresh sortable to detect new elements
+	function refreshSortable () {
+		if ( sortableInitialized ) {
+			form.$formContent.sortable('refresh');
+		} else {
+			initializeSortable();
+		}
 	}
 
 	// Adds a section to the form
 	function addSection (data) {
 
 		var newSection = Sections.create(data);
-			$formContent.append(newSection.$el);
+			form.$formContent.append(newSection.$el);
 
 			// Initialize sortable on the new element
 			newSection.initializeSortable();
 
-			$form.trigger('addSection');
+			refreshSortable();
 		
 	}
 
 	// Binds events
-	function bindHandlers () {
-
-		// bind custom addSection event
-		$form.on('addSection',function () {
-			initializeSortable();
-		});
-
+	function bindFormHandlers () {
 		// bind add section click
-		$addSection.on('click',function (e) {
+		form.$addSectionBtn.on('click',function (e) {
 			addSection(Defaults.section);
 		});
 	}
@@ -70,7 +104,9 @@ App.createModule('form',(function (app,$) {
 
 	// define public application interface
 	// ====================================================================================
-	module.addSection = addSection;
+	module.create 				= create;
+	module.addSection 			= addSection;
+	module.initializeSortable 	= initializeSortable;
 
 	// define module init
 	// ====================================================================================
@@ -80,8 +116,10 @@ App.createModule('form',(function (app,$) {
 		console.log('form module added');
 
 		defineVariables();
-		initializeSortable();
-		bindHandlers();
+
+		// add to stage
+		$('.js-stage').append(module.create().$el);
+
 	};
 
 	// retrn module object

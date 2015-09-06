@@ -29,26 +29,11 @@
 
 			<div class="col-md-6 clearfix">
 				
-
-				<!-- the form -->
-				<form class="form" action="" name="" method="post">
-					<div class="form-header">
-						<div class="btn btn-primary js-add-section pull-right">Add Section</div>
-						<h4>Form Name</h4>
-					</div>
-					<div class="form-content js-form-content">
-						
-					</div>
-				</form>
+				<!-- The Stage -->
+				<div class="js-stage"></div>
 
 			</div>
 
-		</div>
-	</div>
-
-	<div class="modal">
-		<div class="editor">
-			
 		</div>
 	</div>
 
@@ -59,6 +44,19 @@
 	<div id="templates" class="hidden">
 		
 		<!-- read templates -->
+
+		<!-- form -->
+		<script class="form-template" id="tmpl-read-form" type="text/html">
+			<form class="form js-form" action="" name="" method="post">
+				<div class="form-header form-header">
+					<div class="btn btn-primary js-add-section pull-right">Add Section</div>
+					<h4 class="js-form-title"><%=name%></h4>
+				</div>
+				<div class="form-content js-form-content">
+					
+				</div>
+			</form>
+		</script>
 
 		<!-- section -->
 		<script class="section-template" id="tmpl-read-section" type="text/html">
