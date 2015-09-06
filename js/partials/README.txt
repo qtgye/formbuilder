@@ -37,3 +37,12 @@ App.createModule('moduleName',(function (app,$) {
 	return module;
 
 })(window.App,jQuery));
+
+
+/*
+** MODULE END
+** =============================================================================================
+*/
+
+
+
