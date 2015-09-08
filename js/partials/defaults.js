@@ -89,6 +89,7 @@ App.createModule('defaults',(function (app,$) {
 			isAvailable 	: true,
 			key 			: 'name',
 			label 			: 'Name',
+			isSwitch 		: false,
 			value 			: 'option2',
 			description 	: '',
 			showif 			: '',
@@ -119,11 +120,12 @@ App.createModule('defaults',(function (app,$) {
 	},
 
 	section = {
-		name 	: "New Section",
-		showif 	: "",
-		hideif 	: "",
-		isBatch : true,
-		fields 	: []
+		name 		: "New Section",
+		description : 'Lorem Ipsum',
+		showif 		: "",
+		hideif 		: "",
+		isBatch 	: true,
+		fields 		: []
 	},
 
 	form 	= {

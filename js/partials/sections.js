@@ -142,10 +142,13 @@ App.createModule('sections',(function (app,$) {
 		self.$edit 		= self.$el.find('.field-edit');
 		self.$remove 	= self.$el.find('.field-remove');
 		// bind buttons
-		self.$edit.on('click',function () {
+		self.$edit.on('click',function (e) {
+			e.preventDefault();
 			self.editor.toggle();
+			return false;
 		});
-		self.$remove.on('click',function () {
+		self.$remove.on('click',function (e) {
+			e.preventDefault();
 			self.$el.addClass('section-removing');
 			setTimeout(function () {
 				self.$el.remove();
@@ -184,6 +187,8 @@ App.createModule('sections',(function (app,$) {
 	// creates a section object from data
 	function createSection (data) {
 		var newSection = new Section(data);
+		Editor.closeEditor();
+		newSection.editor.open();
 		return newSection;
 	}
 
@@ -224,7 +229,6 @@ App.createModule('sections',(function (app,$) {
 
 			// Update vars
 			helperWidth = _newField.$el.width();
-
 		}
 
 		Fields.getField((ui.helper||ui.item)[0].id).sectionId = self.id;

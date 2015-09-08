@@ -33,7 +33,6 @@ li {
 		padding: 5px;
 		line-height: 1;
 		background-color: lightBlue;
-		cursor: move;
 		overflow: hidden;
 	}
 
@@ -74,7 +73,7 @@ li {
 
 	.section-header {
 		display: block;
-		padding: 5px;
+		padding: 15px;
 		line-height: 1;
 		background-color: lightGreen;
 		cursor: move;
@@ -100,8 +99,7 @@ li {
 	height: auto;
 	position: relative;
 	margin-bottom: 10px;
-	border: 1px solid silver;
-	border-radius: 5px;
+	border-bottom: 1px solid #efefef;
 	background-color: #fff;
 	overflow: visible;
 	-webkit-transition: opacity 0.5s,
@@ -109,9 +107,13 @@ li {
 	        transition: opacity 0.5s,
 				transform 0.5s;
 }
+.field.as-peg {
+	border-bottom: none
+}
 
 	.field-dragging {
 		box-shadow: 0 0 15px rgba(0,0,0,0.3);
+		cursor: move;
 	}
 
 	.field-removing {
@@ -128,15 +130,59 @@ li {
 		background-color: lightCyan;
 		cursor: move;
 		overflow: hidden;
+		-webkit-transition: opacity 0.3s;
+		        transition: opacity 0.3s;
+	}
+
+	.is-disabled .field-header {
+		background-color: #ededed;
+		opacity: 0.65;
 	}
 
 		.field-header h5 {
 			margin: 0;
 		}
 
+		.field-peg {
+			display: none;
+			padding: 5px 20px;
+			border-radius: 3px;
+			background: lightGreen;
+			cursor: move;
+			-webkit-transition: background 0.25s,
+						color 0.25s;
+			        transition: background 0.25s,
+						color 0.25s;
+		}
+		.field-peg:hover {
+			background: green;
+			color: white;
+		}
+		.as-peg .field-peg {
+			display: block;
+		}
+
 	.field-content {
+		display: block;		
+		padding: 20px;
+		-webkit-transition: opacity 0.3s;
+		        transition: opacity 0.3s;
+	}
+	.is-disabled .field-content {
+		opacity: 0.65;
+	}
+	.as-peg .field-content {
+		display: none;
+	}
+
+	.disable-icon {
+		display: none;
+		position: absolute;
+		right: 20px;
+		bottom: 20px;
+	}
+	.is-disabled .disable-icon {
 		display: block;
-		padding: 10px;
 	}
 
 
@@ -154,8 +200,13 @@ li {
 	        transition: all 0.3s;
 	z-index: 100;
 }
-.section-header:hover > .actions,
-.field-header:hover > .actions {
+.field > .actions {
+	-webkit-transform: translateY(0);
+	    -ms-transform: translateY(0);
+	        transform: translateY(0);
+	opacity: 1;
+}
+.section-header:hover > .actions {
 	-webkit-transform: translateY(0);
 	    -ms-transform: translateY(0);
 	        transform: translateY(0);
@@ -167,34 +218,38 @@ li {
 .editor {
 	display: none;
 	position: absolute;
-	right: 95%;
-	top: 0;
-	right: 100%;
-	margin-right: 10px;	
+	top: -10px;
+	left: 100%;	
 	z-index: 0;
-	padding: 10px;
 	background-color: #fff;
 	box-shadow: 3px 3px 15px rgba(0,0,0,0.5);
-	-webkit-transition: right 0.2s;
-	        transition: right 0.2s;
 }
 
 .has-open-editor > .editor {
-	display: block;
-	max-height: 400px;
+	display: inline-block;
+	max-height: 400px;	
 	overflow-y: auto;
-	overflow-x: hidden;
+	z-index: 90;
 }
 
-	.editor:after {
+	.editor:before {
 		display: table;
 		content: '';
 		position: absolute;
 		top: 10px;
-		left: 100%;
-		border-left: 10px solid #fff;
-		border-top: 10px solid transparent;
-		border-bottom: 10px solid transparent;
+		left: -7.07px;
+		width: 15px;
+		height: 15px;
+		border-top: 1px solid #e5e5e5;
+		border-left: 1px solid #e5e5e5;
+		background-color: #fff;
+		-webkit-transform-origin: center center;
+		    -ms-transform-origin: center center;
+		        transform-origin: center center;
+		-webkit-transform: rotate(-45deg);
+		    -ms-transform: rotate(-45deg);
+		        transform: rotate(-45deg);
+		z-index: 100;
 	}
 
 	.editor-close {
@@ -205,6 +260,7 @@ li {
 
 	.editor-form {
 		display: table;
+		width: 100%;
 	}
 
 		.prop {
@@ -214,12 +270,18 @@ li {
 		.prop-col {
 			display: table-cell;
 			padding: 5px 10px;
+			padding-right: 0;
 		}
 
 		.prop-col:first-child {
+			min-width: 6em;
 			white-space: nowrap;
-			text-align: right;
+			text-align: right;			
 		}
+
+.editor input {
+	max-width: 90%;
+}
 
 .editor textarea {
 	resize: vertical;

@@ -21,7 +21,7 @@
 				<h1>Form Builder JS App</h1>
 			</div>
 			
-			<div class="col-md-6">
+			<div class="col-md-2">
 
 				<div class="fields-list js-field-list">
 				</div>
@@ -31,7 +31,7 @@
 			<div class="col-md-6 clearfix">
 				
 				<!-- The Stage -->
-				<div class="js-stage"></div>
+				<div class="js-stage"></div>				
 
 			</div>
 
@@ -76,66 +76,70 @@
 
 		<!-- singleline -->
 		<script class="field-template" data-type="singleline" id="tmpl-read-singleline" type="text/html">
-			<div class="field has-open-editor" data-type="singleline" data-showif="<%=showif%>" data-hideif="<%=hideif%>" data-restriction="<%=restriction%>" data-is-available="<%=isAvailable%>">
-				<div class="field-header js-drag-handle">
+			<div class="field has-open-editor js-drag-handle as-peg <%=( isAvailable ? '' : 'is-disabled' )%>" data-type="singleline" data-showif="<%=showif%>" data-hideif="<%=hideif%>" data-restriction="<%=restriction%>" data-is-available="<%=isAvailable%>">
+				<div class="field-peg js-peg">
 					<h5>Single Line</h5>
 				</div>
-				<div class="field-content">
+				<div class="field-content js-drag-handle">
 					<label><%=label%></label>
 					<input type="text" id="<%=key%>" name="<%=key%>" placeholder="<%=placeholder%>" value="<%=value%>" <%=( required? 'required' : '' )%> >
 					<span class="help-block field-description"><%=description%></span>
-				</div>						
+				</div>	
+				<i class="disable-icon fa fa-eye-slash fa-lg"></i>		
 			</div>
 		</script>
 		
 		<!-- date -->
 		<script class="field-template" data-type="date" id="tmpl-read-date" type="text/html">
-			<div class="field has-open-editor" data-type="date" data-is-available="<%=isAvailable%>" data-format="<%=format%>" data-showif="<%=showif%>" data-hideif="<%=hideif%>">
-				<div class="field-header js-drag-handle">
+			<div class="field has-open-editor js-drag-handle as-peg <%=( isAvailable ? '' : 'is-disabled' )%>" data-type="date" data-is-available="<%=isAvailable%>" data-format="<%=format%>" data-showif="<%=showif%>" data-hideif="<%=hideif%>">
+				<div class="field-peg js-peg">
 					<h5>Date</h5>
 				</div>
-				<div class="field-content">
+				<div class="field-content js-drag-handle">
 					<label><%=label%></label>
 					<input type="date" id="<%=key%>" name="<%=key%>" <%=( required? 'required' : '' )%> >
 					<span class="help-block field-description"><%=description%></span>
-				</div>						
+				</div>		
+				<i class="disable-icon fa fa-eye-slash fa-lg"></i>				
 			</div>
 		</script>
 
 		<!-- entity -->
 		<script class="field-template" data-type="entity" id="tmpl-read-entity" type="text/html">
-			<div class="field has-open-editor" data-type="entity">
-				<div class="field-header js-drag-handle">
+			<div class="field has-open-editor js-drag-handle as-peg <%=( isAvailable ? '' : 'is-disabled' )%>" data-type="entity">
+				<div class="field-peg js-peg">
 					<h5>Entity</h5>
 				</div>
-				<div class="field-content">
+				<div class="field-content js-drag-handle">
 					<label><%=label%></label>
 					<span class="help-block field-description"><%=description%></span>
-				</div>						
+				</div>	
+				<i class="disable-icon fa fa-eye-slash fa-lg"></i>					
 			</div>
 		</script>
 
 		<!-- multiline -->
 		<script class="field-template" data-type="multiline" id="tmpl-read-multiline" type="text/html">
-			<div class="field has-open-editor" data-type="multiline">
-				<div class="field-header js-drag-handle">
+			<div class="field has-open-editor js-drag-handle as-peg <%=( isAvailable ? '' : 'is-disabled' )%>" data-type="multiline">
+				<div class="field-peg js-peg">
 					<h5>Multiline</h5>
 				</div>
-				<div class="field-content">
+				<div class="field-content js-drag-handle">
 					<label><%=label%></label>
 					<textarea id="<%=key%>" name="<%=key%>" placeholder="<%=placeholder%>" <%= (required?'required':'') %> ><%=value%></textarea>
 					<span class="help-block field-description"><%=description%></span>
-				</div>						
+				</div>	
+				<i class="disable-icon fa fa-eye-slash fa-lg"></i>					
 			</div>
 		</script>		
 
 		<!-- selection -->
 		<script class="field-template" data-type="selection" id="tmpl-read-selection" type="text/html">
-			<div class="field has-open-editor" data-type="selection">
-				<div class="field-header js-drag-handle">
+			<div class="field has-open-editor js-drag-handle as-peg <%=( isAvailable ? '' : 'is-disabled' )%>" data-type="selection">
+				<div class="field-peg js-peg">
 					<h5>Selection</h5>
 				</div>
-				<div class="field-content">
+				<div class="field-content js-drag-handle">
 					<label><%=label%></label>
 					<select id="<%=key%>" name="<%=key%>" value="<%=value%>" <%= ( multiple ? 'multiple' : '' ) %> >
 						<% options.forEach(function(option){ %>
@@ -143,17 +147,18 @@
 						<% }); %>
 					</select>
 					<span class="help-block field-description"><%=description%></span>
-				</div>						
+				</div>	
+				<i class="disable-icon fa fa-eye-slash fa-lg"></i>					
 			</div>
 		</script>
 
 		<!-- radio -->
 		<script class="field-template" data-type="radiobox" id="tmpl-read-radio" type="text/html">
-			<div class="field has-open-editor" data-type="radiobox">
-				<div class="field-header js-drag-handle">
+			<div class="field has-open-editor js-drag-handle as-peg <%=( isAvailable ? '' : 'is-disabled' )%>" data-type="radiobox">
+				<div class="field-peg js-peg">
 					<h5>Radio Box</h5>
 				</div>
-				<div class="field-content">
+				<div class="field-content js-drag-handle">
 					<label><%=label%></label>
 					<span class="help-block field-description"><%=description%></span>
 					<% options.forEach(function(option){ %>
@@ -161,26 +166,27 @@
 							<input type="radio" name="<%=option.key%>" value="<%=option.value%>" <%= ( value == option.value ? 'checked' : '' ) %>><%=option.label%>
 						</label>
 					<% }); %>
-				</div>						
+				</div>	
+				<i class="disable-icon fa fa-eye-slash fa-lg"></i>					
 			</div>
 		</script>
 		
 		<!-- checkbox -->
 		<script class="field-template" data-type="checkbox" id="tmpl-read-checkbox" type="text/html">
-			<div class="field has-open-editor" data-type="checkbox">
-				<div class="field-header js-drag-handle">
+			<div class="field has-open-editor js-drag-handle as-peg <%=( isAvailable ? '' : 'is-disabled' )%>" data-type="checkbox">
+				<div class="field-peg js-peg">
 					<h5>Checkbox</h5>
 				</div>
-				<div class="field-content">
+				<div class="field-content js-drag-handle">
 					<label><%=label%></label>
 					<span class="help-block field-description"><%=description%></span>
 					<% options.forEach(function(option) { %>
 						<label>
 							<input type="checkbox" name="<%=option.key%>" value="<%=option.value%>" <%= ( value == option.value ? 'checked' : '' ) %> ><%=option.label%>
 						</label>
-					<% }); %>
-					
-				</div>						
+					<% }); %>					
+				</div>		
+				<i class="disable-icon fa fa-eye-slash fa-lg"></i>				
 			</div>
 		</script>
 
@@ -201,9 +207,7 @@
 		<!-- editor template -->
 		<script class="editor-template" id="tmpl-editor" type="text/html">
 			<div class="editor" data-id="<%=id%>">
-
-				<div class="btn btn-warning pull-right editor-close">&times;</div>			
-
+				
 				<form action="" method="post" class="editor-form js-editor-form">
 					
 					<% for ( key in data ) { %>
@@ -261,6 +265,23 @@
 								</div>																
 							</div>
 						<% } %>
+						<% if ( key == 'isSwitch' ) {%>
+							<div class="prop" data-key"isSwitch">
+								<div class="prop-col">
+									<label for="">Switch :</label>	
+								</div>
+								<div class="prop-col">
+									<label for="<%=id%>_isSwitch_radio_true">
+										<input <%= ( data[key] === true ? 'checked' : '' ) %> type="radio" name="isSwitch" value="true" id="<%=id%>_isSwitch_radio_true">
+										True
+									</label>
+									<label for="<%=id%>_isSwitch_radio_false">
+										<input <%= ( data[key] === false ? 'checked' : '' ) %> type="radio" name="isSwitch" value="false" id="<%=id%>_isSwitch_radio_false">
+										False
+									</label>
+								</div>																
+							</div>
+						<% } %>
 						<% if ( key == 'label' ) { %>
 							<div class="prop" data-key"label">
 								<div class="prop-col">
@@ -298,7 +319,7 @@
 										<label for="">Value :</label>
 									</div>
 									<div class="prop-col">
-										<textarea name="value" cols="30" rows="5"><%= data[key] %></textarea>
+										<textarea name="value" rows="5"><%= data[key] %></textarea>
 									</div>								
 								</div>
 							<% } %>
@@ -356,7 +377,7 @@
 									<label for="">Description :</label>
 								</div>
 								<div class="prop-col">
-									<textarea name="description" cols="30" rows="5"><%= data[key] %></textarea>
+									<textarea name="description" rows="5"><%= data[key] %></textarea>
 								</div>								
 							</div>
 						<% } %>
@@ -366,7 +387,7 @@
 									<label for="">Show if :</label>
 								</div>
 								<div class="prop-col">
-									<textarea name="showif" cols="30" rows="5"><%= data[key] %></textarea>
+									<textarea name="showif" rows="5"><%= data[key] %></textarea>
 								</div>								
 							</div>
 						<% } %>
@@ -376,7 +397,7 @@
 									<label for="">Hide if :</label>
 								</div>
 								<div class="prop-col">
-									<textarea name="hideif" cols="30" rows="5"><%= data[key] %></textarea>
+									<textarea name="hideif" rows="5"><%= data[key] %></textarea>
 								</div>								
 							</div>
 						<% } %>
@@ -386,7 +407,7 @@
 									<label for="">Restriction :</label>
 								</div>
 								<div class="prop-col">
-									<textarea name="restriction" cols="30" rows="5"><%= data[key] %></textarea>
+									<textarea name="restriction" rows="5"><%= data[key] %></textarea>
 								</div>								
 							</div>
 						<% } %>
@@ -413,7 +434,7 @@
 									<label for="">Options :</label>
 								</div>
 								<div class="prop-col">
-									<textarea name="options" cols="30" rows="5"><%= data[key] %></textarea>
+									<textarea name="options" rows="5"><%= data[key] %></textarea>
 								</div>								
 							</div>
 						<% } %>

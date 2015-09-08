@@ -63,11 +63,12 @@ App.createModule('fields',(function (app,$) {
 		self.data 			= cloneObject(self.data); // make sure data is not a reference
 		self.id 			= guid();
 		self.type 			= arg.data('type');
-		self.$fieldHeader 	= self.$el.find('.field-header');
 		self.$fieldContent 	= self.$el.find('.field-content');
 		self.sectionId 		= null; // will hold containing section's id
 
-		self.$el.attr('id',self.id);		
+		self
+			.$el.attr('id',self.id)
+			.removeClass('as-peg');
 
 		// private methods
 		// ------------------------
@@ -88,6 +89,13 @@ App.createModule('fields',(function (app,$) {
 			}
 
 			updateFieldDOM(self,self.data);
+
+			if ( !self.data.isAvailable ) {
+				self.$el.addClass('is-disabled');
+			} else {
+				self.$el.removeClass('is-disabled');
+			}
+
 		};
 		// removes the field object entirely
 		self.remove = function () {			
@@ -106,17 +114,23 @@ App.createModule('fields',(function (app,$) {
 
 		// add action buttons
 		// ------------------------
-		self.$fieldHeader.prepend($(tmpl(templates.actions,self)));
+		self.$el.append($(tmpl(templates.actions,self)));
 		self.$edit 		= self.$el.find('.field-edit');
 		self.$remove 	= self.$el.find('.field-remove');
-		self.$edit.on('click',self.editor.toggle);
+		self.$edit.on('click',function (e) {
+			self.editor.toggle();
+			return false;
+		});
 		self.$remove.on('click', function () {
 			self.$el.addClass('field-removing');
 			setTimeout(function () {
 				self.$el.remove();
 				self.remove();
 			},500);
+			return false;
 		});
+
+		self.editor.open();
 
 		// add to store
 		// ------------------------
@@ -171,6 +185,9 @@ App.createModule('fields',(function (app,$) {
 	// Create a field object
 	function create (arg) {
 		var _newField = new Field(arg);
+
+		Editor.closeEditor();
+		_newField.editor.open();
 
 		console.log('New field : ' + _newField.id);
 		return _newField;

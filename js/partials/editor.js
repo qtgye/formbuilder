@@ -18,7 +18,9 @@ App.createModule('editor',(function (app,$) {
 	// define private variables
 	// ====================================================================================
 	
-	var editorTemplate;
+	var editors = {},
+		editorTemplate,
+		currentOpen; // holds the data-id of the open editor
 
 
 	// Editor Class
@@ -33,6 +35,8 @@ App.createModule('editor',(function (app,$) {
 			data 	: prepareData(object.data)
 		};
 
+		self.id 		= editorData.id;
+
 		self.$parent 	= object.$el;
 		self.$el 		= $(tmpl(editorTemplate,editorData));
 		self.$form 		= self.$el.find('form');
@@ -40,7 +44,9 @@ App.createModule('editor',(function (app,$) {
 
 		// opens the editor
 		function open () {
+			module.closeEditor();
 			self.$parent.addClass('has-open-editor');
+			currentOpen = self.id;
 		}
 		// closes the editor
 		function close () {
@@ -48,7 +54,16 @@ App.createModule('editor',(function (app,$) {
 		}
 		// toggles the editor
 		function toggle () {
-			self.$parent.toggleClass('has-open-editor');
+			if ( self.$parent.hasClass('has-open-editor') )
+			{
+				close();
+			} else {
+				open();
+			}
+		}
+		// on editor click
+		function onEditorClick (e) {
+			module.editorClicked = true;
 		}
 		// extracts the changes
 		function extractData () {
@@ -83,6 +98,10 @@ App.createModule('editor',(function (app,$) {
 		self.extractData 	= extractData;
 
 		self.$close.on('click',close);
+		self.$el.on('click',onEditorClick);
+
+		// add tp store
+		editors[self.id] = self;
 
 		return self;
 	}
@@ -118,13 +137,32 @@ App.createModule('editor',(function (app,$) {
 		return new Editor(object);
 	}
 
+	// closes the current editor
+	function closeEditor () {
+		if ( currentOpen ) {
+			editors[currentOpen].close();
+		}
+	}
 
+	// bind event handlers
+	function bindHandlers () {
+		
+		app.$body.on('click',function () {
+			if ( !module.editorClicked ) {
+				closeEditor();
+			}
+			module.editorClicked = false;
+		});
+
+	}
 
 
 	// define public application interface
 	// ====================================================================================
 
-	module.create 		= create;
+	module.create 			= create;
+	module.closeEditor		= closeEditor;
+	module.editorClicked	= false;
 
 
 	// define module init
@@ -132,6 +170,7 @@ App.createModule('editor',(function (app,$) {
 	module.init = function () {
 		
 		defineVariables();
+		bindHandlers();
 
 	};
 

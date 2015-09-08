@@ -97,8 +97,9 @@ App.createModule('form',(function (app,$) {
 	// Binds events
 	function bindFormHandlers () {
 		// bind add section click
-		form.$addSectionBtn.on('click',function (e) {
+		form.$addSectionBtn.on('click',function () {
 			addSection(Defaults.section);
+			return false;
 		});
 		// get the form contents data
 		form.$saveBtn.on('click',function () {

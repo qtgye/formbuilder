@@ -77,6 +77,12 @@ App.createModule('fieldSource',(function (app,$) {
 		// }).sortable('refresh');
 	}
 
+	function bindHandlers () {
+		$('.js-peg').on('click',function () {
+			return false;
+		});
+	}
+
 	
 
 
@@ -90,6 +96,7 @@ App.createModule('fieldSource',(function (app,$) {
 		defineVariables();
 		renderFields();
 		initializeDraggables();
+		bindHandlers();
 	};
 
 	// retrn module object
