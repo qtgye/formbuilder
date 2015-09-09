@@ -89,6 +89,16 @@ App.createModule('form',(function (app,$) {
 			return false;
 		});
 
+		console.log(data);
+
+
+		// render sections
+		if ( data.sections.length > 0 ) {
+			data.sections.forEach(function (sectionData) {
+				addSection(sectionData);
+			});
+		}
+
 		return form;
 
 	}
@@ -135,7 +145,7 @@ App.createModule('form',(function (app,$) {
 		$saveBtn.on('click',function () {
 			var formData = getFormData();
 			console.log(formData);
-			// Request.send({data:formData},onSendSuccess);
+			Request.send({data:formData},onSendSuccess);
 		});
 		// clears the form contents and data
 		$clearBtn.on('click',clearFormContent);
@@ -144,7 +154,7 @@ App.createModule('form',(function (app,$) {
 			var $el 	= $(this),
 				source 	= $el.data('source');
 			Request.get(source,function (data) {
-				console.log(data);
+				replaceForm(data);
 			});
 		});
 	}
@@ -185,6 +195,7 @@ App.createModule('form',(function (app,$) {
 		});
 		form.data.sections = [];
 		form.$formContent.empty();
+		sortableInitialized = false;
 	}
 
 	// updates the form data
@@ -205,6 +216,7 @@ App.createModule('form',(function (app,$) {
 		if ( newData.name ) {
 			removeForm();
 			create(newData);
+			Editor.closeEditor();
 		}		
 	}
 

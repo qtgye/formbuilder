@@ -139,7 +139,7 @@ App.createModule('request',(function (app,$) {
 	// sends a request
 	function send (data,successCallback,errorCallback) {
 		return $.ajax({
-			url 		: 'save.php',
+			url 		: '/save.php',
 			method 		: 'POST',
 			dataType 	: 'json',
 			data 		: data,
@@ -606,7 +606,7 @@ App.createModule('fields',(function (app,$) {
 
 		// Construct
 		// -----------------------
-		if (  arg.context ) {
+		if (  arg.jquery ) {
 			// if the arg is a jquery object (new field)
 			self.type 	= arg.data('type');
 			self.data 	= Defaults.fields[self.type];
@@ -622,7 +622,6 @@ App.createModule('fields',(function (app,$) {
 
 		self.data 			= cloneObject(self.data); // make sure data is not a reference
 		self.id 			= guid();
-		self.type 			= arg.data('type');
 		self.$fieldContent 	= self.$el.find('.field-content');
 		self.sectionId 		= null; // will hold containing section's id
 
@@ -837,7 +836,7 @@ App.createModule('sections',(function (app,$) {
 		self.$sectionContent 	= self.$el.find('.js-section-content');
 
 		// Attach element id
-		self.$el.attr('id',self.id);
+		self.$el.attr('id',self.id);		
 
 		// initializes sortable
 		self.initializeSortable = function () {
@@ -917,6 +916,24 @@ App.createModule('sections',(function (app,$) {
 		self.remove = function () {
 			delete sections[self.id];
 		};		
+
+		// render fields
+		self.renderFields = function () {
+			if (self.data.fields.length > 0 ) {
+				self.data.fields.forEach(function (fieldData) {
+					self.addField(fieldData);
+				});
+			}
+		}
+
+		// Adds a new field
+		self.addField = function (fieldData) {
+			self.$sectionContent.append(Fields.create(fieldData).$el);
+		}
+
+		if ( self.data.fields.length ) {
+			self.renderFields();
+		}
 
 		// setup editor
 		self.editor 	= Editor.create(self);
@@ -1159,6 +1176,16 @@ App.createModule('form',(function (app,$) {
 			return false;
 		});
 
+		console.log(data);
+
+
+		// render sections
+		if ( data.sections.length > 0 ) {
+			data.sections.forEach(function (sectionData) {
+				addSection(sectionData);
+			});
+		}
+
 		return form;
 
 	}
@@ -1205,7 +1232,7 @@ App.createModule('form',(function (app,$) {
 		$saveBtn.on('click',function () {
 			var formData = getFormData();
 			console.log(formData);
-			// Request.send({data:formData},onSendSuccess);
+			Request.send({data:formData},onSendSuccess);
 		});
 		// clears the form contents and data
 		$clearBtn.on('click',clearFormContent);
@@ -1214,7 +1241,7 @@ App.createModule('form',(function (app,$) {
 			var $el 	= $(this),
 				source 	= $el.data('source');
 			Request.get(source,function (data) {
-				console.log(data);
+				replaceForm(data);
 			});
 		});
 	}
@@ -1255,6 +1282,7 @@ App.createModule('form',(function (app,$) {
 		});
 		form.data.sections = [];
 		form.$formContent.empty();
+		sortableInitialized = false;
 	}
 
 	// updates the form data
@@ -1275,6 +1303,7 @@ App.createModule('form',(function (app,$) {
 		if ( newData.name ) {
 			removeForm();
 			create(newData);
+			Editor.closeEditor();
 		}		
 	}
 

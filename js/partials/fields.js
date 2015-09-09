@@ -46,7 +46,7 @@ App.createModule('fields',(function (app,$) {
 
 		// Construct
 		// -----------------------
-		if (  arg.context ) {
+		if (  arg.jquery ) {
 			// if the arg is a jquery object (new field)
 			self.type 	= arg.data('type');
 			self.data 	= Defaults.fields[self.type];
@@ -62,7 +62,6 @@ App.createModule('fields',(function (app,$) {
 
 		self.data 			= cloneObject(self.data); // make sure data is not a reference
 		self.id 			= guid();
-		self.type 			= arg.data('type');
 		self.$fieldContent 	= self.$el.find('.field-content');
 		self.sectionId 		= null; // will hold containing section's id
 

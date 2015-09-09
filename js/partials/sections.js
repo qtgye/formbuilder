@@ -47,7 +47,7 @@ App.createModule('sections',(function (app,$) {
 		self.$sectionContent 	= self.$el.find('.js-section-content');
 
 		// Attach element id
-		self.$el.attr('id',self.id);
+		self.$el.attr('id',self.id);		
 
 		// initializes sortable
 		self.initializeSortable = function () {
@@ -127,6 +127,24 @@ App.createModule('sections',(function (app,$) {
 		self.remove = function () {
 			delete sections[self.id];
 		};		
+
+		// render fields
+		self.renderFields = function () {
+			if (self.data.fields.length > 0 ) {
+				self.data.fields.forEach(function (fieldData) {
+					self.addField(fieldData);
+				});
+			}
+		}
+
+		// Adds a new field
+		self.addField = function (fieldData) {
+			self.$sectionContent.append(Fields.create(fieldData).$el);
+		}
+
+		if ( self.data.fields.length ) {
+			self.renderFields();
+		}
 
 		// setup editor
 		self.editor 	= Editor.create(self);
