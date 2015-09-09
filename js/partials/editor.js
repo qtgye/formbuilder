@@ -20,6 +20,7 @@ App.createModule('editor',(function (app,$) {
 	
 	var editors = {},
 		editorTemplate,
+		editorClicked,
 		currentOpen; // holds the data-id of the open editor
 
 
@@ -30,7 +31,7 @@ App.createModule('editor',(function (app,$) {
 		var self = this;
 
 		var editorData = {
-			id 		: object.$el[0].id, // the field id
+			id 		: object.$el[0].id || object.id, // the field id
 			type 	: object.type,
 			data 	: prepareData(object.data)
 		};
@@ -148,6 +149,7 @@ App.createModule('editor',(function (app,$) {
 	function bindHandlers () {
 		
 		app.$body.on('click',function () {
+			console.log(module.editorClicked);
 			if ( !module.editorClicked ) {
 				closeEditor();
 			}

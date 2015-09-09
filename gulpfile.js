@@ -8,6 +8,18 @@ var gulp 			= require('gulp'),
 	fs 				= require('fs'),
 	jsFiles 		= [];
 
+var jsFiles = [		
+			"js/partials/helpers.js",
+			"js/partials/main.js",	
+			"js/partials/request.js",	
+			"js/partials/editor.js",
+			"js/partials/defaults.js",	
+			"js/partials/fields.js",
+			"js/partials/sections.js",
+			"js/partials/form.js",
+			"js/partials/fieldSource.js"
+		];
+
 
 // handles pipe error
 function pipeError (error) {
@@ -23,7 +35,7 @@ gulp.task('del',function () {
 
 // parses manifest file
 gulp.task('manifest', function () {
-	jsFiles = [];
+	var jsFiles = [];
 
 	var paths 	= require('./manifest.json').files,
 		keys 	= Object.keys(paths);

@@ -117,6 +117,76 @@ var App = window.App || (function (W,D,$) {
 
 
 /*
+** Request module
+**
+** handles ajax requests
+**
+*/
+
+App.createModule('request',(function (app,$) {
+
+	// define module
+	// ====================================================================================
+	var module = {};
+
+	// define private variables
+	// ====================================================================================
+
+
+	// define private functions
+	// ====================================================================================
+	
+	// sends a request
+	function send (data,successCallback,errorCallback) {
+		return $.ajax({
+			url 		: 'save.php',
+			method 		: 'POST',
+			dataType 	: 'json',
+			data 		: data,
+			sucess 		: successCallback,
+			error 		: errorCallback
+		});
+	}
+
+	function get (url,successCallback,errorCallback) {
+		return $.ajax({
+			url 		: url,
+			method 		: 'GET',
+			dataType 	: 'json',
+			success		: successCallback,
+			error 		: errorCallback
+		});
+	}
+
+
+	// define public application interface
+	// ====================================================================================
+
+	module.send 	= send;
+	module.get 		= get;
+
+	// define module init
+	// ====================================================================================
+	module.init = function () {
+		
+	};
+
+	// retrn module object
+	// ====================================================================================
+	return module;
+
+})(window.App,jQuery));
+
+
+/*
+** MODULE END
+** =============================================================================================
+*/
+
+
+
+
+/*
 ** Editor module
 **
 ** handles editors
@@ -138,6 +208,7 @@ App.createModule('editor',(function (app,$) {
 	
 	var editors = {},
 		editorTemplate,
+		editorClicked,
 		currentOpen; // holds the data-id of the open editor
 
 
@@ -148,7 +219,7 @@ App.createModule('editor',(function (app,$) {
 		var self = this;
 
 		var editorData = {
-			id 		: object.$el[0].id, // the field id
+			id 		: object.$el[0].id || object.id, // the field id
 			type 	: object.type,
 			data 	: prepareData(object.data)
 		};
@@ -266,6 +337,7 @@ App.createModule('editor',(function (app,$) {
 	function bindHandlers () {
 		
 		app.$body.on('click',function () {
+			console.log(module.editorClicked);
 			if ( !module.editorClicked ) {
 				closeEditor();
 			}
@@ -441,7 +513,8 @@ App.createModule('defaults',(function (app,$) {
 	},
 
 	form 	= {
-		name 	: 'Form'
+		name 		: 'Form',
+		sections 	: []
 	};
 
 
@@ -1014,11 +1087,18 @@ App.createModule('form',(function (app,$) {
 
 	// define private variables
 	// ====================================================================================
-	var sortableInitialized = false,
+	var
 
-		data,
-		template,
-		form;
+	Request,
+	Defaults,
+
+	sortableInitialized = false,
+
+	data,
+	template,
+	form,
+
+	$stage;
 
 
 
@@ -1027,20 +1107,25 @@ App.createModule('form',(function (app,$) {
 	// ====================================================================================
 	
 	// Fills in the predefined variables
-	function defineVariables () {
+	function defineVariables (data) {
 
 		Defaults 	= app.defaults 	;
 		Editor 		= app.editor 	;
 		Sections 	= app.sections 	;
 		Fields 		= app.fields 	;
+		Request 	= app.request 	;
 
-		data 		= cloneObject(Defaults.form);
+		data 		= cloneObject(data);
 		template 	= $('#tmpl-read-form')[0].innerHTML;
+
+		$stage 		= $('.js-stage');
+		$saveBtn 	= $('.js-form-save');
+		$clearBtn 	= $('.js-form-clear');
 
 	}
 
 	// creates the form object using default data
-	function create () {
+	function create (data) {
 		
 		form  = {
 			name  	: data.name,
@@ -1048,14 +1133,31 @@ App.createModule('form',(function (app,$) {
 			data 	: data,
 			$el 	: $(tmpl(template,data))
 		};
+
+		$stage.append(form.$el);
 		
 		form.$formHeader 	= form.$el.find('.js-form-header');
 		form.$formTitle 	= form.$el.find('.js-form-title');
 		form.$formContent 	= form.$el.find('.js-form-content');
-		form.$addSectionBtn = form.$el.find('.js-add-section');
-		form.$saveBtn 		= form.$el.find('.js-form-save');
+		form.$addSectionBtn = form.$el.find('.js-add-section');		
+		form.$editBtn 		= form.$el.find('.js-edit-form');
 
 		bindFormHandlers();
+
+		// setup editor
+		// setup editor
+		form.editor 	= Editor.create(form);
+		form.$el.append(form.editor.$el);	
+
+		form.editor.$form.on('keyup change',function () {
+			var newData = form.editor.extractData();
+			updateForm(newData);
+		});
+		form.$editBtn.on('click',function (e) {
+			e.preventDefault();
+			form.editor.toggle();
+			return false;
+		});
 
 		return form;
 
@@ -1064,7 +1166,7 @@ App.createModule('form',(function (app,$) {
 	// Initializse jquery widgets
 	function initializeSortable () {
 		form.$formContent.sortable({
-			handle 	: '.js-drag-handle'
+			handle 	: '.js-section-handle'
 		});
 		sortableInitialized = true;
 	}
@@ -1083,12 +1185,9 @@ App.createModule('form',(function (app,$) {
 
 		var newSection = Sections.create(data);
 			form.$formContent.append(newSection.$el);
-
 			// Initialize sortable on the new element
 			newSection.initializeSortable();
-
-			refreshSortable();
-		
+			refreshSortable();		
 	}
 
 	// Binds events
@@ -1097,11 +1196,26 @@ App.createModule('form',(function (app,$) {
 		form.$addSectionBtn.on('click',function () {
 			addSection(Defaults.section);
 			return false;
-		});
+		});		
+	}
+
+	// Bind handlers for elements outside the form
+	function bindGlobalHandlers () {
 		// get the form contents data
-		form.$saveBtn.on('click',function () {
-			var formData = extractContentData();
+		$saveBtn.on('click',function () {
+			var formData = getFormData();
 			console.log(formData);
+			// Request.send({data:formData},onSendSuccess);
+		});
+		// clears the form contents and data
+		$clearBtn.on('click',clearFormContent);
+		// For Sample Data
+		$('.js-sample-data').on('click',function (e) {
+			var $el 	= $(this),
+				source 	= $el.data('source');
+			Request.get(source,function (data) {
+				console.log(data);
+			});
 		});
 	}
 
@@ -1134,6 +1248,47 @@ App.createModule('form',(function (app,$) {
 		return sectionsData;
 	}
 
+	// clears the form content
+	function clearFormContent () {
+		getContentObjects().forEach(function (_section) {
+			_section.remove();
+		});
+		form.data.sections = [];
+		form.$formContent.empty();
+	}
+
+	// updates the form data
+	function updateForm (newData) {
+		form.$formTitle.text(newData.name);
+	}
+
+	// deletes the form and its data
+	function removeForm () {
+		clearFormContent();
+		form.$el.remove();
+		form = null;
+	}
+
+	// replaces the form with a new one
+	function replaceForm (newData) {
+		// verify newData
+		if ( newData.name ) {
+			removeForm();
+			create(newData);
+		}		
+	}
+
+	// gets the form data for saving
+	function getFormData () {
+		form.data.sections = extractContentData();
+		return form.data;
+	}
+
+	// handles sent data success
+	function onSendSuccess (data) {
+		console.log(data);
+	}
+
 
 	// define public application interface
 	// ====================================================================================
@@ -1141,6 +1296,8 @@ App.createModule('form',(function (app,$) {
 	module.addSection 			= addSection;
 	module.initializeSortable 	= initializeSortable;
 	module.extractContentData 	= extractContentData;
+	module.getFormData 			= getFormData;
+	module.replace 				= replaceForm;
 
 	// define module init
 	// ====================================================================================
@@ -1150,9 +1307,9 @@ App.createModule('form',(function (app,$) {
 		console.log('form module added');
 
 		defineVariables();
-
-		// add to stage
-		$('.js-stage').append(module.create().$el);
+		bindGlobalHandlers();
+		// create initial form
+		module.create(Defaults.form);
 
 	};
 

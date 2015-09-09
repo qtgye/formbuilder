@@ -129,7 +129,8 @@ App.createModule('defaults',(function (app,$) {
 	},
 
 	form 	= {
-		name 	: 'Form'
+		name 		: 'Form',
+		sections 	: []
 	};
 
 

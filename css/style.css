@@ -11,12 +11,31 @@ li {
 
 
 /* General Styles */
+.main-container {
+	padding-top: 70px;
+}
 
+
+
+
+
+
+/* Header Styles */
+.viewport-header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	padding: 10px 0;
+	border-bottom: 1px solid silver;
+	background-color: #fff;
+	z-index: 200;
+}
 
 
 
  /* Form Styles */
 .form {
+	position: relative;
 	display: block;
 	width: auto; 
 	height: auto;
@@ -218,7 +237,7 @@ li {
 .editor {
 	display: none;
 	position: absolute;
-	top: -10px;
+	top: 0;
 	left: 100%;	
 	z-index: 0;
 	background-color: #fff;
@@ -286,4 +305,12 @@ li {
 .editor textarea {
 	resize: vertical;
 	overflow-y: auto;
+}
+
+
+
+
+/* BOOTSTRAP OVERRIDES */
+.btn-group {
+	margin: 0 5px;
 }

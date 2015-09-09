@@ -14,11 +14,26 @@
 </head>
 <body>
 	
-	<div class="container">
+	<div class="container main-container">
 		<div class="row">
 			
-			<div class="col-md-12">
-				<h1>Form Builder JS App</h1>
+			<div class="col-md-12 viewport-header">
+				
+				<h4 class="pull-left">Form Builder JS App</h4>
+				
+				<div class="pull-right clearfix">
+					<div class="btn-group pull-right">
+						<div class="btn btn-primary js-form-save">SAVE</div>
+						<div class="btn btn-default js-form-clear">CLEAR FORM</div>
+					</div>
+
+					<div class="btn-group pull-right">
+						<div class="btn btn-default js-sample-data" data-source="/samples/one.json">Sample Data 1</div>
+						<div class="btn btn-default js-sample-data" data-source="/samples/two.json">Sample Data 2</div>
+						<div class="btn btn-default js-sample-data" data-source="/samples/three.json">Sample Data 3</div>
+					</div>					
+				</div>
+
 			</div>
 			
 			<div class="col-md-2">
@@ -39,9 +54,15 @@
 	</div>
 
 
-	<!--=============================================================
-							TEMPLATES
-	==============================================================-->
+	
+
+
+
+
+
+
+
+
 	<div id="templates" class="hidden">
 		
 		<!-- read templates -->
@@ -51,21 +72,19 @@
 			<form class="form js-form" action="" name="" method="post">
 				<div class="form-header form-header">
 					<div class="btn btn-primary js-add-section pull-right">Add Section</div>
+					<div class="btn btn-primary js-edit-form pull-right">Edit Form</div>
 					<h4 class="js-form-title"><%=name%></h4>
 				</div>
 				<div class="form-content js-form-content">
 					
-				</div>
-				<div class="form-actions clearfix">
-					<div class="btn btn-primary pull-right js-form-save">SAVE</div>
-				</div>
+				</div>				
 			</form>
 		</script>
 
 		<!-- section -->
 		<script class="section-template" id="tmpl-read-section" type="text/html">
 			<div class="section has-open-editor">
-				<div class="section-header js-section-header js-drag-handle">
+				<div class="section-header js-section-header js-section-handle">
 					<h5 class="js-section-name"><%=name%></h5>
 				</div>
 				<div class="section-content js-section-content">
