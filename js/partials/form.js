@@ -52,6 +52,9 @@ App.createModule('form',(function (app,$) {
 		$saveBtn 	= $('.js-form-save');
 		$clearBtn 	= $('.js-form-clear');
 
+		$formList 	= $('.js-form-list');
+		$loadForm 	= $formList.find('.js-load-form');
+
 	}
 
 	// creates the form object using default data
@@ -143,19 +146,16 @@ App.createModule('form',(function (app,$) {
 	function bindGlobalHandlers () {
 		// get the form contents data
 		$saveBtn.on('click',function () {
-			var formData = getFormData();
-			console.log(formData);
-			Request.send({data:formData},onSendSuccess);
+			var formData 	= getFormData(),
+				postData 	= cloneObject(Defaults.postData);
+			postData.config.push(formData);
+			Request.send({data:postData},onSendSuccess);
 		});
 		// clears the form contents and data
 		$clearBtn.on('click',clearFormContent);
-		// For Sample Data
-		$('.js-sample-data').on('click',function (e) {
-			var $el 	= $(this),
-				source 	= $el.data('source');
-			Request.get(source,function (data) {
-				replaceForm(data);
-			});
+		// Fetches forms
+		$loadForm.on('click',function (e) {
+			Request.get('/getForms.php',onGetForms);
 		});
 	}
 
@@ -200,6 +200,7 @@ App.createModule('form',(function (app,$) {
 
 	// updates the form data
 	function updateForm (newData) {
+		form.data.name = newData.name;
 		form.$formTitle.text(newData.name);
 	}
 
@@ -226,8 +227,24 @@ App.createModule('form',(function (app,$) {
 		return form.data;
 	}
 
+	// handles form list GET
+	function onGetForms (data) {
+		if ( data.forms ) {
+			if ( data.forms.length > 0 ) {
+				// list forms
+			} else {
+				// no forms
+			}
+		}
+		else {
+			// error
+		}
+
+	}
+
 	// handles sent data success
 	function onSendSuccess (data) {
+		console.log('request sent');
 		console.log(data);
 	}
 

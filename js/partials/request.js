@@ -21,7 +21,7 @@ App.createModule('request',(function (app,$) {
 	// sends a request
 	function send (data,successCallback,errorCallback) {
 		return $.ajax({
-			url 		: '/save.php',
+			url 		: 'http://api-dev.maxine.io:8000/api/v1/templates',
 			method 		: 'POST',
 			dataType 	: 'json',
 			data 		: data,

@@ -139,7 +139,7 @@ App.createModule('request',(function (app,$) {
 	// sends a request
 	function send (data,successCallback,errorCallback) {
 		return $.ajax({
-			url 		: '/save.php',
+			url 		: 'http://api-dev.maxine.io:8000/api/v1/templates',
 			method 		: 'POST',
 			dataType 	: 'json',
 			data 		: data,
@@ -504,17 +504,67 @@ App.createModule('defaults',(function (app,$) {
 	},
 
 	section = {
-		name 		: "New Section",
-		description : 'Lorem Ipsum',
-		showif 		: "",
-		hideif 		: "",
-		isBatch 	: true,
-		fields 		: []
+			name 		: "New Section",
+			description : 'Lorem Ipsum',
+			showif 		: "",
+			hideif 		: "",
+			isBatch 	: true,
+			fields 		: []
 	},
 
 	form 	= {
-		name 		: 'Form',
-		sections 	: []
+			name 		: 'New Form',
+			sections 	: []
+	},
+
+	postData1			= {
+			account_id 		: "5b960be8-f871-475c-ad76-6b8ab1bc4200",
+			user_id 		: "1e5cb1f2-0e3f-441d-8958-c6fc392071b0",
+			title			: "Test Form",
+			author 			: "Jace",
+			tags 			: "loans, investments, finance, business",
+			description		: "Just testing the api",
+			sequence		: 1,
+			config 			: {}
+	},
+
+	postData  	= {
+		id 				: guid(),
+		user_id 		: "1e5cb1f2-0e3f-441d-8958-c6fc392071b0",
+		fullname 		: "Cy Domingo",
+		account_id 		: "5b960be8-f871-475c-ad76-6b8ab1bc4200",
+		organisation 	: "LawCanvas",
+		status 			: 0,
+		title 			: "Loan Facility Agreement",
+		author 			: "Drew Walker",
+		tags 			: "loans, investments, finance, business",
+		sequence 		: 0,
+		description 	: "A loan agreement is a contract between a borrower and a lender which regulates the mutual promises made by each party. There are many types of loan agreements, including facilities agreements, revolvers, term loans and working capital loans",
+		num_files 		: 0,
+		num_docs 		: 0,
+		created_at 		: Date.now(),
+		updated_at 		: Date.now(),
+		config 			: [
+			// {
+			// 	account_id: "fddf3117-f89c-4719-8c03-49c52a318be3",
+			// 	user_id: "15b6f0cd-54ac-40c2-ab8c-22b2a86bde41",
+			// 	title: "Loan Facility Agreement",
+			// 	author: "Drew Walker",
+			// 	tags: "loans, investments, finance, business",
+			// 	description: "A loan agreement is a contract between a borrower and a lender which regulates the mutual promises made by each party. There are many types of loan agreements, including facilities agreements, revolvers, term loans and working capital loans",
+			// 	sequence: 1,
+			// 	config: {
+			// 		flag: true,
+			// 		message: "Template successfully created",
+			// 		data: {
+			// 			id: "29bb36b0-c10d-4e91-bdba-43759074798e",
+			// 			status: 0,
+			// 			created_at: "2015-09-10 23:08:10",
+			// 			updated_at: "2015-09-10 23:08:10"
+			// 		}
+			// 	}
+			// }
+		]
 	};
 
 
@@ -531,6 +581,7 @@ App.createModule('defaults',(function (app,$) {
 	module.fields 	= fields;
 	module.section 	= section;
 	module.form 	= form;
+	module.postData = postData;
 
 
 
@@ -1139,6 +1190,9 @@ App.createModule('form',(function (app,$) {
 		$saveBtn 	= $('.js-form-save');
 		$clearBtn 	= $('.js-form-clear');
 
+		$formList 	= $('.js-form-list');
+		$loadForm 	= $formList.find('.js-load-form');
+
 	}
 
 	// creates the form object using default data
@@ -1230,19 +1284,16 @@ App.createModule('form',(function (app,$) {
 	function bindGlobalHandlers () {
 		// get the form contents data
 		$saveBtn.on('click',function () {
-			var formData = getFormData();
-			console.log(formData);
-			Request.send({data:formData},onSendSuccess);
+			var formData 	= getFormData(),
+				postData 	= cloneObject(Defaults.postData);
+			postData.config.push(formData);
+			Request.send({data:postData},onSendSuccess);
 		});
 		// clears the form contents and data
 		$clearBtn.on('click',clearFormContent);
-		// For Sample Data
-		$('.js-sample-data').on('click',function (e) {
-			var $el 	= $(this),
-				source 	= $el.data('source');
-			Request.get(source,function (data) {
-				replaceForm(data);
-			});
+		// Fetches forms
+		$loadForm.on('click',function (e) {
+			Request.get('/getForms.php',onGetForms);
 		});
 	}
 
@@ -1287,6 +1338,7 @@ App.createModule('form',(function (app,$) {
 
 	// updates the form data
 	function updateForm (newData) {
+		form.data.name = newData.name;
 		form.$formTitle.text(newData.name);
 	}
 
@@ -1313,8 +1365,24 @@ App.createModule('form',(function (app,$) {
 		return form.data;
 	}
 
+	// handles form list GET
+	function onGetForms (data) {
+		if ( data.forms ) {
+			if ( data.forms.length > 0 ) {
+				// list forms
+			} else {
+				// no forms
+			}
+		}
+		else {
+			// error
+		}
+
+	}
+
 	// handles sent data success
 	function onSendSuccess (data) {
+		console.log('request sent');
 		console.log(data);
 	}
 
