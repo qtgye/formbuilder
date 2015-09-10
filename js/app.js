@@ -1287,6 +1287,8 @@ App.createModule('form',(function (app,$) {
 			var formData 	= getFormData(),
 				postData 	= cloneObject(Defaults.postData);
 			postData.config.push(formData);
+			console.log('POST data:');
+			console.log(postData);
 			Request.send({data:postData},onSendSuccess);
 		});
 		// clears the form contents and data
