@@ -28,6 +28,8 @@ App.createModule('form',(function (app,$) {
 	template,
 	form,
 
+	latestForms,
+
 	$stage;
 
 
@@ -50,10 +52,7 @@ App.createModule('form',(function (app,$) {
 
 		$stage 		= $('.js-stage');
 		$saveBtn 	= $('.js-form-save');
-		$clearBtn 	= $('.js-form-clear');
-
-		$formList 	= $('.js-form-list');
-		$loadForm 	= $formList.find('.js-load-form');
+		$clearBtn 	= $('.js-form-clear');		
 
 	}
 
@@ -92,17 +91,22 @@ App.createModule('form',(function (app,$) {
 			return false;
 		});
 
-		console.log(data);
-
-
 		// render sections
-		if ( data.sections.length > 0 ) {
-			data.sections.forEach(function (sectionData) {
+		if ( data.config.length > 0 ) {
+			data.config.forEach(function (sectionData) {
 				addSection(sectionData);
 			});
 		}
 
 		return form;
+
+	}
+
+	// Initializes the form loader at the header
+	function initializeFormLoader () {
+		var $formLoader 			= $('.js-form-loader'),
+			$formLoaderBtn 			= $formLoader.find('.js-load-btn'),
+			$formLoaderDropdown 	=	$formLoader.find('.js-form-loader-dropdown');
 
 	}
 
@@ -146,19 +150,13 @@ App.createModule('form',(function (app,$) {
 	function bindGlobalHandlers () {
 		// get the form contents data
 		$saveBtn.on('click',function () {
-			var formData 	= getFormData(),
-				postData 	= cloneObject(Defaults.postData);
-			postData.config.push(formData);
-			console.log('POST data:');
-			console.log(postData);
-			Request.send({data:postData},onSendSuccess);
+			var postData = cloneObject(Defaults.postData);
+			postData.config.push(getFormConfig());
+			postData.title = form.data.title;
+			Request.send(postData,onSendSuccess);
 		});
 		// clears the form contents and data
 		$clearBtn.on('click',clearFormContent);
-		// Fetches forms
-		$loadForm.on('click',function (e) {
-			Request.get('/getForms.php',onGetForms);
-		});
 	}
 
 	// gets the section objects
@@ -195,15 +193,15 @@ App.createModule('form',(function (app,$) {
 		getContentObjects().forEach(function (_section) {
 			_section.remove();
 		});
-		form.data.sections = [];
+		form.data.config = [];
 		form.$formContent.empty();
 		sortableInitialized = false;
 	}
 
 	// updates the form data
 	function updateForm (newData) {
-		form.data.name = newData.name;
-		form.$formTitle.text(newData.name);
+		form.data.name = newData.title;
+		form.$formTitle.text(newData.title);
 	}
 
 	// deletes the form and its data
@@ -216,7 +214,7 @@ App.createModule('form',(function (app,$) {
 	// replaces the form with a new one
 	function replaceForm (newData) {
 		// verify newData
-		if ( newData.name ) {
+		if ( newData && newData.name ) {
 			removeForm();
 			create(newData);
 			Editor.closeEditor();
@@ -224,19 +222,21 @@ App.createModule('form',(function (app,$) {
 	}
 
 	// gets the form data for saving
-	function getFormData () {
-		form.data.sections = extractContentData();
+	function getFormConfig () {
+		form.data.config = extractContentData();
 		return form.data;
+	}
+
+	// Gets form ids from cookie
+	function getLatestForms () {
+		Request.get(onGetForms);
 	}
 
 	// handles form list GET
 	function onGetForms (data) {
-		if ( data.forms ) {
-			if ( data.forms.length > 0 ) {
-				// list forms
-			} else {
-				// no forms
-			}
+		latestForms = [];
+		if ( data.flag ) {
+			latestForms = data.data;
 		}
 		else {
 			// error
@@ -246,8 +246,12 @@ App.createModule('form',(function (app,$) {
 
 	// handles sent data success
 	function onSendSuccess (data) {
-		console.log('request sent');
-		console.log(data);
+		if ( data.flag ) {
+			console.info('Form saved');
+		} else {
+			throw new Error('The form was not saved');
+		}
+		
 	}
 
 
@@ -257,7 +261,7 @@ App.createModule('form',(function (app,$) {
 	module.addSection 			= addSection;
 	module.initializeSortable 	= initializeSortable;
 	module.extractContentData 	= extractContentData;
-	module.getFormData 			= getFormData;
+	module.getFormConfig 			= getFormConfig;
 	module.replace 				= replaceForm;
 
 	// define module init
@@ -269,6 +273,7 @@ App.createModule('form',(function (app,$) {
 
 		defineVariables();
 		bindGlobalHandlers();
+		initializeFormLoader();
 		// create initial form
 		module.create(Defaults.form);
 

@@ -26,7 +26,8 @@ App.createModule('sections',(function (app,$) {
 		template 		= '',
 		actionsTemplate	= '',
 		sections 		= {},
-		helperWidth;
+		dragHelperWidth,
+		fieldHelperWidth;
 
 
 	// Section object class
@@ -52,8 +53,9 @@ App.createModule('sections',(function (app,$) {
 		// initializes sortable
 		self.initializeSortable = function () {
 			self.$sectionContent.sortable({
-				handle 		: '.js-drag-handle',
+				handle 		: '.js-field-handle',
 				connectWith : '.js-section-content',
+				helper 		: 'clone',
 				create 		: function () {
 					isSortableInitialized = true;
 				},
@@ -93,6 +95,8 @@ App.createModule('sections',(function (app,$) {
 			contentObjects.forEach(function (_field,index) {
 				fieldsData[index] = _field.data;
 			});
+
+			console.log(fieldsData);
 
 			return fieldsData;
 		};
@@ -135,12 +139,12 @@ App.createModule('sections',(function (app,$) {
 					self.addField(fieldData);
 				});
 			}
-		}
+		};
 
 		// Adds a new field
 		self.addField = function (fieldData) {
 			self.$sectionContent.append(Fields.create(fieldData).$el);
-		}
+		};
 
 		if ( self.data.fields.length ) {
 			self.renderFields();
@@ -207,6 +211,8 @@ App.createModule('sections',(function (app,$) {
 		var newSection = new Section(data);
 		Editor.closeEditor();
 		newSection.editor.open();
+		// update fieldHelperWidth
+		fieldHelperWidth = newSection.$el.innerWidth();
 		return newSection;
 	}
 
@@ -227,7 +233,7 @@ App.createModule('sections',(function (app,$) {
 
 		// get the helper's dimension for the item
 		ui.helper
-			.width( helperWidth ? helperWidth : ui.item.width() )
+			// .width( fieldHelperWidth ? fieldHelperWidth : ui.item.width() )
 			.addClass('field-dragging');
 
 	}
@@ -244,9 +250,6 @@ App.createModule('sections',(function (app,$) {
 		if ( ui.helper ) {
 			// The element is new
 			var _newField = Fields.create(ui.helper);
-
-			// Update vars
-			helperWidth = _newField.$el.width();
 		}
 
 		Fields.getField((ui.helper||ui.item)[0].id).sectionId = self.id;

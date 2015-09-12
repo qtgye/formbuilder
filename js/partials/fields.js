@@ -86,7 +86,7 @@ App.createModule('fields',(function (app,$) {
 					self.data[key] = newData[key];
 				}				
 			}
-
+			
 			updateFieldDOM(self,self.data);
 
 			if ( !self.data.isAvailable ) {
@@ -106,7 +106,8 @@ App.createModule('fields',(function (app,$) {
 		self.editor 	= Editor.create(self);
 		self.$el.append(self.editor.$el);
 		
-		self.editor.$form.on('keyup change',function () {
+		self.editor.$form.on('keyup change',function (e) {
+			console.log(e);
 			var newData = self.editor.extractData();
 			self.update(newData);
 		});

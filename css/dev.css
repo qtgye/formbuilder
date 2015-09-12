@@ -31,6 +31,57 @@ li {
 	z-index: 200;
 }
 
+.form-loader {
+	position: relative;
+}
+	.is-fetching .fetch-btn {
+		opacity: 0.5;
+	}
+		.fetch-btn-text-fetching {
+			display: none;
+		}
+		.is-fetching .fetch-btn-text-default {
+			display: none;
+		}
+		.is-fetching .fetch-btn-text-fetching {
+			display: inline;
+		}
+	
+	.form-list-dropdown {
+		display: none;
+		position: absolute;
+		top: 100%;
+		right: 0;
+		z-index: 10;
+		background-color: #333;
+	}
+	.is-open .form-list-dropdown {
+		display: block;
+	}
+		
+		.latest-form-list {
+			display: table;
+			padding: 0;
+			margin: 0;
+		}
+
+			.form-list-item {
+				display: block;
+				padding: 5px 20px;
+			}
+				
+				.form-list-item a:link,
+				.form-list-item a:active,
+				.form-list-item a:visited {
+					white-space: pre;
+					color: silver;
+				}
+
+				.form-list-item a:hover {
+					color:white;
+					text-decoration: none;
+				}
+
 
 
  /* Form Styles */

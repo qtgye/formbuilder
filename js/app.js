@@ -131,7 +131,35 @@ App.createModule('request',(function (app,$) {
 
 	// define private variables
 	// ====================================================================================
+	var 
 
+	// POST params
+	POST = {
+		url 	: 'http://api-dev.maxine.io:8000/api/v1/templates'
+	},
+
+	// GET params
+	GET = {
+		url 	: 'http://api-dev.maxine.io:8000/api/v1/templates',
+		params 	: [
+			{ sort 	: 'created_at' 	},
+			{ order	: 'DESC'		},
+			{ limit	: 5 			}
+		],
+		getURL : function () {
+			if ( this.params.length === 0 ) {
+				return this.url;
+			} else {
+				console.log(this.params);
+				return this.url + '?' +
+					this.params.map(function (pair) {
+					for ( var key in pair ) {
+							return key + '=' + pair[key];
+						}
+					}).join('&');
+			}
+		}
+	};
 
 	// define private functions
 	// ====================================================================================
@@ -139,18 +167,18 @@ App.createModule('request',(function (app,$) {
 	// sends a request
 	function send (data,successCallback,errorCallback) {
 		return $.ajax({
-			url 		: 'http://api-dev.maxine.io:8000/api/v1/templates',
+			url 		: POST.url,
 			method 		: 'POST',
 			dataType 	: 'json',
 			data 		: data,
-			sucess 		: successCallback,
+			success 	: successCallback,
 			error 		: errorCallback
 		});
 	}
 
-	function get (url,successCallback,errorCallback) {
+	function get (successCallback,errorCallback) {
 		return $.ajax({
-			url 		: url,
+			url 		: GET.getURL(),
 			method 		: 'GET',
 			dataType 	: 'json',
 			success		: successCallback,
@@ -221,7 +249,7 @@ App.createModule('editor',(function (app,$) {
 		var editorData = {
 			id 		: object.$el[0].id || object.id, // the field id
 			type 	: object.type,
-			data 	: prepareData(object.data)
+			data 	: prepareData(cloneObject(object.data))
 		};
 
 		self.id 		= editorData.id;
@@ -261,14 +289,14 @@ App.createModule('editor',(function (app,$) {
 				formData 	= self.$form.serializeArray();
 			
 			formData.forEach(function (pair) {
-				// Convert options into array
+				// Convert options into array				
 				if ( pair.name == 'options' ) {
 					var arr = pair.value.split('\r\n').map(function (option) {
 						var opt = option.split(',');
 						return { label: opt[0], value: opt[1]};
 					});
 					pair.value = arr;
-				}
+				}				
 				// Convert to boolean
 				if ( pair.value == "true" ) {
 					pair.value = true;
@@ -311,7 +339,6 @@ App.createModule('editor',(function (app,$) {
 		// converts array to string in specified format
 		if (fieldData.options) {
 			fieldData.options = (function (options) {
-				console.log(options);
 				return options.map(function (pair) {
 					return pair.label + ',' + pair.value;
 				}).join('\r\n');
@@ -337,7 +364,6 @@ App.createModule('editor',(function (app,$) {
 	function bindHandlers () {
 		
 		app.$body.on('click',function () {
-			console.log(module.editorClicked);
 			if ( !module.editorClicked ) {
 				closeEditor();
 			}
@@ -513,58 +539,20 @@ App.createModule('defaults',(function (app,$) {
 	},
 
 	form 	= {
-			name 		: 'New Form',
-			sections 	: []
+			account_id 		: "5b960be8-f871-475c-ad76-6b8ab1bc4200",
+			user_id 		: "1e5cb1f2-0e3f-441d-8958-c6fc392071b0",
+			title 			: 'Sample Form',
+			status 			: 0,
+			description 	: 'Sample Form',
+			tags 			: '',
+			config 			: []
 	},
 
-	postData1			= {
+	postData			= {
 			account_id 		: "5b960be8-f871-475c-ad76-6b8ab1bc4200",
 			user_id 		: "1e5cb1f2-0e3f-441d-8958-c6fc392071b0",
 			title			: "Test Form",
-			author 			: "Jace",
-			tags 			: "loans, investments, finance, business",
-			description		: "Just testing the api",
-			sequence		: 1,
-			config 			: {}
-	},
-
-	postData  	= {
-		id 				: guid(),
-		user_id 		: "1e5cb1f2-0e3f-441d-8958-c6fc392071b0",
-		fullname 		: "Cy Domingo",
-		account_id 		: "5b960be8-f871-475c-ad76-6b8ab1bc4200",
-		organisation 	: "LawCanvas",
-		status 			: 0,
-		title 			: "Loan Facility Agreement",
-		author 			: "Drew Walker",
-		tags 			: "loans, investments, finance, business",
-		sequence 		: 0,
-		description 	: "A loan agreement is a contract between a borrower and a lender which regulates the mutual promises made by each party. There are many types of loan agreements, including facilities agreements, revolvers, term loans and working capital loans",
-		num_files 		: 0,
-		num_docs 		: 0,
-		created_at 		: Date.now(),
-		updated_at 		: Date.now(),
-		config 			: [
-			// {
-			// 	account_id: "fddf3117-f89c-4719-8c03-49c52a318be3",
-			// 	user_id: "15b6f0cd-54ac-40c2-ab8c-22b2a86bde41",
-			// 	title: "Loan Facility Agreement",
-			// 	author: "Drew Walker",
-			// 	tags: "loans, investments, finance, business",
-			// 	description: "A loan agreement is a contract between a borrower and a lender which regulates the mutual promises made by each party. There are many types of loan agreements, including facilities agreements, revolvers, term loans and working capital loans",
-			// 	sequence: 1,
-			// 	config: {
-			// 		flag: true,
-			// 		message: "Template successfully created",
-			// 		data: {
-			// 			id: "29bb36b0-c10d-4e91-bdba-43759074798e",
-			// 			status: 0,
-			// 			created_at: "2015-09-10 23:08:10",
-			// 			updated_at: "2015-09-10 23:08:10"
-			// 		}
-			// 	}
-			// }
-		]
+			config 			: []
 	};
 
 
@@ -697,7 +685,7 @@ App.createModule('fields',(function (app,$) {
 					self.data[key] = newData[key];
 				}				
 			}
-
+			
 			updateFieldDOM(self,self.data);
 
 			if ( !self.data.isAvailable ) {
@@ -717,7 +705,8 @@ App.createModule('fields',(function (app,$) {
 		self.editor 	= Editor.create(self);
 		self.$el.append(self.editor.$el);
 		
-		self.editor.$form.on('keyup change',function () {
+		self.editor.$form.on('keyup change',function (e) {
+			console.log(e);
 			var newData = self.editor.extractData();
 			self.update(newData);
 		});
@@ -866,7 +855,8 @@ App.createModule('sections',(function (app,$) {
 		template 		= '',
 		actionsTemplate	= '',
 		sections 		= {},
-		helperWidth;
+		dragHelperWidth,
+		fieldHelperWidth;
 
 
 	// Section object class
@@ -892,8 +882,9 @@ App.createModule('sections',(function (app,$) {
 		// initializes sortable
 		self.initializeSortable = function () {
 			self.$sectionContent.sortable({
-				handle 		: '.js-drag-handle',
+				handle 		: '.js-field-handle',
 				connectWith : '.js-section-content',
+				helper 		: 'clone',
 				create 		: function () {
 					isSortableInitialized = true;
 				},
@@ -933,6 +924,8 @@ App.createModule('sections',(function (app,$) {
 			contentObjects.forEach(function (_field,index) {
 				fieldsData[index] = _field.data;
 			});
+
+			console.log(fieldsData);
 
 			return fieldsData;
 		};
@@ -975,12 +968,12 @@ App.createModule('sections',(function (app,$) {
 					self.addField(fieldData);
 				});
 			}
-		}
+		};
 
 		// Adds a new field
 		self.addField = function (fieldData) {
 			self.$sectionContent.append(Fields.create(fieldData).$el);
-		}
+		};
 
 		if ( self.data.fields.length ) {
 			self.renderFields();
@@ -1047,6 +1040,8 @@ App.createModule('sections',(function (app,$) {
 		var newSection = new Section(data);
 		Editor.closeEditor();
 		newSection.editor.open();
+		// update fieldHelperWidth
+		fieldHelperWidth = newSection.$el.innerWidth();
 		return newSection;
 	}
 
@@ -1067,7 +1062,7 @@ App.createModule('sections',(function (app,$) {
 
 		// get the helper's dimension for the item
 		ui.helper
-			.width( helperWidth ? helperWidth : ui.item.width() )
+			// .width( fieldHelperWidth ? fieldHelperWidth : ui.item.width() )
 			.addClass('field-dragging');
 
 	}
@@ -1084,9 +1079,6 @@ App.createModule('sections',(function (app,$) {
 		if ( ui.helper ) {
 			// The element is new
 			var _newField = Fields.create(ui.helper);
-
-			// Update vars
-			helperWidth = _newField.$el.width();
 		}
 
 		Fields.getField((ui.helper||ui.item)[0].id).sectionId = self.id;
@@ -1166,6 +1158,8 @@ App.createModule('form',(function (app,$) {
 	template,
 	form,
 
+	latestForms,
+
 	$stage;
 
 
@@ -1188,10 +1182,7 @@ App.createModule('form',(function (app,$) {
 
 		$stage 		= $('.js-stage');
 		$saveBtn 	= $('.js-form-save');
-		$clearBtn 	= $('.js-form-clear');
-
-		$formList 	= $('.js-form-list');
-		$loadForm 	= $formList.find('.js-load-form');
+		$clearBtn 	= $('.js-form-clear');		
 
 	}
 
@@ -1230,17 +1221,22 @@ App.createModule('form',(function (app,$) {
 			return false;
 		});
 
-		console.log(data);
-
-
 		// render sections
-		if ( data.sections.length > 0 ) {
-			data.sections.forEach(function (sectionData) {
+		if ( data.config.length > 0 ) {
+			data.config.forEach(function (sectionData) {
 				addSection(sectionData);
 			});
 		}
 
 		return form;
+
+	}
+
+	// Initializes the form loader at the header
+	function initializeFormLoader () {
+		var $formLoader 			= $('.js-form-loader'),
+			$formLoaderBtn 			= $formLoader.find('.js-load-btn'),
+			$formLoaderDropdown 	=	$formLoader.find('.js-form-loader-dropdown');
 
 	}
 
@@ -1284,19 +1280,13 @@ App.createModule('form',(function (app,$) {
 	function bindGlobalHandlers () {
 		// get the form contents data
 		$saveBtn.on('click',function () {
-			var formData 	= getFormData(),
-				postData 	= cloneObject(Defaults.postData);
-			postData.config.push(formData);
-			console.log('POST data:');
-			console.log(postData);
-			Request.send({data:postData},onSendSuccess);
+			var postData = cloneObject(Defaults.postData);
+			postData.config.push(getFormConfig());
+			postData.title = form.data.title;
+			Request.send(postData,onSendSuccess);
 		});
 		// clears the form contents and data
 		$clearBtn.on('click',clearFormContent);
-		// Fetches forms
-		$loadForm.on('click',function (e) {
-			Request.get('/getForms.php',onGetForms);
-		});
 	}
 
 	// gets the section objects
@@ -1333,15 +1323,15 @@ App.createModule('form',(function (app,$) {
 		getContentObjects().forEach(function (_section) {
 			_section.remove();
 		});
-		form.data.sections = [];
+		form.data.config = [];
 		form.$formContent.empty();
 		sortableInitialized = false;
 	}
 
 	// updates the form data
 	function updateForm (newData) {
-		form.data.name = newData.name;
-		form.$formTitle.text(newData.name);
+		form.data.name = newData.title;
+		form.$formTitle.text(newData.title);
 	}
 
 	// deletes the form and its data
@@ -1354,7 +1344,7 @@ App.createModule('form',(function (app,$) {
 	// replaces the form with a new one
 	function replaceForm (newData) {
 		// verify newData
-		if ( newData.name ) {
+		if ( newData && newData.name ) {
 			removeForm();
 			create(newData);
 			Editor.closeEditor();
@@ -1362,19 +1352,21 @@ App.createModule('form',(function (app,$) {
 	}
 
 	// gets the form data for saving
-	function getFormData () {
-		form.data.sections = extractContentData();
+	function getFormConfig () {
+		form.data.config = extractContentData();
 		return form.data;
+	}
+
+	// Gets form ids from cookie
+	function getLatestForms () {
+		Request.get(onGetForms);
 	}
 
 	// handles form list GET
 	function onGetForms (data) {
-		if ( data.forms ) {
-			if ( data.forms.length > 0 ) {
-				// list forms
-			} else {
-				// no forms
-			}
+		latestForms = [];
+		if ( data.flag ) {
+			latestForms = data.data;
 		}
 		else {
 			// error
@@ -1384,8 +1376,12 @@ App.createModule('form',(function (app,$) {
 
 	// handles sent data success
 	function onSendSuccess (data) {
-		console.log('request sent');
-		console.log(data);
+		if ( data.flag ) {
+			console.info('Form saved');
+		} else {
+			throw new Error('The form was not saved');
+		}
+		
 	}
 
 
@@ -1395,7 +1391,7 @@ App.createModule('form',(function (app,$) {
 	module.addSection 			= addSection;
 	module.initializeSortable 	= initializeSortable;
 	module.extractContentData 	= extractContentData;
-	module.getFormData 			= getFormData;
+	module.getFormConfig 			= getFormConfig;
 	module.replace 				= replaceForm;
 
 	// define module init
@@ -1407,6 +1403,7 @@ App.createModule('form',(function (app,$) {
 
 		defineVariables();
 		bindGlobalHandlers();
+		initializeFormLoader();
 		// create initial form
 		module.create(Defaults.form);
 

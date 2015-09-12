@@ -33,7 +33,7 @@ App.createModule('editor',(function (app,$) {
 		var editorData = {
 			id 		: object.$el[0].id || object.id, // the field id
 			type 	: object.type,
-			data 	: prepareData(object.data)
+			data 	: prepareData(cloneObject(object.data))
 		};
 
 		self.id 		= editorData.id;
@@ -73,14 +73,14 @@ App.createModule('editor',(function (app,$) {
 				formData 	= self.$form.serializeArray();
 			
 			formData.forEach(function (pair) {
-				// Convert options into array
+				// Convert options into array				
 				if ( pair.name == 'options' ) {
 					var arr = pair.value.split('\r\n').map(function (option) {
 						var opt = option.split(',');
 						return { label: opt[0], value: opt[1]};
 					});
 					pair.value = arr;
-				}
+				}				
 				// Convert to boolean
 				if ( pair.value == "true" ) {
 					pair.value = true;
@@ -123,7 +123,6 @@ App.createModule('editor',(function (app,$) {
 		// converts array to string in specified format
 		if (fieldData.options) {
 			fieldData.options = (function (options) {
-				console.log(options);
 				return options.map(function (pair) {
 					return pair.label + ',' + pair.value;
 				}).join('\r\n');
@@ -149,7 +148,6 @@ App.createModule('editor',(function (app,$) {
 	function bindHandlers () {
 		
 		app.$body.on('click',function () {
-			console.log(module.editorClicked);
 			if ( !module.editorClicked ) {
 				closeEditor();
 			}

@@ -13,7 +13,35 @@ App.createModule('request',(function (app,$) {
 
 	// define private variables
 	// ====================================================================================
+	var 
 
+	// POST params
+	POST = {
+		url 	: 'http://api-dev.maxine.io:8000/api/v1/templates'
+	},
+
+	// GET params
+	GET = {
+		url 	: 'http://api-dev.maxine.io:8000/api/v1/templates',
+		params 	: [
+			{ sort 	: 'created_at' 	},
+			{ order	: 'DESC'		},
+			{ limit	: 5 			}
+		],
+		getURL : function () {
+			if ( this.params.length === 0 ) {
+				return this.url;
+			} else {
+				console.log(this.params);
+				return this.url + '?' +
+					this.params.map(function (pair) {
+					for ( var key in pair ) {
+							return key + '=' + pair[key];
+						}
+					}).join('&');
+			}
+		}
+	};
 
 	// define private functions
 	// ====================================================================================
@@ -21,18 +49,18 @@ App.createModule('request',(function (app,$) {
 	// sends a request
 	function send (data,successCallback,errorCallback) {
 		return $.ajax({
-			url 		: 'http://api-dev.maxine.io:8000/api/v1/templates',
+			url 		: POST.url,
 			method 		: 'POST',
 			dataType 	: 'json',
 			data 		: data,
-			sucess 		: successCallback,
+			success 	: successCallback,
 			error 		: errorCallback
 		});
 	}
 
-	function get (url,successCallback,errorCallback) {
+	function get (successCallback,errorCallback) {
 		return $.ajax({
-			url 		: url,
+			url 		: GET.getURL(),
 			method 		: 'GET',
 			dataType 	: 'json',
 			success		: successCallback,
