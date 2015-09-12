@@ -133,6 +133,7 @@ App.createModule('form',(function (app,$) {
 			else {
 				// error
 			}
+			formLoader.isFetching = false;
 		}
 
 		// resets the form loader
@@ -183,8 +184,11 @@ App.createModule('form',(function (app,$) {
 		}
 
 		$formLoaderBtn.on('click',function () {
-			$formLoader.removeClass('is-open');
-			getLatestForms();
+			if ( !formLoader.isFetching ) {
+				formLoader.isFetching = true;
+				$formLoader.removeClass('is-open');
+				getLatestForms();
+			}
 		});
 		$formListClose.on('click',function () {
 			reset();
@@ -340,6 +344,11 @@ App.createModule('form',(function (app,$) {
 		}
 		
 	}	
+
+	// handles sent data error
+	function onSendError (data) {
+		// body...
+	}
 
 
 	// define public application interface

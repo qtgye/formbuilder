@@ -142,8 +142,8 @@ App.createModule('editor',(function (app,$) {
 		}
 		// adds other options for account
 		if ( fieldData.account_id ) {
-			var userIds = User.getAll('account_id');
-			fieldData.account_id = userIds.map(function (id) {
+			var accountIds = User.getAll('account_id');
+			fieldData.account_id = accountIds.map(function (id) {
 				return {
 					value 		: id,
 					selected 	: id == fieldData.account_id

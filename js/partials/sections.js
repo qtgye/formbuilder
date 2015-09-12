@@ -96,8 +96,6 @@ App.createModule('sections',(function (app,$) {
 				fieldsData[index] = _field.data;
 			});
 
-			console.log(fieldsData);
-
 			return fieldsData;
 		};
 
@@ -134,7 +132,7 @@ App.createModule('sections',(function (app,$) {
 
 		// render fields
 		self.renderFields = function () {
-			if (self.data.fields.length > 0 ) {
+			if (self.data.fields && self.data.fields.length > 0 ) {
 				self.data.fields.forEach(function (fieldData) {
 					self.addField(fieldData);
 				});
@@ -146,7 +144,7 @@ App.createModule('sections',(function (app,$) {
 			self.$sectionContent.append(Fields.create(fieldData).$el);
 		};
 
-		if ( self.data.fields.length ) {
+		if ( self.data.fields && self.data.fields.length ) {
 			self.renderFields();
 		}
 

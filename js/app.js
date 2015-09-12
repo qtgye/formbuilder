@@ -623,8 +623,8 @@ App.createModule('editor',(function (app,$) {
 		}
 		// adds other options for account
 		if ( fieldData.account_id ) {
-			var userIds = User.getAll('account_id');
-			fieldData.account_id = userIds.map(function (id) {
+			var accountIds = User.getAll('account_id');
+			fieldData.account_id = accountIds.map(function (id) {
 				return {
 					value 		: id,
 					selected 	: id == fieldData.account_id
@@ -1024,8 +1024,6 @@ App.createModule('sections',(function (app,$) {
 				fieldsData[index] = _field.data;
 			});
 
-			console.log(fieldsData);
-
 			return fieldsData;
 		};
 
@@ -1062,7 +1060,7 @@ App.createModule('sections',(function (app,$) {
 
 		// render fields
 		self.renderFields = function () {
-			if (self.data.fields.length > 0 ) {
+			if (self.data.fields && self.data.fields.length > 0 ) {
 				self.data.fields.forEach(function (fieldData) {
 					self.addField(fieldData);
 				});
@@ -1074,7 +1072,7 @@ App.createModule('sections',(function (app,$) {
 			self.$sectionContent.append(Fields.create(fieldData).$el);
 		};
 
-		if ( self.data.fields.length ) {
+		if ( self.data.fields && self.data.fields.length ) {
 			self.renderFields();
 		}
 
@@ -1362,6 +1360,7 @@ App.createModule('form',(function (app,$) {
 			else {
 				// error
 			}
+			formLoader.isFetching = false;
 		}
 
 		// resets the form loader
@@ -1412,8 +1411,11 @@ App.createModule('form',(function (app,$) {
 		}
 
 		$formLoaderBtn.on('click',function () {
-			$formLoader.removeClass('is-open');
-			getLatestForms();
+			if ( !formLoader.isFetching ) {
+				formLoader.isFetching = true;
+				$formLoader.removeClass('is-open');
+				getLatestForms();
+			}
 		});
 		$formListClose.on('click',function () {
 			reset();
@@ -1569,6 +1571,11 @@ App.createModule('form',(function (app,$) {
 		}
 		
 	}	
+
+	// handles sent data error
+	function onSendError (data) {
+		// body...
+	}
 
 
 	// define public application interface
