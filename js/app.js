@@ -1467,25 +1467,9 @@ App.createModule('form',(function (app,$) {
 	function bindGlobalHandlers () {
 		// get the form contents data
 		$saveBtn.on('click',function () {
-			var formData 	= cloneObject(getFormData()),
-				postData 	= {
-					config : []
-				};
-			// prepare data to send			
-			postData.title 			= formData.title;
-			postData.description 	= formData.description;
-			postData.status 	 	= formData.status;
-			postData.user_id 	 	= formData.user_id;
-			postData.account_id	 	= formData.account_id;
-			postData.config.push(formData);
-			// delete unwanted form properties
-			delete postData.config[0].title;
-			delete postData.config[0].description;
-			delete postData.config[0].status;
-			delete postData.config[0].user_id;
-			delete postData.config[0].account_id;
+			var formData 	= cloneObject(getFormData());
 			// send the data
-			Request.send(postData,onSendSuccess,onSendError);
+			Request.send(formData,onSendSuccess,onSendError);
 		});
 		// clears the form contents and data
 		$clearBtn.on('click',clearFormContent);
@@ -1536,6 +1520,7 @@ App.createModule('form',(function (app,$) {
 		form.data.account_id	= newData.account_id;
 		form.data.title 		= newData.title;
 		form.data.description 	= newData.description;
+		form.data.tags 			= newData.tags;
 		form.$formTitle.text(newData.title);
 	}
 
