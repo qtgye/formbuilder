@@ -34,27 +34,6 @@ gulp.task('del',function () {
 	]);
 });
 
-// parses manifest file
-gulp.task('manifest', function () {
-	var jsFiles = [];
-
-	var paths 	= require('./manifest.json').files,
-		keys 	= Object.keys(paths);
-
-	console.log(paths);
-
-	// collect paths
-	keys.forEach(function (key) {
-		fs.stat('./'+paths[key], function(err) {
-		    if(err == null) {
-		        jsFiles.push(paths[key]);
-		    } else {
-		    	console.log('The file ' + paths[key] + ' does not exist.')
-		    }
-		});
-	});
-});
-
 // browser sync
 gulp.task('browser-sync', function() {
     browserSync.init({
@@ -89,7 +68,6 @@ gulp.task('scripts',['del','jshint'],function () {
 // watch
 gulp.task('watch',
 	[
-		'manifest',
 		'css',
 		'scripts',
 		'browser-sync'
@@ -98,7 +76,6 @@ gulp.task('watch',
 	// watch
 	gulp.watch('./css/dev.css',['css']);
 	gulp.watch('./js/partials/**/*',['scripts']);
-	gulp.watch('./manifest.json',['manifest']);
 	gulp.watch('./**/*.html').on('change',browserSync.reload);
 	gulp.watch('./**/*.css').on('change',browserSync.reload);
 });
