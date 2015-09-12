@@ -18,7 +18,8 @@ App.createModule('editor',(function (app,$) {
 	// define private variables
 	// ====================================================================================
 	
-	var editors = {},
+	var User,
+		editors = {},
 		editorTemplate,
 		editorClicked,
 		currentOpen; // holds the data-id of the open editor
@@ -114,7 +115,8 @@ App.createModule('editor',(function (app,$) {
 	
 	// Fills the predefined variables
 	function defineVariables () {
-		editorTemplate = $('#templates').find('#tmpl-editor').html();
+		editorTemplate 	= $('#templates').find('#tmpl-editor').html();
+		User 			= app.user;
 	}
 
 	// prepares the data to be rendered in the editor template
@@ -127,7 +129,27 @@ App.createModule('editor',(function (app,$) {
 					return pair.label + ',' + pair.value;
 				}).join('\r\n');
 			})(fieldData.options);
-		}	
+		}
+		// adds other options for user_id
+		if ( fieldData.user_id ) {
+			var userIds = User.getAll('user_id');
+			fieldData.user_id = userIds.map(function (id) {
+				return {
+					value 		: id,
+					selected 	: id == fieldData.user_id
+				};
+			});
+		}
+		// adds other options for account
+		if ( fieldData.account_id ) {
+			var userIds = User.getAll('account_id');
+			fieldData.account_id = userIds.map(function (id) {
+				return {
+					value 		: id,
+					selected 	: id == fieldData.account_id
+				};
+			});
+		}
 
 		return fieldData;
 	}
@@ -141,6 +163,7 @@ App.createModule('editor',(function (app,$) {
 	function closeEditor () {
 		if ( currentOpen ) {
 			editors[currentOpen].close();
+			currentOpen = null;
 		}
 	}
 

@@ -136,13 +136,6 @@ App.createModule('defaults',(function (app,$) {
 			description 	: 'Sample Form',
 			tags 			: '',
 			config 			: []
-	},
-
-	postData			= {
-			account_id 		: "5b960be8-f871-475c-ad76-6b8ab1bc4200",
-			user_id 		: "1e5cb1f2-0e3f-441d-8958-c6fc392071b0",
-			title			: "Test Form",
-			config 			: []
 	};
 
 
@@ -159,7 +152,6 @@ App.createModule('defaults',(function (app,$) {
 	module.fields 	= fields;
 	module.section 	= section;
 	module.form 	= form;
-	module.postData = postData;
 
 
 

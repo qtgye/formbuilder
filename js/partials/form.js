@@ -27,8 +27,7 @@ App.createModule('form',(function (app,$) {
 	data,
 	template,
 	form,
-
-	latestForms,
+	formLoader,
 
 	$stage;
 
@@ -92,7 +91,7 @@ App.createModule('form',(function (app,$) {
 		});
 
 		// render sections
-		if ( data.config.length > 0 ) {
+		if ( data.config && data.config.length > 0 ) {
 			data.config.forEach(function (sectionData) {
 				addSection(sectionData);
 			});
@@ -102,13 +101,100 @@ App.createModule('form',(function (app,$) {
 
 	}
 
+
 	// Initializes the form loader at the header
 	function initializeFormLoader () {
-		var $formLoader 			= $('.js-form-loader'),
+		var formLoader 				= {
+				isFetching 	: false
+			},
+			$formLoader 			= $('.js-form-loader'),
 			$formLoaderBtn 			= $formLoader.find('.js-load-btn'),
-			$formLoaderDropdown 	=	$formLoader.find('.js-form-loader-dropdown');
+			$formLoaderDropdown 	= $formLoader.find('.js-form-loader-dropdown'),
+			$formList 				= $formLoader.find('.js-form-list'),
+			$formListClose 			= $formLoader.find('.js-form-list-close'),
+			formListTemplateString	= $('#tmplFormsList')[0].innerHTML,
+			latestForms 			= [],
+			isFetching 				= false;
+
+		// Gets form ids from cookie
+		function getLatestForms () {
+			$formLoader.addClass('is-fetching');
+			Request.get(onGetForms);
+		}
+
+		// handles form list GET
+		function onGetForms (data) {
+			latestForms = [];
+			$formLoader.removeClass('is-fetching');
+			if ( data.flag ) {
+				latestForms = data.data;
+				renderFetchedForms();
+			}
+			else {
+				// error
+			}
+		}
+
+		// resets the form loader
+		function reset () {
+			formLoader.isFetching = false;
+			$formList.empty();
+			$formLoader.removeClass('is-open');
+
+		}
+
+		// renders the fetched forms in list
+		function renderFetchedForms () {
+			var $list = $(tmpl(formListTemplateString,{formsList:latestForms}));
+			$formList
+				.empty()
+				.append($list);
+			$formLoader.addClass('is-open');
+			// bind each item
+			$list.children().each(function () {
+				var $el 	= $(this),
+					formId 	= $el.data('formId');
+				$el.click(function (e) {
+					e.preventDefault();
+					if ( !formLoader.isFetching ) {
+						$el.addClass('is-loading');
+						Request.getForm(formId,onFetchFormSuccess);
+					}					
+				});
+			});
+		}
+
+		// handles successful form fetch
+		function onFetchFormSuccess (data) {			
+			// prepare new data for replacement
+			var newFormData = data.data.config[0];
+			if ( newFormData ) {
+				formLoader.reset();
+				newFormData.user_id 		= data.data.user_id;		
+				newFormData.account_id 		= data.data.account_id;		
+				newFormData.status 			= data.data.status;		
+				newFormData.title 			= data.data.title;
+				newFormData.description 	= data.data.description;
+				newFormData.tags 			= data.data.tags;
+				replaceForm(newFormData);
+			} else {
+				// the form cannot be loaded
+			}			
+		}
+
+		$formLoaderBtn.on('click',function () {
+			$formLoader.removeClass('is-open');
+			getLatestForms();
+		});
+		$formListClose.on('click',function () {
+			reset();
+		});
+
+		// public methods
+		formLoader.reset = reset;
 
 	}
+
 
 	// Initializse jquery widgets
 	function initializeSortable () {
@@ -150,10 +236,25 @@ App.createModule('form',(function (app,$) {
 	function bindGlobalHandlers () {
 		// get the form contents data
 		$saveBtn.on('click',function () {
-			var postData = cloneObject(Defaults.postData);
-			postData.config.push(getFormConfig());
-			postData.title = form.data.title;
-			Request.send(postData,onSendSuccess);
+			var formData 	= cloneObject(getFormData()),
+				postData 	= {
+					config : []
+				};
+			// prepare data to send			
+			postData.title 			= formData.title;
+			postData.description 	= formData.description;
+			postData.status 	 	= formData.status;
+			postData.user_id 	 	= formData.user_id;
+			postData.account_id	 	= formData.account_id;
+			postData.config.push(formData);
+			// delete unwanted form properties
+			delete postData.config[0].title;
+			delete postData.config[0].description;
+			delete postData.config[0].status;
+			delete postData.config[0].user_id;
+			delete postData.config[0].account_id;
+			// send the data
+			Request.send(postData,onSendSuccess,onSendError);
 		});
 		// clears the form contents and data
 		$clearBtn.on('click',clearFormContent);
@@ -200,7 +301,10 @@ App.createModule('form',(function (app,$) {
 
 	// updates the form data
 	function updateForm (newData) {
-		form.data.name = newData.title;
+		form.data.user_id 		= newData.user_id;
+		form.data.account_id	= newData.account_id;
+		form.data.title 		= newData.title;
+		form.data.description 	= newData.description;
 		form.$formTitle.text(newData.title);
 	}
 
@@ -214,7 +318,7 @@ App.createModule('form',(function (app,$) {
 	// replaces the form with a new one
 	function replaceForm (newData) {
 		// verify newData
-		if ( newData && newData.name ) {
+		if ( newData && newData.title ) {
 			removeForm();
 			create(newData);
 			Editor.closeEditor();
@@ -222,27 +326,10 @@ App.createModule('form',(function (app,$) {
 	}
 
 	// gets the form data for saving
-	function getFormConfig () {
+	function getFormData () {
 		form.data.config = extractContentData();
 		return form.data;
-	}
-
-	// Gets form ids from cookie
-	function getLatestForms () {
-		Request.get(onGetForms);
-	}
-
-	// handles form list GET
-	function onGetForms (data) {
-		latestForms = [];
-		if ( data.flag ) {
-			latestForms = data.data;
-		}
-		else {
-			// error
-		}
-
-	}
+	}	
 
 	// handles sent data success
 	function onSendSuccess (data) {
@@ -252,7 +339,7 @@ App.createModule('form',(function (app,$) {
 			throw new Error('The form was not saved');
 		}
 		
-	}
+	}	
 
 
 	// define public application interface
@@ -261,7 +348,7 @@ App.createModule('form',(function (app,$) {
 	module.addSection 			= addSection;
 	module.initializeSortable 	= initializeSortable;
 	module.extractContentData 	= extractContentData;
-	module.getFormConfig 			= getFormConfig;
+	module.getFormData 			= getFormData;
 	module.replace 				= replaceForm;
 
 	// define module init

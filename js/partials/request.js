@@ -26,7 +26,7 @@ App.createModule('request',(function (app,$) {
 		params 	: [
 			{ sort 	: 'created_at' 	},
 			{ order	: 'DESC'		},
-			{ limit	: 5 			}
+			{ limit	: 50 			}
 		],
 		getURL : function () {
 			if ( this.params.length === 0 ) {
@@ -58,9 +58,21 @@ App.createModule('request',(function (app,$) {
 		});
 	}
 
+	// gets a list of latest forms
 	function get (successCallback,errorCallback) {
 		return $.ajax({
 			url 		: GET.getURL(),
+			method 		: 'GET',
+			dataType 	: 'json',
+			success		: successCallback,
+			error 		: errorCallback
+		});
+	}
+
+	// gets a form by id
+	function getForm (id,successCallback,errorCallback) {
+		return $.ajax({
+			url 		: GET.url + '/' + id,
 			method 		: 'GET',
 			dataType 	: 'json',
 			success		: successCallback,
@@ -74,6 +86,7 @@ App.createModule('request',(function (app,$) {
 
 	module.send 	= send;
 	module.get 		= get;
+	module.getForm 	= getForm;
 
 	// define module init
 	// ====================================================================================

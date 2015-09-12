@@ -34,8 +34,9 @@
 						</div>
 						<div class="form-list-dropdown js-form-loader-dropdown">
 							<ul class="latest-form-list js-form-list">
-								<li class="form-list-item js-form-item"><a href="#" data-form-id="123">Form Titlte</a></li>
+								
 							</ul>
+							<div class="form-list-close js-form-list-close">CLOSE</div>
 						</div>
 					</div>					
 				</div>
@@ -229,10 +230,26 @@
 		</script>
 
 
+		<!-- forms list -->
+		<script id="tmplFormsList" type="text/html">
+			<% formsList.forEach(function(form){ %>
+				<li class="form-list-item">
+					<a href="#" class="form-list-item-link js-form-item" data-form-id="<%=form.id%>">
+						<i class="fa fa-spinner fa-lg fa-pulse form-list-item-spinner"></i><%=form.title%>
+					</a>
+				</li>
+			<% }); %>			
+		</script>
+
+		
+
 		<!-- editor template -->
 		<script class="editor-template" id="tmpl-editor" type="text/html">
 			<div class="editor" data-id="<%=id%>">
-				
+
+				<div class="editor-close">&times;</div>
+				<div class="editor-container" data-id="<%=id%>">
+
 				<form action="" method="post" class="editor-form js-editor-form">
 					
 					<% for ( key in data ) { %>
@@ -252,8 +269,7 @@
 									</label>
 								</div>																
 							</div>
-						<% } %>
-						<% if ( key == 'name' ) { %>
+						<% } else if ( key == 'name' ) { %>
 							<div class="prop" data-key="name">
 								<div class="prop-col">
 									<label>Name :</label>
@@ -262,8 +278,7 @@
 									<input type="text" name="name" value="<%=data[key]%>">
 								</div>								
 							</div>
-						<% } %>
-						<% if ( key == 'title' ) { %>
+						<% } else if ( key == 'title' ) { %>
 							<div class="prop" data-key="title">
 								<div class="prop-col">
 									<label>Title :</label>
@@ -272,8 +287,7 @@
 									<input type="text" name="title" value="<%=data[key]%>">
 								</div>								
 							</div>
-						<% } %>
-						<% if ( key == 'key' ) { %>
+						<% } else if ( key == 'key' ) { %>
 							<div class="prop" data-key"key">
 								<div class="prop-col">
 									<label for="">Key :</label>
@@ -282,8 +296,7 @@
 									<input type="text" name="key" value="<%=data[key]%>">
 								</div>								
 							</div>
-						<% } %>
-						<% if ( key == 'required' ) {%>
+						<% } else if ( key == 'required' ) {%>
 							<div class="prop" data-key"required">
 								<div class="prop-col">
 									<label for="">Required :</label>	
@@ -299,8 +312,7 @@
 									</label>
 								</div>																
 							</div>
-						<% } %>
-						<% if ( key == 'isSwitch' ) {%>
+						<% } else if ( key == 'isSwitch' ) {%>
 							<div class="prop" data-key"isSwitch">
 								<div class="prop-col">
 									<label for="">Switch :</label>	
@@ -316,8 +328,7 @@
 									</label>
 								</div>																
 							</div>
-						<% } %>
-						<% if ( key == 'label' ) { %>
+						<% } else if ( key == 'label' ) { %>
 							<div class="prop" data-key"label">
 								<div class="prop-col">
 									<label for="">Label :</label>
@@ -326,8 +337,7 @@
 									<input type="text" name="label" value="<%=data[key]%>">
 								</div>								
 							</div>
-						<% } %>
-						<% if ( key == 'placeholder' ) { %>
+						<% } else if ( key == 'placeholder' ) { %>
 							<div class="prop" data-key"placeholder">
 								<div class="prop-col">
 									<label for="">Placeholder :</label>
@@ -336,8 +346,7 @@
 									<input type="text" name="placeholder" value="<%=data[key]%>">
 								</div>								
 							</div>
-						<% } %>
-						<% if ( key == 'value' ) { %>
+						<% } else if ( key == 'value' ) { %>
 							<% if ( type.match(/(singleline|date|entity|select|radiobox|checkbox)/) ) { %>
 								<div class="prop" data-key"value">
 									<div class="prop-col">
@@ -347,8 +356,7 @@
 										<input type="text" name="value" value="<%=data[key]%>">
 									</div>								
 								</div>
-							<% } %>
-							<% if ( type.match(/(multiline)/) ) { %>
+							<% } else if ( type.match(/(multiline)/) ) { %>
 								<div class="prop" data-key"value">
 									<div class="prop-col">
 										<label for="">Value :</label>
@@ -358,8 +366,7 @@
 									</div>								
 								</div>
 							<% } %>
-						<% } %>
-						<% if ( key == 'format' ) { %>
+						<% } else if ( key == 'format' ) { %>
 							<div class="prop" data-key"format">
 								<div class="prop-col">
 									<label for="">Format :</label>
@@ -368,8 +375,7 @@
 									<input type="text" name="format" value="<%=data[key]%>">
 								</div>								
 							</div>
-						<% } %>
-						<% if ( key == 'min' ) { %>
+						<% } else if ( key == 'min' ) { %>
 							<div class="prop" data-key"min">
 								<div class="prop-col">
 									<label for="">Min :</label>
@@ -378,8 +384,7 @@
 									<input type="number" name="min" value="<%=data[key]%>">
 								</div>								
 							</div>
-						<% } %>
-						<% if ( key == 'max' ) { %>
+						<% } else if ( key == 'max' ) { %>
 							<div class="prop" data-key"max">
 								<div class="prop-col">
 									<label for="">Max :</label>
@@ -388,8 +393,7 @@
 									<input type="number" name="max" value="<%=data[key]%>">
 								</div>								
 							</div>
-						<% } %>
-						<% if ( key == 'multiple' ) {%>
+						<% } else if ( key == 'multiple' ) {%>
 							<div class="prop" data-key"multiple">
 								<div class="prop-col">
 									<label for="">Allow multiple :</label>	
@@ -405,8 +409,7 @@
 									</label>
 								</div>																
 							</div>
-						<% } %>
-						<% if ( key == 'description' ) { %>
+						<% } else if ( key == 'description' ) { %>
 							<div class="prop" data-key"description">
 								<div class="prop-col">
 									<label for="">Description :</label>
@@ -415,8 +418,7 @@
 									<textarea name="description" rows="5"><%= data[key] %></textarea>
 								</div>								
 							</div>
-						<% } %>
-						<% if ( key == 'showif' ) { %>
+						<% } else if ( key == 'showif' ) { %>
 							<div class="prop" data-key"showif">
 								<div class="prop-col">
 									<label for="">Show if :</label>
@@ -425,8 +427,7 @@
 									<textarea name="showif" rows="5"><%= data[key] %></textarea>
 								</div>								
 							</div>
-						<% } %>
-						<% if ( key == 'hideif' ) { %>
+						<% } else if ( key == 'hideif' ) { %>
 							<div class="prop" data-key"hideif">
 								<div class="prop-col">
 									<label for="">Hide if :</label>
@@ -435,8 +436,7 @@
 									<textarea name="hideif" rows="5"><%= data[key] %></textarea>
 								</div>								
 							</div>
-						<% } %>
-						<% if ( key == 'restriction' ) { %>
+						<% } else if ( key == 'restriction' ) { %>
 							<div class="prop" data-key"restriction">
 								<div class="prop-col">
 									<label for="">Restriction :</label>
@@ -445,8 +445,7 @@
 									<textarea name="restriction" rows="5"><%= data[key] %></textarea>
 								</div>								
 							</div>
-						<% } %>
-						<% if ( key == 'isBatch' ) {%>
+						<% } else if ( key == 'isBatch' ) {%>
 							<div class="prop" data-key"isBatch">
 								<div class="prop-col">
 									<label for="">Is Batch :</label>	
@@ -462,8 +461,7 @@
 									</label>
 								</div>																
 							</div>
-						<% } %>
-						<% if ( key == 'options' ) { %>
+						<% } else if ( key == 'options' ) { %>
 							<div class="prop" data-key"options">
 								<div class="prop-col">
 									<label for="">Options :</label>
@@ -472,12 +470,75 @@
 									<textarea name="options" rows="5"><%= data[key] %></textarea>
 								</div>								
 							</div>
+						<% } else if ( key == 'user_id' ) { %>
+							<div class="prop" data-key"user_id">
+								<div class="prop-col">
+									<label for="">User ID :</label>
+								</div>
+								<div class="prop-col">
+									<select name="user_id" id="user_id">
+										<% data[key].forEach(function(item){ %>
+											<option value="<%=item.value%>" <%=(item.selected?'selected':'')%>>
+												<%=item.value%>
+											</option>
+										<% }); %>										
+									</select>
+								</div>								
+							</div>
+						<% } else if ( key == 'account_id' ) { %>
+							<div class="prop" data-key"account_id">
+								<div class="prop-col">
+									<label for="">Account ID :</label>
+								</div>
+								<div class="prop-col">
+									<select name="account_id" id="account_id">
+										<% data[key].forEach(function(item){ %>
+											<option value="<%=item.value%>" <%=(item.selected?'selected':'')%>>
+												<%=item.value%>
+											</option>
+										<% }); %>										
+									</select>
+								</div>								
+							</div>
+						<% } else if ( key == 'status' ) { %>
+							<div class="prop" data-key"status">
+								<div class="prop-col">
+									<label for="">Status :</label>
+								</div>
+								<div class="prop-col">
+									<select name="status" id="status">
+										<option value="3" <%=(data[key]===3?'selected':'')%>>
+											Draft
+										</option>		
+										<option value="0" <%=(data[key]===0?'selected':'')%>>
+											Active
+										</option>
+										<option value="1" <%=(data[key]===1?'selected':'')%>>
+											Suspended
+										</option>
+										<option value="2" <%=(data[key]===2?'selected':'')%>>
+											Deleted
+										</option>					
+									</select>
+								</div>								
+							</div>
+						<% } else if ( key == 'tags' ) { %>
+							<div class="prop" data-key"tags">
+								<div class="prop-col">
+									<label for="">Tags :</label>
+								</div>
+								<div class="prop-col">
+									<input type="text" name="tags" value="<%= data[key] %>">
+								</div>								
+							</div>
 						<% } %>
 					<% }; %>
 				</form>
 			</div>
+			</div>
 		</script>
 
+		
 
 	</div> 
 

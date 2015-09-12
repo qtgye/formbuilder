@@ -117,298 +117,6 @@ var App = window.App || (function (W,D,$) {
 
 
 /*
-** Request module
-**
-** handles ajax requests
-**
-*/
-
-App.createModule('request',(function (app,$) {
-
-	// define module
-	// ====================================================================================
-	var module = {};
-
-	// define private variables
-	// ====================================================================================
-	var 
-
-	// POST params
-	POST = {
-		url 	: 'http://api-dev.maxine.io:8000/api/v1/templates'
-	},
-
-	// GET params
-	GET = {
-		url 	: 'http://api-dev.maxine.io:8000/api/v1/templates',
-		params 	: [
-			{ sort 	: 'created_at' 	},
-			{ order	: 'DESC'		},
-			{ limit	: 5 			}
-		],
-		getURL : function () {
-			if ( this.params.length === 0 ) {
-				return this.url;
-			} else {
-				console.log(this.params);
-				return this.url + '?' +
-					this.params.map(function (pair) {
-					for ( var key in pair ) {
-							return key + '=' + pair[key];
-						}
-					}).join('&');
-			}
-		}
-	};
-
-	// define private functions
-	// ====================================================================================
-	
-	// sends a request
-	function send (data,successCallback,errorCallback) {
-		return $.ajax({
-			url 		: POST.url,
-			method 		: 'POST',
-			dataType 	: 'json',
-			data 		: data,
-			success 	: successCallback,
-			error 		: errorCallback
-		});
-	}
-
-	function get (successCallback,errorCallback) {
-		return $.ajax({
-			url 		: GET.getURL(),
-			method 		: 'GET',
-			dataType 	: 'json',
-			success		: successCallback,
-			error 		: errorCallback
-		});
-	}
-
-
-	// define public application interface
-	// ====================================================================================
-
-	module.send 	= send;
-	module.get 		= get;
-
-	// define module init
-	// ====================================================================================
-	module.init = function () {
-		
-	};
-
-	// retrn module object
-	// ====================================================================================
-	return module;
-
-})(window.App,jQuery));
-
-
-/*
-** MODULE END
-** =============================================================================================
-*/
-
-
-
-
-/*
-** Editor module
-**
-** handles editors
-**
-*/
-
-App.createModule('editor',(function (app,$) {
-
-
-
-	// define module
-	// ====================================================================================
-	var module = {};
-
-
-
-	// define private variables
-	// ====================================================================================
-	
-	var editors = {},
-		editorTemplate,
-		editorClicked,
-		currentOpen; // holds the data-id of the open editor
-
-
-	// Editor Class
-	// @param object : the Form/Section/Field object instance
-	function Editor (object) {
-		
-		var self = this;
-
-		var editorData = {
-			id 		: object.$el[0].id || object.id, // the field id
-			type 	: object.type,
-			data 	: prepareData(cloneObject(object.data))
-		};
-
-		self.id 		= editorData.id;
-
-		self.$parent 	= object.$el;
-		self.$el 		= $(tmpl(editorTemplate,editorData));
-		self.$form 		= self.$el.find('form');
-		self.$close 	= self.$el.find('.editor-close');
-
-		// opens the editor
-		function open () {
-			module.closeEditor();
-			self.$parent.addClass('has-open-editor');
-			currentOpen = self.id;
-		}
-		// closes the editor
-		function close () {
-			self.$parent.removeClass('has-open-editor');
-		}
-		// toggles the editor
-		function toggle () {
-			if ( self.$parent.hasClass('has-open-editor') )
-			{
-				close();
-			} else {
-				open();
-			}
-		}
-		// on editor click
-		function onEditorClick (e) {
-			module.editorClicked = true;
-		}
-		// extracts the changes
-		function extractData () {
-
-			var newData 	= {},
-				formData 	= self.$form.serializeArray();
-			
-			formData.forEach(function (pair) {
-				// Convert options into array				
-				if ( pair.name == 'options' ) {
-					var arr = pair.value.split('\r\n').map(function (option) {
-						var opt = option.split(',');
-						return { label: opt[0], value: opt[1]};
-					});
-					pair.value = arr;
-				}				
-				// Convert to boolean
-				if ( pair.value == "true" ) {
-					pair.value = true;
-				} else if ( pair.value == "false" ) {
-					pair.value = false;
-				}
-				newData[pair.name] = pair.value;
-			});
-
-			return newData;
-			
-		}
-		self.open 			= open;
-		self.close 			= close;
-		self.toggle 		= toggle;
-		self.extractData 	= extractData;
-
-		self.$close.on('click',close);
-		self.$el.on('click',onEditorClick);
-
-		// add tp store
-		editors[self.id] = self;
-
-		return self;
-	}
-
-
-
-	// define private functions
-	// ====================================================================================
-	
-	// Fills the predefined variables
-	function defineVariables () {
-		editorTemplate = $('#templates').find('#tmpl-editor').html();
-	}
-
-	// prepares the data to be rendered in the editor template
-	function prepareData (fieldData) {
-
-		// converts array to string in specified format
-		if (fieldData.options) {
-			fieldData.options = (function (options) {
-				return options.map(function (pair) {
-					return pair.label + ',' + pair.value;
-				}).join('\r\n');
-			})(fieldData.options);
-		}	
-
-		return fieldData;
-	}
-
-	// creates an Editor instance
-	function create (object) {
-		return new Editor(object);
-	}
-
-	// closes the current editor
-	function closeEditor () {
-		if ( currentOpen ) {
-			editors[currentOpen].close();
-		}
-	}
-
-	// bind event handlers
-	function bindHandlers () {
-		
-		app.$body.on('click',function () {
-			if ( !module.editorClicked ) {
-				closeEditor();
-			}
-			module.editorClicked = false;
-		});
-
-	}
-
-
-	// define public application interface
-	// ====================================================================================
-
-	module.create 			= create;
-	module.closeEditor		= closeEditor;
-	module.editorClicked	= false;
-
-
-	// define module init
-	// ====================================================================================
-	module.init = function () {
-		
-		defineVariables();
-		bindHandlers();
-
-	};
-
-
-
-	// retrn module object
-	// ====================================================================================
-	return module;
-
-})(window.App,jQuery));
-
-
-/*
-** MODULE END
-** =============================================================================================
-*/
-
-
-
-
-
-/*
 ** Default data
 **
 */
@@ -546,13 +254,6 @@ App.createModule('defaults',(function (app,$) {
 			description 	: 'Sample Form',
 			tags 			: '',
 			config 			: []
-	},
-
-	postData			= {
-			account_id 		: "5b960be8-f871-475c-ad76-6b8ab1bc4200",
-			user_id 		: "1e5cb1f2-0e3f-441d-8958-c6fc392071b0",
-			title			: "Test Form",
-			config 			: []
 	};
 
 
@@ -569,7 +270,6 @@ App.createModule('defaults',(function (app,$) {
 	module.fields 	= fields;
 	module.section 	= section;
 	module.form 	= form;
-	module.postData = postData;
 
 
 
@@ -592,6 +292,405 @@ App.createModule('defaults',(function (app,$) {
 ** =============================================================================================
 */
 
+
+
+
+
+
+/*
+** Request module
+**
+** handles ajax requests
+**
+*/
+
+App.createModule('request',(function (app,$) {
+
+	// define module
+	// ====================================================================================
+	var module = {};
+
+	// define private variables
+	// ====================================================================================
+	var 
+
+	// POST params
+	POST = {
+		url 	: 'http://api-dev.maxine.io:8000/api/v1/templates'
+	},
+
+	// GET params
+	GET = {
+		url 	: 'http://api-dev.maxine.io:8000/api/v1/templates',
+		params 	: [
+			{ sort 	: 'created_at' 	},
+			{ order	: 'DESC'		},
+			{ limit	: 50 			}
+		],
+		getURL : function () {
+			if ( this.params.length === 0 ) {
+				return this.url;
+			} else {
+				console.log(this.params);
+				return this.url + '?' +
+					this.params.map(function (pair) {
+					for ( var key in pair ) {
+							return key + '=' + pair[key];
+						}
+					}).join('&');
+			}
+		}
+	};
+
+	// define private functions
+	// ====================================================================================
+	
+	// sends a request
+	function send (data,successCallback,errorCallback) {
+		return $.ajax({
+			url 		: POST.url,
+			method 		: 'POST',
+			dataType 	: 'json',
+			data 		: data,
+			success 	: successCallback,
+			error 		: errorCallback
+		});
+	}
+
+	// gets a list of latest forms
+	function get (successCallback,errorCallback) {
+		return $.ajax({
+			url 		: GET.getURL(),
+			method 		: 'GET',
+			dataType 	: 'json',
+			success		: successCallback,
+			error 		: errorCallback
+		});
+	}
+
+	// gets a form by id
+	function getForm (id,successCallback,errorCallback) {
+		return $.ajax({
+			url 		: GET.url + '/' + id,
+			method 		: 'GET',
+			dataType 	: 'json',
+			success		: successCallback,
+			error 		: errorCallback
+		});
+	}
+
+
+	// define public application interface
+	// ====================================================================================
+
+	module.send 	= send;
+	module.get 		= get;
+	module.getForm 	= getForm;
+
+	// define module init
+	// ====================================================================================
+	module.init = function () {
+		
+	};
+
+	// retrn module object
+	// ====================================================================================
+	return module;
+
+})(window.App,jQuery));
+
+
+/*
+** MODULE END
+** =============================================================================================
+*/
+
+
+
+
+/*
+** User Module
+**
+*/
+
+App.createModule('user',(function (app,$) {
+
+	// define module
+	// ====================================================================================
+	var module = {};
+
+	// define private variables
+	// ====================================================================================
+	var
+
+	Defaults,
+	credentials = {
+		user_id 		: [
+			"1e5cb1f2-0e3f-441d-8958-c6fc392071b0",
+			"test1",
+			"test2"
+		],
+		account_id	 	: [
+			"5b960be8-f871-475c-ad76-6b8ab1bc4200",
+			"test3",
+			"test4"
+		]
+	},
+
+	$userForm;
+
+	// define private functions
+	// ====================================================================================
+	function definePrivateVariables () {
+		Defaults = app.defaults;
+	}
+
+	// returns a list of available credentials acc. to scope
+	function getAll (scope) {
+		if ( scope in credentials ) {
+			return credentials[scope];
+		}
+		return null;
+	}
+
+
+	// define public application interface
+	// ====================================================================================
+	module.getAll = getAll;
+
+	// define module init
+	// ====================================================================================
+	module.init = function () {
+		console.log('user module added');
+		definePrivateVariables();
+	};
+
+	// retrn module object
+	// ====================================================================================
+	return module;
+
+})(window.App,jQuery));
+
+
+/*
+** MODULE END
+** =============================================================================================
+*/
+
+
+
+/*
+** Editor module
+**
+** handles editors
+**
+*/
+
+App.createModule('editor',(function (app,$) {
+
+
+
+	// define module
+	// ====================================================================================
+	var module = {};
+
+
+
+	// define private variables
+	// ====================================================================================
+	
+	var User,
+		editors = {},
+		editorTemplate,
+		editorClicked,
+		currentOpen; // holds the data-id of the open editor
+
+
+	// Editor Class
+	// @param object : the Form/Section/Field object instance
+	function Editor (object) {
+		
+		var self = this;
+
+		var editorData = {
+			id 		: object.$el[0].id || object.id, // the field id
+			type 	: object.type,
+			data 	: prepareData(cloneObject(object.data))
+		};
+
+		self.id 		= editorData.id;
+
+		self.$parent 	= object.$el;
+		self.$el 		= $(tmpl(editorTemplate,editorData));
+		self.$form 		= self.$el.find('form');
+		self.$close 	= self.$el.find('.editor-close');
+
+		// opens the editor
+		function open () {
+			module.closeEditor();
+			self.$parent.addClass('has-open-editor');
+			currentOpen = self.id;
+		}
+		// closes the editor
+		function close () {
+			self.$parent.removeClass('has-open-editor');
+		}
+		// toggles the editor
+		function toggle () {
+			if ( self.$parent.hasClass('has-open-editor') )
+			{
+				close();
+			} else {
+				open();
+			}
+		}
+		// on editor click
+		function onEditorClick (e) {
+			module.editorClicked = true;
+		}
+		// extracts the changes
+		function extractData () {
+
+			var newData 	= {},
+				formData 	= self.$form.serializeArray();
+			
+			formData.forEach(function (pair) {
+				// Convert options into array				
+				if ( pair.name == 'options' ) {
+					var arr = pair.value.split('\r\n').map(function (option) {
+						var opt = option.split(',');
+						return { label: opt[0], value: opt[1]};
+					});
+					pair.value = arr;
+				}				
+				// Convert to boolean
+				if ( pair.value == "true" ) {
+					pair.value = true;
+				} else if ( pair.value == "false" ) {
+					pair.value = false;
+				}
+				newData[pair.name] = pair.value;
+			});
+
+			return newData;
+			
+		}
+		self.open 			= open;
+		self.close 			= close;
+		self.toggle 		= toggle;
+		self.extractData 	= extractData;
+
+		self.$close.on('click',close);
+		self.$el.on('click',onEditorClick);
+
+		// add tp store
+		editors[self.id] = self;
+
+		return self;
+	}
+
+
+
+	// define private functions
+	// ====================================================================================
+	
+	// Fills the predefined variables
+	function defineVariables () {
+		editorTemplate 	= $('#templates').find('#tmpl-editor').html();
+		User 			= app.user;
+	}
+
+	// prepares the data to be rendered in the editor template
+	function prepareData (fieldData) {
+
+		// converts array to string in specified format
+		if (fieldData.options) {
+			fieldData.options = (function (options) {
+				return options.map(function (pair) {
+					return pair.label + ',' + pair.value;
+				}).join('\r\n');
+			})(fieldData.options);
+		}
+		// adds other options for user_id
+		if ( fieldData.user_id ) {
+			var userIds = User.getAll('user_id');
+			fieldData.user_id = userIds.map(function (id) {
+				return {
+					value 		: id,
+					selected 	: id == fieldData.user_id
+				};
+			});
+		}
+		// adds other options for account
+		if ( fieldData.account_id ) {
+			var userIds = User.getAll('account_id');
+			fieldData.account_id = userIds.map(function (id) {
+				return {
+					value 		: id,
+					selected 	: id == fieldData.account_id
+				};
+			});
+		}
+
+		return fieldData;
+	}
+
+	// creates an Editor instance
+	function create (object) {
+		return new Editor(object);
+	}
+
+	// closes the current editor
+	function closeEditor () {
+		if ( currentOpen ) {
+			editors[currentOpen].close();
+			currentOpen = null;
+		}
+	}
+
+	// bind event handlers
+	function bindHandlers () {
+		
+		app.$body.on('click',function () {
+			if ( !module.editorClicked ) {
+				closeEditor();
+			}
+			module.editorClicked = false;
+		});
+
+	}
+
+
+	// define public application interface
+	// ====================================================================================
+
+	module.create 			= create;
+	module.closeEditor		= closeEditor;
+	module.editorClicked	= false;
+
+
+	// define module init
+	// ====================================================================================
+	module.init = function () {
+		
+		defineVariables();
+		bindHandlers();
+
+	};
+
+
+
+	// retrn module object
+	// ====================================================================================
+	return module;
+
+})(window.App,jQuery));
+
+
+/*
+** MODULE END
+** =============================================================================================
+*/
 
 
 
@@ -1157,8 +1256,7 @@ App.createModule('form',(function (app,$) {
 	data,
 	template,
 	form,
-
-	latestForms,
+	formLoader,
 
 	$stage;
 
@@ -1222,7 +1320,7 @@ App.createModule('form',(function (app,$) {
 		});
 
 		// render sections
-		if ( data.config.length > 0 ) {
+		if ( data.config && data.config.length > 0 ) {
 			data.config.forEach(function (sectionData) {
 				addSection(sectionData);
 			});
@@ -1232,13 +1330,100 @@ App.createModule('form',(function (app,$) {
 
 	}
 
+
 	// Initializes the form loader at the header
 	function initializeFormLoader () {
-		var $formLoader 			= $('.js-form-loader'),
+		var formLoader 				= {
+				isFetching 	: false
+			},
+			$formLoader 			= $('.js-form-loader'),
 			$formLoaderBtn 			= $formLoader.find('.js-load-btn'),
-			$formLoaderDropdown 	=	$formLoader.find('.js-form-loader-dropdown');
+			$formLoaderDropdown 	= $formLoader.find('.js-form-loader-dropdown'),
+			$formList 				= $formLoader.find('.js-form-list'),
+			$formListClose 			= $formLoader.find('.js-form-list-close'),
+			formListTemplateString	= $('#tmplFormsList')[0].innerHTML,
+			latestForms 			= [],
+			isFetching 				= false;
+
+		// Gets form ids from cookie
+		function getLatestForms () {
+			$formLoader.addClass('is-fetching');
+			Request.get(onGetForms);
+		}
+
+		// handles form list GET
+		function onGetForms (data) {
+			latestForms = [];
+			$formLoader.removeClass('is-fetching');
+			if ( data.flag ) {
+				latestForms = data.data;
+				renderFetchedForms();
+			}
+			else {
+				// error
+			}
+		}
+
+		// resets the form loader
+		function reset () {
+			formLoader.isFetching = false;
+			$formList.empty();
+			$formLoader.removeClass('is-open');
+
+		}
+
+		// renders the fetched forms in list
+		function renderFetchedForms () {
+			var $list = $(tmpl(formListTemplateString,{formsList:latestForms}));
+			$formList
+				.empty()
+				.append($list);
+			$formLoader.addClass('is-open');
+			// bind each item
+			$list.children().each(function () {
+				var $el 	= $(this),
+					formId 	= $el.data('formId');
+				$el.click(function (e) {
+					e.preventDefault();
+					if ( !formLoader.isFetching ) {
+						$el.addClass('is-loading');
+						Request.getForm(formId,onFetchFormSuccess);
+					}					
+				});
+			});
+		}
+
+		// handles successful form fetch
+		function onFetchFormSuccess (data) {			
+			// prepare new data for replacement
+			var newFormData = data.data.config[0];
+			if ( newFormData ) {
+				formLoader.reset();
+				newFormData.user_id 		= data.data.user_id;		
+				newFormData.account_id 		= data.data.account_id;		
+				newFormData.status 			= data.data.status;		
+				newFormData.title 			= data.data.title;
+				newFormData.description 	= data.data.description;
+				newFormData.tags 			= data.data.tags;
+				replaceForm(newFormData);
+			} else {
+				// the form cannot be loaded
+			}			
+		}
+
+		$formLoaderBtn.on('click',function () {
+			$formLoader.removeClass('is-open');
+			getLatestForms();
+		});
+		$formListClose.on('click',function () {
+			reset();
+		});
+
+		// public methods
+		formLoader.reset = reset;
 
 	}
+
 
 	// Initializse jquery widgets
 	function initializeSortable () {
@@ -1280,10 +1465,25 @@ App.createModule('form',(function (app,$) {
 	function bindGlobalHandlers () {
 		// get the form contents data
 		$saveBtn.on('click',function () {
-			var postData = cloneObject(Defaults.postData);
-			postData.config.push(getFormConfig());
-			postData.title = form.data.title;
-			Request.send(postData,onSendSuccess);
+			var formData 	= cloneObject(getFormData()),
+				postData 	= {
+					config : []
+				};
+			// prepare data to send			
+			postData.title 			= formData.title;
+			postData.description 	= formData.description;
+			postData.status 	 	= formData.status;
+			postData.user_id 	 	= formData.user_id;
+			postData.account_id	 	= formData.account_id;
+			postData.config.push(formData);
+			// delete unwanted form properties
+			delete postData.config[0].title;
+			delete postData.config[0].description;
+			delete postData.config[0].status;
+			delete postData.config[0].user_id;
+			delete postData.config[0].account_id;
+			// send the data
+			Request.send(postData,onSendSuccess,onSendError);
 		});
 		// clears the form contents and data
 		$clearBtn.on('click',clearFormContent);
@@ -1330,7 +1530,10 @@ App.createModule('form',(function (app,$) {
 
 	// updates the form data
 	function updateForm (newData) {
-		form.data.name = newData.title;
+		form.data.user_id 		= newData.user_id;
+		form.data.account_id	= newData.account_id;
+		form.data.title 		= newData.title;
+		form.data.description 	= newData.description;
 		form.$formTitle.text(newData.title);
 	}
 
@@ -1344,7 +1547,7 @@ App.createModule('form',(function (app,$) {
 	// replaces the form with a new one
 	function replaceForm (newData) {
 		// verify newData
-		if ( newData && newData.name ) {
+		if ( newData && newData.title ) {
 			removeForm();
 			create(newData);
 			Editor.closeEditor();
@@ -1352,27 +1555,10 @@ App.createModule('form',(function (app,$) {
 	}
 
 	// gets the form data for saving
-	function getFormConfig () {
+	function getFormData () {
 		form.data.config = extractContentData();
 		return form.data;
-	}
-
-	// Gets form ids from cookie
-	function getLatestForms () {
-		Request.get(onGetForms);
-	}
-
-	// handles form list GET
-	function onGetForms (data) {
-		latestForms = [];
-		if ( data.flag ) {
-			latestForms = data.data;
-		}
-		else {
-			// error
-		}
-
-	}
+	}	
 
 	// handles sent data success
 	function onSendSuccess (data) {
@@ -1382,7 +1568,7 @@ App.createModule('form',(function (app,$) {
 			throw new Error('The form was not saved');
 		}
 		
-	}
+	}	
 
 
 	// define public application interface
@@ -1391,7 +1577,7 @@ App.createModule('form',(function (app,$) {
 	module.addSection 			= addSection;
 	module.initializeSortable 	= initializeSortable;
 	module.extractContentData 	= extractContentData;
-	module.getFormConfig 			= getFormConfig;
+	module.getFormData 			= getFormData;
 	module.replace 				= replaceForm;
 
 	// define module init
