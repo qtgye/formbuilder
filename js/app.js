@@ -503,7 +503,9 @@ App.createModule('editor',(function (app,$) {
 		editors = {},
 		editorTemplate,
 		editorClicked,
-		currentOpen; // holds the data-id of the open editor
+		currentOpen, // holds the data-id of the open editor
+
+		$editorGuide;
 
 
 	// Editor Class
@@ -524,6 +526,12 @@ App.createModule('editor',(function (app,$) {
 		self.$el 		= $(tmpl(editorTemplate,editorData));
 		self.$form 		= self.$el.find('form');
 		self.$close 	= self.$el.find('.editor-close');
+
+		self.$el.css({
+			width: $editorGuide.width(),
+			top: $editorGuide.offset().top,
+			left: $editorGuide.offset().left
+		});
 
 		// opens the editor
 		function open () {
@@ -598,6 +606,8 @@ App.createModule('editor',(function (app,$) {
 	function defineVariables () {
 		editorTemplate 	= $('#templates').find('#tmpl-editor').html();
 		User 			= app.user;
+
+		$editorGuide 	= $('.js-editor-guide');
 	}
 
 	// prepares the data to be rendered in the editor template

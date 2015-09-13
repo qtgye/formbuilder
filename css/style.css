@@ -92,7 +92,7 @@ li {
 				.is-loading .form-list-item-spinner {
 					display: inline;
 					position: absolute;
-					right: 100%;
+					left: 0;
 				}
 		.form-list-close {
 			margin-top: 10px;
@@ -157,6 +157,10 @@ li {
 	        transition: opacity 0.5s,
 				transform 0.5s;
 }
+.section.has-open-editor {
+	border-color: green;
+	box-shadow: 0 0 1px 1px green;
+}
 
 	.section-removing {
 		-webkit-transform: translateX(20px);
@@ -202,7 +206,11 @@ li {
 				transform 0.5s;
 }
 .field.as-peg {
-	border-bottom: none
+	border-bottom: none;
+}
+.field.has-open-editor {
+	border-color: green;
+	box-shadow: 0 0 1px 1px green;
 }
 
 	.field-dragging {
@@ -309,22 +317,25 @@ li {
 
 
 /* Editor styles */
+.editor-guide {
+	/*border: 1px solid silver;*/
+}
 .editor {
 	display: none;
-	position: absolute;
-	top: 0;
-	left: 100%;	
-	z-index: 0;
+	position: fixed;
+	z-index: 90;
+	padding: 20px 0;
 	background-color: #fff;
-	box-shadow: 3px 3px 15px rgba(0,0,0,0.5);
+	box-shadow: 0 0 5px rgba(0,0,0,0.5);
 }
 
 .has-open-editor > .editor {
 	display: inline-block;	
-	width: 70%;
-	padding: 20px 0;
-	overflow-x: visible;
 	z-index: 90;
+}
+
+.field-dragging > .editor {
+	display: none;
 }
 
 	.editor-container {

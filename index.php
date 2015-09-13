@@ -57,12 +57,27 @@
 
 			</div>
 
+			<div class="col-md-4 clearfix editor-guide js-editor-guide">
+				
+			</div>
+
 		</div>
 	</div>
 
 
 	
-
+	<!-- modal -->
+	<div class="modal fade is-saving" id="modal" data-backdrop="false">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<div class="modal-saving">
+					<h3>
+						<i class="fa fa-spinner fa-pulse"></i> SAVING
+					</h3>
+				</div>
+			</div>
+		</div>
+	</div>
 
 
 
@@ -102,7 +117,7 @@
 
 		<!-- singleline -->
 		<script class="field-template" data-type="singleline" id="tmpl-read-singleline" type="text/html">
-			<div class="field has-open-editor js-drag-handle js-field-handle as-peg <%=( isAvailable ? '' : 'is-disabled' )%>" data-type="singleline" data-showif="<%=showif%>" data-hideif="<%=hideif%>" data-restriction="<%=restriction%>" data-is-available="<%=isAvailable%>">
+			<div class="field js-drag-handle js-field-handle as-peg <%=( isAvailable ? '' : 'is-disabled' )%>" data-type="singleline" data-showif="<%=showif%>" data-hideif="<%=hideif%>" data-restriction="<%=restriction%>" data-is-available="<%=isAvailable%>">
 				<div class="field-peg js-peg">
 					<h5>Single Line</h5>
 				</div>
@@ -117,7 +132,7 @@
 		
 		<!-- date -->
 		<script class="field-template" data-type="date" id="tmpl-read-date" type="text/html">
-			<div class="field has-open-editor js-drag-handle js-field-handle as-peg <%=( isAvailable ? '' : 'is-disabled' )%>" data-type="date" data-is-available="<%=isAvailable%>" data-format="<%=format%>" data-showif="<%=showif%>" data-hideif="<%=hideif%>">
+			<div class="field js-drag-handle js-field-handle as-peg <%=( isAvailable ? '' : 'is-disabled' )%>" data-type="date" data-is-available="<%=isAvailable%>" data-format="<%=format%>" data-showif="<%=showif%>" data-hideif="<%=hideif%>">
 				<div class="field-peg js-peg">
 					<h5>Date</h5>
 				</div>
@@ -132,7 +147,7 @@
 
 		<!-- entity -->
 		<script class="field-template" data-type="entity" id="tmpl-read-entity" type="text/html">
-			<div class="field has-open-editor js-drag-handle js-field-handle as-peg <%=( isAvailable ? '' : 'is-disabled' )%>" data-type="entity">
+			<div class="field js-drag-handle js-field-handle as-peg <%=( isAvailable ? '' : 'is-disabled' )%>" data-type="entity">
 				<div class="field-peg js-peg">
 					<h5>Entity</h5>
 				</div>
@@ -146,7 +161,7 @@
 
 		<!-- multiline -->
 		<script class="field-template" data-type="multiline" id="tmpl-read-multiline" type="text/html">
-			<div class="field has-open-editor js-drag-handle js-field-handle as-peg <%=( isAvailable ? '' : 'is-disabled' )%>" data-type="multiline">
+			<div class="field js-drag-handle js-field-handle as-peg <%=( isAvailable ? '' : 'is-disabled' )%>" data-type="multiline">
 				<div class="field-peg js-peg">
 					<h5>Multiline</h5>
 				</div>
@@ -161,7 +176,7 @@
 
 		<!-- selection -->
 		<script class="field-template" data-type="selection" id="tmpl-read-selection" type="text/html">
-			<div class="field has-open-editor js-drag-handle js-field-handle as-peg <%=( isAvailable ? '' : 'is-disabled' )%>" data-type="selection">
+			<div class="field js-drag-handle js-field-handle as-peg <%=( isAvailable ? '' : 'is-disabled' )%>" data-type="selection">
 				<div class="field-peg js-peg">
 					<h5>Selection</h5>
 				</div>
@@ -180,7 +195,7 @@
 
 		<!-- radio -->
 		<script class="field-template" data-type="radiobox" id="tmpl-read-radio" type="text/html">
-			<div class="field has-open-editor js-drag-handle js-field-handle as-peg <%=( isAvailable ? '' : 'is-disabled' )%>" data-type="radiobox">
+			<div class="field js-drag-handle js-field-handle as-peg <%=( isAvailable ? '' : 'is-disabled' )%>" data-type="radiobox">
 				<div class="field-peg js-peg">
 					<h5>Radio Box</h5>
 				</div>
@@ -199,7 +214,7 @@
 		
 		<!-- checkbox -->
 		<script class="field-template" data-type="checkbox" id="tmpl-read-checkbox" type="text/html">
-			<div class="field has-open-editor js-drag-handle js-field-handle as-peg <%=( isAvailable ? '' : 'is-disabled' )%>" data-type="checkbox">
+			<div class="field js-drag-handle js-field-handle as-peg <%=( isAvailable ? '' : 'is-disabled' )%>" data-type="checkbox">
 				<div class="field-peg js-peg">
 					<h5>Checkbox</h5>
 				</div>
