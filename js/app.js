@@ -253,7 +253,7 @@ App.createModule('defaults',(function (app,$) {
 			status 			: 0,
 			description 	: 'Sample Form',
 			tags 			: '',
-			config 			: []
+			sections		: []
 	};
 
 
@@ -347,8 +347,9 @@ App.createModule('request',(function (app,$) {
 	
 	// sends a request
 	function send (data,successCallback,errorCallback) {
+		var url = POST.url + ( data.id ? '/' + data.id : '');
 		return $.ajax({
-			url 		: POST.url,
+			url 		: url,
 			method 		: 'POST',
 			dataType 	: 'json',
 			data 		: data,
@@ -1296,7 +1297,7 @@ App.createModule('form',(function (app,$) {
 	function create (data) {
 		
 		form  = {
-			name  	: data.name,
+			title  	: data.title,
 			id 		: guid(),
 			data 	: data,
 			$el 	: $(tmpl(template,data))
@@ -1351,7 +1352,8 @@ App.createModule('form',(function (app,$) {
 			$formListClose 			= $formLoader.find('.js-form-list-close'),
 			formListTemplateString	= $('#tmplFormsList')[0].innerHTML,
 			latestForms 			= [],
-			isFetching 				= false;
+			isFetching 				= false,
+			fetchedFormId 			= null;
 
 		// Gets form ids from cookie
 		function getLatestForms () {
@@ -1396,6 +1398,7 @@ App.createModule('form',(function (app,$) {
 					e.preventDefault();
 					if ( !formLoader.isFetching ) {
 						$el.addClass('is-loading');
+						fetchedFormId = formId;
 						Request.getForm(formId,onFetchFormSuccess);
 					}					
 				});
@@ -1405,15 +1408,19 @@ App.createModule('form',(function (app,$) {
 		// handles successful form fetch
 		function onFetchFormSuccess (data) {			
 			// prepare new data for replacement
-			var newFormData = data.data.config[0];
-			if ( newFormData ) {
+			var newFormData = {};
+			if ( newFormData ) {				
 				formLoader.reset();
+				newFormData.id 				= fetchedFormId;
 				newFormData.user_id 		= data.data.user_id;		
 				newFormData.account_id 		= data.data.account_id;		
 				newFormData.status 			= data.data.status;		
 				newFormData.title 			= data.data.title;
 				newFormData.description 	= data.data.description;
 				newFormData.tags 			= data.data.tags;
+				newFormData.config			= data.data.config;
+				console.log('new form data:');
+				console.log(newFormData);
 				replaceForm(newFormData);
 			} else {
 				// the form cannot be loaded
@@ -1478,6 +1485,7 @@ App.createModule('form',(function (app,$) {
 		// get the form contents data
 		$saveBtn.on('click',function () {
 			var formData 	= cloneObject(getFormData());
+			console.log(formData);
 			// send the data
 			Request.send(formData,onSendSuccess,onSendError);
 		});

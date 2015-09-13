@@ -135,7 +135,7 @@ App.createModule('defaults',(function (app,$) {
 			status 			: 0,
 			description 	: 'Sample Form',
 			tags 			: '',
-			config 			: []
+			sections		: []
 	};
 
 

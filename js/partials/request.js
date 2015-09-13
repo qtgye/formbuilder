@@ -48,8 +48,9 @@ App.createModule('request',(function (app,$) {
 	
 	// sends a request
 	function send (data,successCallback,errorCallback) {
+		var url = POST.url + ( data.id ? '/' + data.id : '');
 		return $.ajax({
-			url 		: POST.url,
+			url 		: url,
 			method 		: 'POST',
 			dataType 	: 'json',
 			data 		: data,
