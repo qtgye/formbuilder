@@ -27,7 +27,7 @@ App.createModule('sections',(function (app,$) {
 		actionsTemplate	= '',
 		sections 		= {},
 		dragHelperWidth,
-		fieldHelperWidth;
+		$fieldGuide;
 
 
 	// Section object class
@@ -192,6 +192,11 @@ App.createModule('sections',(function (app,$) {
 	// define private functions
 	// ====================================================================================
 	
+	// prepares the predefined variables
+	function definePrivateVariables () {
+		$fieldGuide = $('.field-guide');
+	}
+
 	// One time called template preparation
 	function prepareTemplate () {
 		template 		= $('#tmpl-read-section').html().trim();
@@ -208,9 +213,7 @@ App.createModule('sections',(function (app,$) {
 	function createSection (data) {
 		var newSection = new Section(data);
 		Editor.closeEditor();
-		newSection.editor.open();
-		// update fieldHelperWidth
-		fieldHelperWidth = newSection.$el.innerWidth();
+		newSection.editor.open();		
 		return newSection;
 	}
 
@@ -231,7 +234,7 @@ App.createModule('sections',(function (app,$) {
 
 		// get the helper's dimension for the item
 		ui.helper
-			// .width( fieldHelperWidth ? fieldHelperWidth : ui.item.width() )
+			.width( $fieldGuide.width() )
 			.addClass('field-dragging');
 
 	}
@@ -253,6 +256,8 @@ App.createModule('sections',(function (app,$) {
 		Fields.getField((ui.helper||ui.item)[0].id).sectionId = self.id;
 		// update receiving section's fields data
 		sections[$(e.target).parent()[0].id].updateFieldsData();	
+		// update fieldHelperWidth
+		fieldHelperWidth = Fields.getField((ui.helper||ui.item)[0].id).$el.width();
 	}
 
 	// sortable list remove handler
@@ -278,6 +283,7 @@ App.createModule('sections',(function (app,$) {
 
 		console.log('sections module added');
 		
+		definePrivateVariables();
 		prepareTemplate();
 	};
 

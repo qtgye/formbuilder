@@ -44,16 +44,28 @@
 			</div>
 			
 			<div class="col-md-2">
+				
+				<div class="fields-list-guide js-fields-list-guide">
+				</div>
 
 				<div class="fields-list js-field-list">
 				</div>
 
 			</div>
 
-			<div class="col-md-6 clearfix">
+			<div class="col-md-6 clearfix">				
 				
 				<!-- The Stage -->
-				<div class="js-stage"></div>				
+				<div class="stage js-stage"></div>				
+
+				<!-- guides -->
+				<div class="guides">
+					<div class="form-guide">
+						<div class="section-guide">
+							<div class="field-guide"></div>
+						</div>
+					</div>
+				</div>
 
 			</div>
 
@@ -235,10 +247,10 @@
 		<!-- action buttons -->
 		<script class="actions-template" id="tmpl-actions" type="text/html">
 			<div class="actions">
-				<div class="btn btn-primary field-edit">
+				<div class="action-button action-button-edit field-edit">
 					edit
 				</div>
-				<div class="btn btn-warning field-remove">
+				<div class="action-button action-button-remove field-remove">
 					&times;
 				</div>
 			</div>
@@ -374,7 +386,7 @@
 							<% } else if ( type.match(/(multiline)/) ) { %>
 								<div class="prop" data-key"value">
 									<div class="prop-col">
-										<label for="">Value :</label>
+										<label for="">Default Value :</label>
 									</div>
 									<div class="prop-col">
 										<textarea name="value" rows="5"><%= data[key] %></textarea>

@@ -108,6 +108,44 @@ li {
 		}
 
 
+/* Fields Source Styles */
+.fields-list-guide {
+	display: block;
+}
+
+.fields-list {
+	position: fixed;
+}
+
+
+
+/* Guides Styles */
+.guides {
+	position: relative;
+	visibility: hidden;
+}
+.form-guide {
+	display: block;
+	padding: 5px;
+}
+
+	.section-guide {
+		display: block;
+		padding: 5px;
+	}
+
+		.field-guide {
+			display: block;
+			padding: 5px;
+		}
+
+
+/* Stage Styles */
+.stage {
+	clear: none;
+}
+
+
  /* Form Styles */
 .form {
 	position: relative;
@@ -120,6 +158,10 @@ li {
 	background-color: #fff;
 	overflow: visible;
 	clear: both;
+}
+.form.has-open-editor {
+	border-color: green;
+	box-shadow: 0 0 1px 1px green;
 }
 
 	.form-header {
@@ -251,6 +293,7 @@ li {
 			border-radius: 3px;
 			background: lightGreen;
 			cursor: move;
+			white-space: nowrap;
 			-webkit-transition: background 0.25s,
 						color 0.25s;
 			        transition: background 0.25s,
@@ -292,8 +335,8 @@ li {
 .actions {
 	display: table;
 	position: absolute;
-	top: 0;
-	right: 0;
+	top: 5px;
+	right: 5px;
 	opacity: 0;
 	-webkit-transform: translateY(-10%);
 	    -ms-transform: translateY(-10%);
@@ -314,6 +357,32 @@ li {
 	        transform: translateY(0);
 	opacity: 1;
 }
+
+	.action-button {
+		display: inline-block;
+		padding: 3px 6px;
+		border-radius: 3px;
+		border: 1px solid #000;
+		opacity: 0.3;
+		color: #000;
+		cursor: pointer;
+		-webkit-transition: border 0.25s,
+					color 0.25s,
+					opacity 0.25s;
+		        transition: border 0.25s,
+					color 0.25s,
+					opacity 0.25s;
+	}
+		.action-button-edit:hover {
+			border-color: green;
+			color: green;
+			opacity: 1;
+		}
+		.action-button-remove:hover {
+			border-color: red;
+			color: red;
+			opacity: 1;
+		}
 
 
 /* Editor styles */
