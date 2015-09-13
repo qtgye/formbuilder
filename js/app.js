@@ -1098,8 +1098,8 @@ App.createModule('sections',(function (app,$) {
 
 		// add action buttons
 		self.$sectionHeader.prepend($(tmpl(actionsTemplate,self)));
-		self.$edit 		= self.$el.find('.field-edit');
-		self.$remove 	= self.$el.find('.field-remove');
+		self.$edit 		= self.$sectionHeader.find('.field-edit');
+		self.$remove 	= self.$sectionHeader.find('.field-remove');
 		// bind buttons
 		self.$edit.on('click',function (e) {
 			e.preventDefault();
