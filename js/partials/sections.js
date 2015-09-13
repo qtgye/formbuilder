@@ -55,7 +55,6 @@ App.createModule('sections',(function (app,$) {
 			self.$sectionContent.sortable({
 				handle 		: '.js-field-handle',
 				connectWith : '.js-section-content',
-				helper 		: 'clone',
 				create 		: function () {
 					isSortableInitialized = true;
 				},
