@@ -21,13 +21,10 @@
 				
 				<h4 class="pull-left">Form Builder JS App</h4>
 				
-				<div class="pull-right clearfix">
-					<div class="btn-group pull-right">
-						<div class="btn btn-primary js-form-save">SAVE</div>
-						<div class="btn btn-default js-form-reset">RESET</div>
-					</div>
+				<div class="pull-right clearfix">					
 
-					<div class="pull-right form-loader js-form-loader">
+					<div class="btn-group pull-right form-loader js-form-loader">
+						<div class="btn btn-default js-form-create">CREATE</div>
 						<div class="btn btn-default fetch-btn js-load-btn">
 							<span class="fetch-btn-text-default">Load Form</span>
 							<span class="fetch-btn-text-fetching"><i class="fa fa-spinner fa-lg fa-pulse"></i> Fetching</span>
@@ -38,7 +35,14 @@
 							</ul>
 							<div class="form-list-close js-form-list-close">CLOSE</div>
 						</div>
-					</div>					
+					</div>		
+
+					<div class="btn-group js-form-actions pull-right is-new">
+						<div class="btn btn-primary js-form-save">SAVE</div>
+						<div class="btn btn-primary js-form-save">UPDATE</div>
+						<div class="btn btn-default js-form-clear">CLEAR</div>						
+					</div>
+
 				</div>
 
 			</div>
@@ -54,11 +58,6 @@
 			</div>
 
 			<div class="col-md-6 clearfix">		
-
-				<!-- form actions -->
-				<div class="form-actions">
-					
-				</div>
 				
 				<!-- The Stage -->
 				<div class="stage js-stage"></div>				

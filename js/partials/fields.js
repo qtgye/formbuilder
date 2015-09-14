@@ -62,6 +62,15 @@ App.createModule('fields',(function (app,$) {
 		}
 
 		self.data 			= cloneObject(self.data); // make sure data is not a reference
+		// make sure booleans are not casted as strings
+		for ( var key in self.data ) {
+			if ( self.data[key] === "true" ) {
+				self.data[key] = true;
+			} 
+			if ( self.data[key] === "false" ) {
+				self.data[key] = false;
+			} 
+		}
 		self.id 			= guid();
 		self.$fieldContent 	= self.$el.find('.field-content');
 		self.sectionId 		= null; // will hold containing section's id

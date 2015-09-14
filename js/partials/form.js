@@ -49,9 +49,11 @@ App.createModule('form',(function (app,$) {
 		data 		= cloneObject(data);
 		template 	= $('#tmpl-read-form')[0].innerHTML;
 
-		$stage 		= $('.js-stage');
-		$saveBtn 	= $('.js-form-save');
-		$resetBtn	= $('.js-form-reset');		
+		$stage 			= $('.js-stage');
+		$formActions 	= $('.js-form-actions');
+		$saveBtn 		= $('.js-form-save');
+		$clearBtn		= $('.js-form-clear');
+		$createBtn 		= $('.js-form-create');
 
 	}
 
@@ -252,7 +254,12 @@ App.createModule('form',(function (app,$) {
 			Request.send(formData,onSendSuccess,onSendError);
 		});
 		// clears the form contents and data
-		$resetBtn.on('click',resetForm);
+		$clearBtn.on('click',clearFormContent);
+		// creates a new form
+		$createBtn.on('click',function () {
+			var defaultForm = cloneObject(Defaults.form);
+			form.replaceForm(defaultForm);
+		});
 	}
 
 	// gets the section objects

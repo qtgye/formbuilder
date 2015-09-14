@@ -874,6 +874,15 @@ App.createModule('fields',(function (app,$) {
 		}
 
 		self.data 			= cloneObject(self.data); // make sure data is not a reference
+		// make sure booleans are not casted as strings
+		for ( var key in self.data ) {
+			if ( self.data[key] === "true" ) {
+				self.data[key] = true;
+			} 
+			if ( self.data[key] === "false" ) {
+				self.data[key] = false;
+			} 
+		}
 		self.id 			= guid();
 		self.$fieldContent 	= self.$el.find('.field-content');
 		self.sectionId 		= null; // will hold containing section's id
@@ -1418,9 +1427,11 @@ App.createModule('form',(function (app,$) {
 		data 		= cloneObject(data);
 		template 	= $('#tmpl-read-form')[0].innerHTML;
 
-		$stage 		= $('.js-stage');
-		$saveBtn 	= $('.js-form-save');
-		$resetBtn	= $('.js-form-reset');		
+		$stage 			= $('.js-stage');
+		$formActions 	= $('.js-form-actions');
+		$saveBtn 		= $('.js-form-save');
+		$clearBtn		= $('.js-form-clear');
+		$createBtn 		= $('.js-form-create');
 
 	}
 
@@ -1621,7 +1632,12 @@ App.createModule('form',(function (app,$) {
 			Request.send(formData,onSendSuccess,onSendError);
 		});
 		// clears the form contents and data
-		$resetBtn.on('click',resetForm);
+		$clearBtn.on('click',clearFormContent);
+		// creates a new form
+		$createBtn.on('click',function () {
+			var defaultForm = cloneObject(Defaults.form);
+			form.replaceForm(defaultForm);
+		});
 	}
 
 	// gets the section objects
