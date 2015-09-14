@@ -37,10 +37,15 @@
 						</div>
 					</div>		
 
-					<div class="btn-group js-form-actions pull-right is-new">
-						<div class="btn btn-primary js-form-save">SAVE</div>
-						<div class="btn btn-primary js-form-save">UPDATE</div>
-						<div class="btn btn-default js-form-clear">CLEAR</div>						
+					<div class="form-actions js-form-actions pull-right">
+						<div class="btn-group form-actions-new">
+							<div class="btn btn-primary form-save-btn js-form-save">SAVE</div>
+							<div class="btn btn-default form-clear-btn js-form-clear">CLEAR</div>	
+						</div>
+						<div class="btn-group form-actions-update">
+							<div class="btn btn-primary form-update-btn js-form-save">UPDATE</div>
+							<div class="btn btn-default form-clear-btn js-form-clear">CLEAR</div>			
+						</div>					
 					</div>
 
 				</div>

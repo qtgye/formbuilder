@@ -186,7 +186,7 @@ App.createModule('form',(function (app,$) {
 				console.log('new form data:');
 				console.log(newFormData);
 				replaceForm(newFormData);
-
+				$formActions.addClass('is-update');
 			} else {
 				// the form cannot be loaded
 			}			
@@ -260,6 +260,7 @@ App.createModule('form',(function (app,$) {
 		$createBtn.on('click',function () {
 			var defaultForm = cloneObject(Defaults.form);
 			replaceForm(defaultForm);
+			$formActions.removeClass('is-update');
 		});
 	}
 
@@ -325,7 +326,7 @@ App.createModule('form',(function (app,$) {
 		if ( newData && newData.title ) {
 			removeForm();
 			create(newData);
-			Editor.closeEditor();
+			Editor.closeEditor();			
 		}		
 	}
 
@@ -347,7 +348,9 @@ App.createModule('form',(function (app,$) {
 	// handles sent data success
 	function onSendSuccess (data) {
 		if ( data.flag ) {
-			console.info('Form saved');
+			console.log(data);
+			form.data.id = data.id;
+			$formActions.addClass('is-update');
 		} else {
 			throw new Error('The form was not saved');
 		}

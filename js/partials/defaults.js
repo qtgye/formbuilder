@@ -70,7 +70,6 @@ App.createModule('defaults',(function (app,$) {
 			min 			: 0,
 			max 			: 0,
 			description 	: '',
-			description 	: '',
 			showif 			: '',
 			hideif 			: '',
 			restriction 	: ''
@@ -86,7 +85,6 @@ App.createModule('defaults',(function (app,$) {
 			max 			: 0,
 			description 	: '',
 			multiple 		: false,
-			description 	: '',
 			showif 			: '',
 			hideif 			: '',
 			options 		: [

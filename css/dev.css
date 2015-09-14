@@ -31,6 +31,24 @@ li {
 	z-index: 200;
 }
 
+.form-actions {
+	padding: 0;
+}
+
+	.form-actions-new {
+		display: inline-block;
+	}
+	.is-update .form-actions-new {
+		display: none;
+	}
+
+	.form-actions-update {
+		display: none;
+	}
+	.is-update .form-actions-update {
+		display: inline-block;
+	}
+
 .form-loader {
 	position: relative;
 }
@@ -175,11 +193,7 @@ li {
 	.form-content {
 		min-height: 100px;
 		padding: 5px;
-	} 
-
-		.form-actions {
-			padding: 10px;
-		}
+	}
 
 
 
