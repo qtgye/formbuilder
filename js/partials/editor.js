@@ -97,7 +97,7 @@ App.createModule('editor',(function (app,$) {
 					pair.value = false;
 				}
 				newData[pair.name] = pair.value;
-			});
+			});			
 
 			return newData;
 			
@@ -160,6 +160,8 @@ App.createModule('editor',(function (app,$) {
 				};
 			});
 		}
+
+		console.log(fieldData);
 
 		return fieldData;
 	}

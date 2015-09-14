@@ -51,7 +51,7 @@ App.createModule('form',(function (app,$) {
 
 		$stage 		= $('.js-stage');
 		$saveBtn 	= $('.js-form-save');
-		$clearBtn 	= $('.js-form-clear');		
+		$resetBtn	= $('.js-form-reset');		
 
 	}
 
@@ -252,7 +252,7 @@ App.createModule('form',(function (app,$) {
 			Request.send(formData,onSendSuccess,onSendError);
 		});
 		// clears the form contents and data
-		$clearBtn.on('click',clearFormContent);
+		$resetBtn.on('click',resetForm);
 	}
 
 	// gets the section objects
@@ -321,6 +321,15 @@ App.createModule('form',(function (app,$) {
 		}		
 	}
 
+	// resets the form into a default one
+	function resetForm () {
+		var formData = cloneObject(Defaults.form);
+		if ( form.data.id ) {
+			formData.id = form.data.id;
+		}
+		replaceForm(formData);
+	}
+
 	// gets the form data for saving
 	function getFormData () {
 		form.data.config = extractContentData();
@@ -363,7 +372,7 @@ App.createModule('form',(function (app,$) {
 		bindGlobalHandlers();
 		initializeFormLoader();
 		// create initial form
-		module.create(Defaults.form);
+		module.create(cloneObject(Defaults.form));
 
 	};
 

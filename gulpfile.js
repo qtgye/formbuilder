@@ -14,6 +14,7 @@ var jsFiles = [
 			"js/partials/defaults.js",
 			"js/partials/request.js",	
 			"js/partials/user.js",
+			"js/partials/modal.js",
 			"js/partials/editor.js",				
 			"js/partials/fields.js",
 			"js/partials/sections.js",

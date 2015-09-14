@@ -483,6 +483,32 @@ li {
 }
 
 
+/* Modal Styles */
+.modal {
+	background: rgba(0,0,0,0.3);
+}
+
+	.modal-content {
+		border-radius: 3px;
+	}
+
+.modal-saving {
+	text-align: center;
+	color: gray;
+}
+.modal-save-success {
+	text-align: center;
+	color: green;
+}
+.modal-save-error {
+	color: red;
+	text-align: center;
+}
+	.modal-save-error .modal-error-content {
+		color: silver;
+	}
+
+
 
 /* BOOTSTRAP OVERRIDES */
 .btn-group {

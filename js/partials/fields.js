@@ -28,6 +28,7 @@ App.createModule('fields',(function (app,$) {
 				isEntity 		: 'entity'		,
 				isMultiline		: 'multiline'	,
 				isSelect 		: 'selection'	,
+				isSwitch 		: 'radiobox'	,
 				isRadiobox 		: 'radiobox'	,
 				isCheckbox 		: 'checkbox'
 			};
@@ -80,11 +81,24 @@ App.createModule('fields',(function (app,$) {
 		// public methods
 		// ------------------------
 		self.update = function (newData) {
+
+			console.log(newData);
 			
 			for ( var key in self.data ) {
 				if ( key in newData ) {
 					self.data[key] = newData[key];
-				}				
+				}
+			}
+
+			// replace isSwitch/isRadio with selected property
+			if ( 'isSwitch' in newData ) {
+				if ( newData.isSwitch === true || self.data.isRadiobox  ) {
+					self.data.isSwitch = true;
+					delete self.data.isRadiobox;
+				} else if ( newData.isSwitch === false || self.data.isSwitch ) {
+					self.data.isRadiobox = true;
+					delete self.data.isSwitch;
+				}
 			}
 			
 			updateFieldDOM(self,self.data);
@@ -155,6 +169,8 @@ App.createModule('fields',(function (app,$) {
 	// renders a dom structure of the data
 	function renderData (data) {	
 		var dataType = getFieldType(data);
+		// console.log(data);
+		// console.log(dataType);
 		return tmpl(templates[dataType],data);
 	}
 
@@ -174,7 +190,14 @@ App.createModule('fields',(function (app,$) {
 
 	// returns the fieldType
 	function getFieldType (data) {
-		return checker[Object.keys(data)[0]];
+		var dataType;
+		Object.keys(data).forEach(function (key) {
+			if ( key in checker ) {
+				dataType =  checker[key];
+				return;
+			}
+		});
+		return dataType;
 	}
 
 	// get a field object

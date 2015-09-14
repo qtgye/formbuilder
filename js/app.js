@@ -139,11 +139,13 @@ App.createModule('defaults',(function (app,$) {
 		'singleline'	: {
 			isSingleline	: true,
 			isAvailable 	: true,
-			key 			: 'name',
+			key 			: 'singleline',
 			required 		: false,
-			label 			: 'Text Input:',
+			label 			: 'Label',
 			placeholder 	: 'placeholder',
 			value 			: '',
+			min 			: 0,
+			max 			: 0,
 			description 	: '',
 			showif 			: '',
 			hideif 			: '',
@@ -154,20 +156,23 @@ App.createModule('defaults',(function (app,$) {
 			isAvailable 	: true,
 			key 			: 'date',
 			required 		: false,
-			label 			: 'Date:',
+			label 			: 'Label',
 			format 			: 'DD MMMM YYYY',
-			description 	: 'desc',
-			showif 			: 's if',
-			hideif 			: 'hide me if this happens'
+			placeholder		: '',
+			value 			: '',
+			allowFuture 	: true,
+			description 	: '',
+			showif 			: '',
+			hideif 			: ''
 		},
 		'entity'		: {
 			isEntity 		: true,
 			isAvailable 	: true,
-			key 			: 'directors',
+			key 			: 'entity',
 			required 		: false,
 			min 			: 0,
 			max 			: 0,
-			label 			: 'Directors',
+			label 			: 'Label',
 			description 	: '',
 			showif 			: '',
 			hideif 			: ''
@@ -175,11 +180,14 @@ App.createModule('defaults',(function (app,$) {
 		'multiline'		: {
 			isMultiline 	: true,
 			isAvailable 	: true,
-			key 			: 'name',
+			key 			: 'multiline',
 			required 		: false,
 			label 			: 'Multiline Input:',
 			placeholder 	: 'placeholder',
 			value 			: '',
+			min 			: 0,
+			max 			: 0,
+			description 	: '',
 			description 	: '',
 			showif 			: '',
 			hideif 			: '',
@@ -190,56 +198,52 @@ App.createModule('defaults',(function (app,$) {
 			isAvailable 	: true,
 			key 			: 'name',
 			required 		: false,
-			label 			: 'Select:',
-			value 			: 'option2',
+			label 			: 'Label',
+			value 			: '',
+			min 			: 0,
+			max 			: 0,
+			description 	: '',
 			multiple 		: false,
 			description 	: '',
 			showif 			: '',
 			hideif 			: '',
 			options 		: [
-								{label: 'Option1', value: 'option1'},
-								{label: 'Option2', value: 'option2'},
-								{label: 'Option3', value: 'option3'}
+								{label: 'Option1', value: 'option1'}
 							  ]
 		},
 		'radiobox' 		: {
 			isRadiobox 		: true,
 			isAvailable 	: true,
-			key 			: 'name',
-			label 			: 'Name',
-			isSwitch 		: false,
-			value 			: 'option2',
+			key 			: 'radio',
+			label 			: 'Label',
+			value 			: '',
 			description 	: '',
 			showif 			: '',
 			hideif 			: '',
 			options 		: [
-								{label: 'Option1', value: 'option1'},
-								{label: 'Option2', value: 'option2'},
-								{label: 'Option3', value: 'option3'}
+								{label: 'Option1', value: 'option1'}
 							  ]
 		},
 		'checkbox' 				: {
 			isCheckbox 		: true,
 			isAvailable 	: true,
-			key 			: 'name',
+			key 			: 'checkbox',
 			min 			: 0,
 			max 			: 0,
-			label 			: 'Name',
-			value 			: 'option3',
+			label 			: 'Label',
+			value 			: '',
 			description 	: '',
 			showif 			: '',
 			hideif 			: '',
 			options 		: [
-								{label: 'Option1', value: 'option1'},
-								{label: 'Option2', value: 'option2'},
-								{label: 'Option3', value: 'option3'}
+								{label: 'Option1', value: 'option1'}
 							  ]
 		}
 	},
 
 	section = {
 			name 		: "New Section",
-			description : 'Lorem Ipsum',
+			description : '',
 			showif 		: "",
 			hideif 		: "",
 			isBatch 	: true,
@@ -249,11 +253,11 @@ App.createModule('defaults',(function (app,$) {
 	form 	= {
 			account_id 		: "5b960be8-f871-475c-ad76-6b8ab1bc4200",
 			user_id 		: "1e5cb1f2-0e3f-441d-8958-c6fc392071b0",
-			title 			: 'Sample Form',
+			title 			: 'New Form',
 			status 			: 0,
-			description 	: 'Sample Form',
+			description 	: '',
 			tags 			: '',
-			sections		: []
+			config		: []
 	};
 
 
@@ -481,6 +485,103 @@ App.createModule('user',(function (app,$) {
 
 
 /*
+** Modal module
+**
+*/
+
+App.createModule('modal',(function (app,$) {
+
+	// define module
+	// ====================================================================================
+	var module = {};
+
+	// define private variables
+	// ====================================================================================
+	var 
+
+	modal = {};
+
+	// define private functions
+	// ====================================================================================
+	function definePrivateVariables () {
+		
+	}
+
+	// handles the modal
+	function modalHandler () {
+		
+		modal.$el 		=	$('#modal');
+		modal.$content 	=	modal.$el.find('.modal-content');
+		modal.show 		=	show;
+		modal.hide 		=	hide;
+		modal.partials 	=	{
+			$saving 			: $('.modal-saving'),
+			$saveSuccess 		: $('.modal-save-success'),
+			$saveError 			: $('.modal-save-error')
+		};
+
+
+		modal.changeContent 	= function (contentType,modalData) {
+			modal.$content.empty();
+			if ( '$'+contentType in modal.partials ) {
+				var $content = modal.partials['$'+contentType].clone();
+				if ( contentType == 'saveError' ) {
+					$content.find('.modal-error-content').text(modalData);
+				}
+				modal.$content.append($content);
+				modal.$content.find('.modal-close').on('click',function () {
+					modal.hide();
+				});
+			}			
+		};
+
+
+
+	}
+
+	// shows the modal
+	function show (contentType,modalData) {
+		if ( contentType ) {
+			modal.changeContent(contentType,modalData);
+			modal.$el.modal({
+				show 		: true,
+				backdrop 	: false
+			});
+		}
+		
+	}
+
+	// hides the modal
+	function hide () {
+		modal.$el.modal('hide');
+	}
+
+
+	// define public application interface
+	// ====================================================================================
+	module.show = show;
+	module.hide = hide;
+
+	// define module init
+	// ====================================================================================
+	module.init = function () {
+		definePrivateVariables();
+		modalHandler();
+	};
+
+	// retrn module object
+	// ====================================================================================
+	return module;
+
+})(window.App,jQuery));
+
+
+/*
+** MODULE END
+** =============================================================================================
+*/
+
+/*
 ** Editor module
 **
 ** handles editors
@@ -579,7 +680,7 @@ App.createModule('editor',(function (app,$) {
 					pair.value = false;
 				}
 				newData[pair.name] = pair.value;
-			});
+			});			
 
 			return newData;
 			
@@ -642,6 +743,8 @@ App.createModule('editor',(function (app,$) {
 				};
 			});
 		}
+
+		console.log(fieldData);
 
 		return fieldData;
 	}
@@ -737,6 +840,7 @@ App.createModule('fields',(function (app,$) {
 				isEntity 		: 'entity'		,
 				isMultiline		: 'multiline'	,
 				isSelect 		: 'selection'	,
+				isSwitch 		: 'radiobox'	,
 				isRadiobox 		: 'radiobox'	,
 				isCheckbox 		: 'checkbox'
 			};
@@ -789,11 +893,24 @@ App.createModule('fields',(function (app,$) {
 		// public methods
 		// ------------------------
 		self.update = function (newData) {
+
+			console.log(newData);
 			
 			for ( var key in self.data ) {
 				if ( key in newData ) {
 					self.data[key] = newData[key];
-				}				
+				}
+			}
+
+			// replace isSwitch/isRadio with selected property
+			if ( 'isSwitch' in newData ) {
+				if ( newData.isSwitch === true || self.data.isRadiobox  ) {
+					self.data.isSwitch = true;
+					delete self.data.isRadiobox;
+				} else if ( newData.isSwitch === false || self.data.isSwitch ) {
+					self.data.isRadiobox = true;
+					delete self.data.isSwitch;
+				}
 			}
 			
 			updateFieldDOM(self,self.data);
@@ -864,6 +981,8 @@ App.createModule('fields',(function (app,$) {
 	// renders a dom structure of the data
 	function renderData (data) {	
 		var dataType = getFieldType(data);
+		// console.log(data);
+		// console.log(dataType);
 		return tmpl(templates[dataType],data);
 	}
 
@@ -883,7 +1002,14 @@ App.createModule('fields',(function (app,$) {
 
 	// returns the fieldType
 	function getFieldType (data) {
-		return checker[Object.keys(data)[0]];
+		var dataType;
+		Object.keys(data).forEach(function (key) {
+			if ( key in checker ) {
+				dataType =  checker[key];
+				return;
+			}
+		});
+		return dataType;
 	}
 
 	// get a field object
@@ -1294,7 +1420,7 @@ App.createModule('form',(function (app,$) {
 
 		$stage 		= $('.js-stage');
 		$saveBtn 	= $('.js-form-save');
-		$clearBtn 	= $('.js-form-clear');		
+		$resetBtn	= $('.js-form-reset');		
 
 	}
 
@@ -1495,7 +1621,7 @@ App.createModule('form',(function (app,$) {
 			Request.send(formData,onSendSuccess,onSendError);
 		});
 		// clears the form contents and data
-		$clearBtn.on('click',clearFormContent);
+		$resetBtn.on('click',resetForm);
 	}
 
 	// gets the section objects
@@ -1564,6 +1690,15 @@ App.createModule('form',(function (app,$) {
 		}		
 	}
 
+	// resets the form into a default one
+	function resetForm () {
+		var formData = cloneObject(Defaults.form);
+		if ( form.data.id ) {
+			formData.id = form.data.id;
+		}
+		replaceForm(formData);
+	}
+
 	// gets the form data for saving
 	function getFormData () {
 		form.data.config = extractContentData();
@@ -1606,7 +1741,7 @@ App.createModule('form',(function (app,$) {
 		bindGlobalHandlers();
 		initializeFormLoader();
 		// create initial form
-		module.create(Defaults.form);
+		module.create(cloneObject(Defaults.form));
 
 	};
 

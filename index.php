@@ -24,7 +24,7 @@
 				<div class="pull-right clearfix">
 					<div class="btn-group pull-right">
 						<div class="btn btn-primary js-form-save">SAVE</div>
-						<div class="btn btn-default js-form-clear">CLEAR FORM</div>
+						<div class="btn btn-default js-form-reset">RESET</div>
 					</div>
 
 					<div class="pull-right form-loader js-form-loader">
@@ -53,7 +53,12 @@
 
 			</div>
 
-			<div class="col-md-6 clearfix">				
+			<div class="col-md-6 clearfix">		
+
+				<!-- form actions -->
+				<div class="form-actions">
+					
+				</div>
 				
 				<!-- The Stage -->
 				<div class="stage js-stage"></div>				
@@ -82,11 +87,8 @@
 	<div class="modal fade is-saving" id="modal" data-backdrop="false">
 		<div class="modal-dialog modal-sm">
 			<div class="modal-content">
-				<div class="modal-saving">
-					<h3>
-						<i class="fa fa-spinner fa-pulse"></i> SAVING
-					</h3>
-				</div>
+				
+				
 			</div>
 		</div>
 	</div>
@@ -99,7 +101,27 @@
 
 	<div id="templates" class="hidden">
 		
-		<!-- read templates -->
+		<!-- modal partials -->
+		<div class="modal-saving">
+			<h3>
+				<i class="fa fa-spinner fa-pulse"></i> Saving form
+			</h3>
+		</div>
+		<div class="modal-save-success">
+			<h3>
+				<i class="fa fa-check"></i> Form saved!
+			</h3>
+			<div class="btn btn-default modal-close">OK</div>
+		</div>
+		<div class="modal-save-error">
+			<h3>
+				<i class="fa fa-warning"></i> Form was not saved!
+			</h3>
+			<div class="modal-error-content">
+				dfsdnflksbfsdhfhsds lkfhdsklfhldkfhl
+			</div>
+			<div class="btn btn-default modal-close">OK</div>
+		</div>
 
 		<!-- form -->
 		<script class="form-template" id="tmpl-read-form" type="text/html">
@@ -274,6 +296,8 @@
 		<script class="editor-template" id="tmpl-editor" type="text/html">
 			<div class="editor" data-id="<%=id%>">
 
+				<%console.log(data);%>
+
 				<div class="editor-close">&times;</div>
 				<div class="editor-container" data-id="<%=id%>">
 
@@ -339,22 +363,6 @@
 									</label>
 								</div>																
 							</div>
-						<% } else if ( key == 'isSwitch' ) {%>
-							<div class="prop" data-key"isSwitch">
-								<div class="prop-col">
-									<label for="">Switch :</label>	
-								</div>
-								<div class="prop-col">
-									<label for="<%=id%>_isSwitch_radio_true">
-										<input <%= ( data[key] === true ? 'checked' : '' ) %> type="radio" name="isSwitch" value="true" id="<%=id%>_isSwitch_radio_true">
-										True
-									</label>
-									<label for="<%=id%>_isSwitch_radio_false">
-										<input <%= ( data[key] === false ? 'checked' : '' ) %> type="radio" name="isSwitch" value="false" id="<%=id%>_isSwitch_radio_false">
-										False
-									</label>
-								</div>																
-							</div>
 						<% } else if ( key == 'label' ) { %>
 							<div class="prop" data-key"label">
 								<div class="prop-col">
@@ -393,6 +401,22 @@
 									</div>								
 								</div>
 							<% } %>
+						<% } else if ( key == 'allowFuture' ) { %>
+							<div class="prop" data-key"allowFuture">
+								<div class="prop-col">
+									<label for="">Allow Future?</label>
+								</div>
+								<div class="prop-col">
+									<label for="<%=id%>_allowFuture_radio_true">
+										<input <%= ( data[key] === true ? 'checked' : '' ) %> type="radio" name="allowFuture" value="true" id="<%=id%>_allowFuture_radio_true">
+										True
+									</label>
+									<label for="<%=id%>_allowFuture_radio_false">
+										<input <%= ( data[key] === false ? 'checked' : '' ) %> type="radio" name="allowFuture" value="false" id="<%=id%>_allowFuture_radio_false">
+										False
+									</label>
+								</div>																
+							</div>
 						<% } else if ( key == 'format' ) { %>
 							<div class="prop" data-key"format">
 								<div class="prop-col">
@@ -485,6 +509,22 @@
 									<label for="<%=id%>_isBatch_radio_false">
 										<input <%= ( data[key] === false ? 'checked' : '' ) %> type="radio" name="isBatch" value="false" id="<%=id%>_isBatch_radio_false">
 										False
+									</label>
+								</div>																
+							</div>
+						<% } else if ( key == 'isRadiobox' || key == 'isSwitch' ) {%>
+							<div class="prop" data-key"isSwitch">
+								<div class="prop-col">
+									<label for="">Use Switch Layout :</label>	
+								</div>
+								<div class="prop-col">
+									<label for="<%=id%>_isSwitch_radio_true">
+										<input <%= ( key == 'isSwitch' ? 'checked' : '' ) %> type="radio" name="isSwitch" value="true" id="<%=id%>_isSwitch_radio_true">
+										Yes
+									</label>
+									<label for="<%=id%>_isRadiobox_radio_true">
+										<input <%= ( key == 'isRadiobox' ? 'checked' : '' ) %> type="radio" name="isSwitch" value="false" id="<%=id%>_isRadiobox_radio_true">
+										No
 									</label>
 								</div>																
 							</div>

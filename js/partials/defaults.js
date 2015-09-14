@@ -21,11 +21,13 @@ App.createModule('defaults',(function (app,$) {
 		'singleline'	: {
 			isSingleline	: true,
 			isAvailable 	: true,
-			key 			: 'name',
+			key 			: 'singleline',
 			required 		: false,
-			label 			: 'Text Input:',
+			label 			: 'Label',
 			placeholder 	: 'placeholder',
 			value 			: '',
+			min 			: 0,
+			max 			: 0,
 			description 	: '',
 			showif 			: '',
 			hideif 			: '',
@@ -36,20 +38,23 @@ App.createModule('defaults',(function (app,$) {
 			isAvailable 	: true,
 			key 			: 'date',
 			required 		: false,
-			label 			: 'Date:',
+			label 			: 'Label',
 			format 			: 'DD MMMM YYYY',
-			description 	: 'desc',
-			showif 			: 's if',
-			hideif 			: 'hide me if this happens'
+			placeholder		: '',
+			value 			: '',
+			allowFuture 	: true,
+			description 	: '',
+			showif 			: '',
+			hideif 			: ''
 		},
 		'entity'		: {
 			isEntity 		: true,
 			isAvailable 	: true,
-			key 			: 'directors',
+			key 			: 'entity',
 			required 		: false,
 			min 			: 0,
 			max 			: 0,
-			label 			: 'Directors',
+			label 			: 'Label',
 			description 	: '',
 			showif 			: '',
 			hideif 			: ''
@@ -57,11 +62,14 @@ App.createModule('defaults',(function (app,$) {
 		'multiline'		: {
 			isMultiline 	: true,
 			isAvailable 	: true,
-			key 			: 'name',
+			key 			: 'multiline',
 			required 		: false,
 			label 			: 'Multiline Input:',
 			placeholder 	: 'placeholder',
 			value 			: '',
+			min 			: 0,
+			max 			: 0,
+			description 	: '',
 			description 	: '',
 			showif 			: '',
 			hideif 			: '',
@@ -72,56 +80,52 @@ App.createModule('defaults',(function (app,$) {
 			isAvailable 	: true,
 			key 			: 'name',
 			required 		: false,
-			label 			: 'Select:',
-			value 			: 'option2',
+			label 			: 'Label',
+			value 			: '',
+			min 			: 0,
+			max 			: 0,
+			description 	: '',
 			multiple 		: false,
 			description 	: '',
 			showif 			: '',
 			hideif 			: '',
 			options 		: [
-								{label: 'Option1', value: 'option1'},
-								{label: 'Option2', value: 'option2'},
-								{label: 'Option3', value: 'option3'}
+								{label: 'Option1', value: 'option1'}
 							  ]
 		},
 		'radiobox' 		: {
 			isRadiobox 		: true,
 			isAvailable 	: true,
-			key 			: 'name',
-			label 			: 'Name',
-			isSwitch 		: false,
-			value 			: 'option2',
+			key 			: 'radio',
+			label 			: 'Label',
+			value 			: '',
 			description 	: '',
 			showif 			: '',
 			hideif 			: '',
 			options 		: [
-								{label: 'Option1', value: 'option1'},
-								{label: 'Option2', value: 'option2'},
-								{label: 'Option3', value: 'option3'}
+								{label: 'Option1', value: 'option1'}
 							  ]
 		},
 		'checkbox' 				: {
 			isCheckbox 		: true,
 			isAvailable 	: true,
-			key 			: 'name',
+			key 			: 'checkbox',
 			min 			: 0,
 			max 			: 0,
-			label 			: 'Name',
-			value 			: 'option3',
+			label 			: 'Label',
+			value 			: '',
 			description 	: '',
 			showif 			: '',
 			hideif 			: '',
 			options 		: [
-								{label: 'Option1', value: 'option1'},
-								{label: 'Option2', value: 'option2'},
-								{label: 'Option3', value: 'option3'}
+								{label: 'Option1', value: 'option1'}
 							  ]
 		}
 	},
 
 	section = {
 			name 		: "New Section",
-			description : 'Lorem Ipsum',
+			description : '',
 			showif 		: "",
 			hideif 		: "",
 			isBatch 	: true,
@@ -131,11 +135,11 @@ App.createModule('defaults',(function (app,$) {
 	form 	= {
 			account_id 		: "5b960be8-f871-475c-ad76-6b8ab1bc4200",
 			user_id 		: "1e5cb1f2-0e3f-441d-8958-c6fc392071b0",
-			title 			: 'Sample Form',
+			title 			: 'New Form',
 			status 			: 0,
-			description 	: 'Sample Form',
+			description 	: '',
 			tags 			: '',
-			sections		: []
+			config		: []
 	};
 
 
