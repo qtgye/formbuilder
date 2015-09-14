@@ -1564,6 +1564,7 @@ App.createModule('form',(function (app,$) {
 				console.log('new form data:');
 				console.log(newFormData);
 				replaceForm(newFormData);
+
 			} else {
 				// the form cannot be loaded
 			}			
@@ -1636,7 +1637,7 @@ App.createModule('form',(function (app,$) {
 		// creates a new form
 		$createBtn.on('click',function () {
 			var defaultForm = cloneObject(Defaults.form);
-			form.replaceForm(defaultForm);
+			replaceForm(defaultForm);
 		});
 	}
 
