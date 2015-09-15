@@ -193,6 +193,7 @@ App.createModule('defaults',(function (app,$) {
 			restriction 	: ''
 		},
 		'selection' 	: {
+			id 				: guid(),
 			isSelect		: true,
 			isAvailable 	: true,
 			key 			: 'name',
@@ -211,6 +212,7 @@ App.createModule('defaults',(function (app,$) {
 							  ]
 		},
 		'radiobox' 		: {
+			id 				: guid(),
 			isRadiobox 		: true,
 			isAvailable 	: true,
 			key 			: 'radio',
@@ -225,6 +227,7 @@ App.createModule('defaults',(function (app,$) {
 							  ]
 		},
 		'checkbox' 				: {
+			id 				: guid(),
 			isCheckbox 		: true,
 			isAvailable 	: true,
 			key 			: 'checkbox',
@@ -917,21 +920,25 @@ App.createModule('fields',(function (app,$) {
 
 		// Construct
 		// -----------------------
+		self.id = guid();
 		if (  arg.jquery ) {
 			// if the arg is a jquery object (new field)
 			self.type 	= arg.data('type');
 			self.data 	= Defaults.fields[self.type];
+			self.data.id = self.id;
 			self.$el 	= arg;
 			template 	= getTemplateString(self.type);
 		} else {
 			// if the arg is a data object
 			self.data 	= arg;
 			self.type 	= getFieldType(self.data);
+			self.data.id = self.id;
 			template 	= getTemplateString(self.type);
 			self.$el 	= renderData();
 		}
 
 		self.data 			= cloneObject(self.data); // make sure data is not a reference
+		console.log(self.data);
 		// make sure booleans are not casted as strings
 		for ( var key in self.data ) {
 			if ( self.data[key] === "true" ) {
@@ -940,8 +947,7 @@ App.createModule('fields',(function (app,$) {
 			if ( self.data[key] === "false" ) {
 				self.data[key] = false;
 			} 
-		}
-		self.id 			= guid();
+		}		
 		self.$fieldContent 	= self.$el.find('.field-content');
 		self.sectionId 		= null; // will hold containing section's id
 
@@ -967,7 +973,7 @@ App.createModule('fields',(function (app,$) {
 				if ( key in newData ) {
 					self.data[key] = newData[key];
 				}
-			}
+			}			
 
 			// replace isSwitch/isRadio with selected property
 			if ( 'isSwitch' in newData ) {
@@ -1027,6 +1033,9 @@ App.createModule('fields',(function (app,$) {
 		// add to store
 		// ------------------------
 		fields[self.id] = self;
+
+		self.data.id = self.id;
+		self.update(self.data);
 		
 	}
 
@@ -1223,7 +1232,11 @@ App.createModule('sections',(function (app,$) {
 				contentObjects	= self.getContentObjects();
 
 			contentObjects.forEach(function (_field,index) {
-				fieldsData[index] = _field.data;
+				var fieldData = cloneObject(_field.data);
+				if ( fieldData.id ) {
+					delete fieldData.id;
+				}
+				fieldsData[index] = fieldData;
 			});
 
 			return fieldsData;

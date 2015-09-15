@@ -243,7 +243,7 @@
 					<span class="help-block field-description"><%=description%></span>
 					<% options.forEach(function(option,key){ %>
 						<label>
-							<input type="radio" name="<%=option.key%>" value="<%=option.value%>" <%= ( value.match(new RegExp(option.value,'i')) || ( !value && key === 0 ) ? 'checked' : '' ) %> ><%=option.label%>
+							<input type="radio" name="<%=id%>" value="<%=option.value%>" <%= ( value.match(new RegExp(option.value,'i')) || ( !value && key === 0 ) ? 'checked' : '' ) %> ><%=option.label%>
 						</label>
 					<% }); %>
 				</div>	

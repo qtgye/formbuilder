@@ -75,6 +75,7 @@ App.createModule('defaults',(function (app,$) {
 			restriction 	: ''
 		},
 		'selection' 	: {
+			id 				: guid(),
 			isSelect		: true,
 			isAvailable 	: true,
 			key 			: 'name',
@@ -93,6 +94,7 @@ App.createModule('defaults',(function (app,$) {
 							  ]
 		},
 		'radiobox' 		: {
+			id 				: guid(),
 			isRadiobox 		: true,
 			isAvailable 	: true,
 			key 			: 'radio',
@@ -107,6 +109,7 @@ App.createModule('defaults',(function (app,$) {
 							  ]
 		},
 		'checkbox' 				: {
+			id 				: guid(),
 			isCheckbox 		: true,
 			isAvailable 	: true,
 			key 			: 'checkbox',

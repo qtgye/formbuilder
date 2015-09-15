@@ -92,7 +92,11 @@ App.createModule('sections',(function (app,$) {
 				contentObjects	= self.getContentObjects();
 
 			contentObjects.forEach(function (_field,index) {
-				fieldsData[index] = _field.data;
+				var fieldData = cloneObject(_field.data);
+				if ( fieldData.id ) {
+					delete fieldData.id;
+				}
+				fieldsData[index] = fieldData;
 			});
 
 			return fieldsData;
