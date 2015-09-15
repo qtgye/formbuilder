@@ -386,25 +386,20 @@
 								</div>								
 							</div>
 						<% } else if ( key == 'value' ) { %>
-							<% if ( type.match(/(singleline|date|entity|select|radiobox|checkbox)/) ) { %>
-								<div class="prop" data-key"value">
-									<div class="prop-col">
-										<label for="">Default value :</label>
-									</div>
-									<div class="prop-col">
+							<div class="prop" data-key"value">
+								<div class="prop-col">
+									<label for="">Default value :</label>
+								</div>
+								<div class="prop-col">
+									<% if ( type.match(/(singleline|entity|select|radiobox|checkbox)/) ) { %>
 										<input type="text" name="value" value="<%=data[key]%>">
-									</div>								
-								</div>
-							<% } else if ( type.match(/(multiline)/) ) { %>
-								<div class="prop" data-key"value">
-									<div class="prop-col">
-										<label for="">Default Value :</label>
-									</div>
-									<div class="prop-col">
+									<% } else if ( type.match(/(multiline)/) ) { %>
 										<textarea name="value" rows="5"><%= data[key] %></textarea>
-									</div>								
-								</div>
-							<% } %>
+									<% } else if ( type.match(/(date)/) ) { %>
+										<input type="date" name="<%=key%>">
+									<% } %>
+								</div>								
+							</div>		
 						<% } else if ( key == 'allowFuture' ) { %>
 							<div class="prop" data-key"allowFuture">
 								<div class="prop-col">

@@ -39,7 +39,7 @@ App.createModule('defaults',(function (app,$) {
 			key 			: 'date',
 			required 		: false,
 			label 			: 'Label',
-			format 			: 'DD MMMM YYYY',
+			format 			: 'YYYY-MM-DD',
 			placeholder		: '',
 			value 			: '',
 			allowFuture 	: true,
