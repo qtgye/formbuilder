@@ -130,7 +130,6 @@ App.createModule('fields',(function (app,$) {
 		self.$el.append(self.editor.$el);
 		
 		self.editor.$form.on('keyup change',function (e) {
-			console.log(e);
 			var newData = self.editor.extractData();
 			self.update(newData);
 		});

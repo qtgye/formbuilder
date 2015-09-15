@@ -21,6 +21,7 @@ App.createModule('form',(function (app,$) {
 
 	Request,
 	Defaults,
+	Editor,
 
 	sortableInitialized = false,
 
@@ -249,10 +250,20 @@ App.createModule('form',(function (app,$) {
 	function bindGlobalHandlers () {
 		// get the form contents data
 		$saveBtn.on('click',function () {
-			var formData 	= cloneObject(getFormData());
-			console.log(formData);
-			// send the data
-			Request.send(formData,onSendSuccess,onSendError);
+			if ( !Editor.hasError() ) {
+				var formData 	= cloneObject(getFormData());
+				console.log('data to send:');
+				console.log(formData);
+				// send the data
+				swal({
+					type 	: 'info',
+					title   : 'Saving form...',
+					allowEscapeKey : false,
+					showConfirmButton : false
+				});
+				Editor.closeEditor();
+				Request.send(formData,onSendSuccess,onSendError);
+			}			
 		});
 		// clears the form contents and data
 		$clearBtn.on('click',clearFormContent);
@@ -295,6 +306,7 @@ App.createModule('form',(function (app,$) {
 
 	// clears the form content
 	function clearFormContent () {
+		Editor.reset();
 		getContentObjects().forEach(function (_section) {
 			_section.remove();
 		});
@@ -351,15 +363,38 @@ App.createModule('form',(function (app,$) {
 			console.log(data);
 			form.data.id = data.id;
 			$formActions.addClass('is-update');
+			swal({
+				type 	: 'success',
+				title   : 'The form was successfuly saved!',
+				timer 	: 2000
+			});
 		} else {
-			throw new Error('The form was not saved');
+			swal({
+				type 	: 'error',
+				title   : 'The form was not saved due to an error.',
+				text 	: data.message.config[0],
+				confirmButtonText : 'Ok'
+			});
 		}
 		
 	}	
 
 	// handles sent data error
-	function onSendError (data) {
-		// body...
+	function onSendError (response) {
+		if ( response.responseJSON.message ) {
+			swal({
+				type 	: 'error',
+				title   : 'The form was not saved due to error.',
+				text 	: response.responseJSON.message.config[0],
+				confirmButtonText : 'Ok'
+			});
+		} else {
+			swal({
+				type 	: 'error',
+				title   : 'An unknown error has occured. The form was not saved.',
+				confirmButtonText : 'Ok'
+			});
+		}
 	}
 
 

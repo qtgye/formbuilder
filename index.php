@@ -221,9 +221,9 @@
 				</div>
 				<div class="field-content js-drag-handle js-field-handle">
 					<label><%=label%></label>
-					<select id="<%=key%>" name="<%=key%>" value="<%=value%>" <%= ( multiple ? 'multiple' : '' ) %> >
-						<% options.forEach(function(option){ %>
-				    		<option value="<%=option.value%>" <%= ( value == option.value ? 'selected' : '' ) %> ><%=option.label%></option>
+					<select id="<%=key%>" name="<%=key%>" <%= ( multiple ? 'multiple' : '' ) %> >
+						<% options.forEach(function(option,key){ %>
+				    		<option value="<%=option.value%>" <%= ( value.match(new RegExp(option.value,'i')) || ( !value && key === 0 ) ? 'selected' : '' ) %> ><%=option.label%></option>
 						<% }); %>
 					</select>
 					<span class="help-block field-description"><%=description%></span>
@@ -241,9 +241,9 @@
 				<div class="field-content js-drag-handle js-field-handle">
 					<label><%=label%></label>
 					<span class="help-block field-description"><%=description%></span>
-					<% options.forEach(function(option){ %>
+					<% options.forEach(function(option,key){ %>
 						<label>
-							<input type="radio" name="<%=option.key%>" value="<%=option.value%>" <%= ( value == option.value ? 'checked' : '' ) %>><%=option.label%>
+							<input type="radio" name="<%=option.key%>" value="<%=option.value%>" <%= ( value.match(new RegExp(option.value,'i')) || ( !value && key === 0 ) ? 'checked' : '' ) %> ><%=option.label%>
 						</label>
 					<% }); %>
 				</div>	
@@ -260,9 +260,9 @@
 				<div class="field-content js-drag-handle js-field-handle">
 					<label><%=label%></label>
 					<span class="help-block field-description"><%=description%></span>
-					<% options.forEach(function(option) { %>
+					<% options.forEach(function(option,key) { %>
 						<label>
-							<input type="checkbox" name="<%=option.key%>" value="<%=option.value%>" <%= ( value == option.value ? 'checked' : '' ) %> ><%=option.label%>
+							<input type="checkbox" name="<%=option.key%>" value="<%=option.value%>" <%= ( value.match(new RegExp(option.value,'i')) || ( !value && key === 0 ) ? 'checked' : '' ) %> ><%=option.label%>
 						</label>
 					<% }); %>					
 				</div>		
@@ -600,7 +600,7 @@
 							</div>
 						<% } %>
 
-						<% if ( true ) { %>
+						<% if ( false ) { %>
 
 						<% } %>
 					<% }; %>
@@ -618,6 +618,7 @@
 	<script src="lib/jquery-1.11.1/dist/jquery.min.js"></script>
 	<script src="lib/jquery-ui/jquery-ui.min.js"></script>
 	<script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="lib/sweetalert/dist/sweetalert.min.js"></script>
 
 	<!-- APP JS -->
 	<script src="js/app.js"></script>

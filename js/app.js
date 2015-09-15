@@ -606,6 +606,8 @@ App.createModule('editor',(function (app,$) {
 		editors = {},
 		editorTemplate,
 		editorClicked,
+		hasError,
+		errorEditor,
 		currentOpen, // holds the data-id of the open editor
 
 		$editorGuide;
@@ -627,6 +629,7 @@ App.createModule('editor',(function (app,$) {
 
 		self.$parent 	= object.$el;
 		self.$el 		= $(tmpl(editorTemplate,editorData));
+		self.$optionsEl = self.$el.find('textarea[name="options"]');
 		self.$form 		= self.$el.find('form');
 		self.$close 	= self.$el.find('.editor-close');
 
@@ -639,12 +642,44 @@ App.createModule('editor',(function (app,$) {
 		// opens the editor
 		function open () {
 			module.closeEditor();
-			self.$parent.addClass('has-open-editor');
-			currentOpen = self.id;
+			if ( !hasError ) {				
+				self.$parent.addClass('has-open-editor');
+				currentOpen = self.id;
+			}			
 		}
 		// closes the editor
 		function close () {
-			self.$parent.removeClass('has-open-editor');
+			// validate options before closing;
+			if ( object.data.isRadiobox || object.data.isSwitch || object.data.isSelect ) {
+				var formDataString = self.$form.serialize(),
+					optionsVal = self.$optionsEl.val().split(/[\r\n]/),
+					isValid;
+				isValid = optionsVal.length >= 2 &&
+						  optionsVal.every(function (item) {
+						  	return item.match(/[\w\d\s]+,[\w\d\s]+/);
+						  });
+				if ( !isValid ) {
+					swal({
+						title 				: 'Oops!',
+						text 				: "Options must have at least 2 pairs of valid label/vale",
+						type 				: "error",
+						confirmButtonText 	: "Ok"
+					});
+					hasError 	= true;
+					errorEditor = self.id; 
+				} else {
+					self.$parent.removeClass('has-open-editor');
+					currentOpen = null;
+					if ( hasError &&  errorEditor == self.id ) {
+						hasError 	= false;
+						errorEditor = null; 
+					}
+				}
+			} else {
+				self.$parent.removeClass('has-open-editor');
+				currentOpen = null;
+			}
+			
 		}
 		// toggles the editor
 		function toggle () {
@@ -758,9 +793,23 @@ App.createModule('editor',(function (app,$) {
 	// closes the current editor
 	function closeEditor () {
 		if ( currentOpen ) {
-			editors[currentOpen].close();
-			currentOpen = null;
+			editors[currentOpen].close();			
 		}
+	}
+
+	// checks if there is an open editor
+	function hasOpenEditor () {
+		return currentOpen ? true : false;
+	}
+
+	// resets the currentOpen editor
+	function reset () {
+		currentOpen = null;
+	}
+
+	// checks if there is an error
+	function editorHasError () {
+		return hasError;
 	}
 
 	// bind event handlers
@@ -782,6 +831,9 @@ App.createModule('editor',(function (app,$) {
 	module.create 			= create;
 	module.closeEditor		= closeEditor;
 	module.editorClicked	= false;
+	module.hasOpenEditor 	= hasOpenEditor;
+	module.reset 			= reset;
+	module.hasError 		= editorHasError;
 
 
 	// define module init
@@ -943,7 +995,6 @@ App.createModule('fields',(function (app,$) {
 		self.$el.append(self.editor.$el);
 		
 		self.editor.$form.on('keyup change',function (e) {
-			console.log(e);
 			var newData = self.editor.extractData();
 			self.update(newData);
 		});
@@ -1400,6 +1451,7 @@ App.createModule('form',(function (app,$) {
 
 	Request,
 	Defaults,
+	Editor,
 
 	sortableInitialized = false,
 
@@ -1628,10 +1680,20 @@ App.createModule('form',(function (app,$) {
 	function bindGlobalHandlers () {
 		// get the form contents data
 		$saveBtn.on('click',function () {
-			var formData 	= cloneObject(getFormData());
-			console.log(formData);
-			// send the data
-			Request.send(formData,onSendSuccess,onSendError);
+			if ( !Editor.hasError() ) {
+				var formData 	= cloneObject(getFormData());
+				console.log('data to send:');
+				console.log(formData);
+				// send the data
+				swal({
+					type 	: 'info',
+					title   : 'Saving form...',
+					allowEscapeKey : false,
+					showConfirmButton : false
+				});
+				Editor.closeEditor();
+				Request.send(formData,onSendSuccess,onSendError);
+			}			
 		});
 		// clears the form contents and data
 		$clearBtn.on('click',clearFormContent);
@@ -1674,6 +1736,7 @@ App.createModule('form',(function (app,$) {
 
 	// clears the form content
 	function clearFormContent () {
+		Editor.reset();
 		getContentObjects().forEach(function (_section) {
 			_section.remove();
 		});
@@ -1730,15 +1793,38 @@ App.createModule('form',(function (app,$) {
 			console.log(data);
 			form.data.id = data.id;
 			$formActions.addClass('is-update');
+			swal({
+				type 	: 'success',
+				title   : 'The form was successfuly saved!',
+				timer 	: 2000
+			});
 		} else {
-			throw new Error('The form was not saved');
+			swal({
+				type 	: 'error',
+				title   : 'The form was not saved due to an error.',
+				text 	: data.message.config[0],
+				confirmButtonText : 'Ok'
+			});
 		}
 		
 	}	
 
 	// handles sent data error
-	function onSendError (data) {
-		// body...
+	function onSendError (response) {
+		if ( response.responseJSON.message ) {
+			swal({
+				type 	: 'error',
+				title   : 'The form was not saved due to error.',
+				text 	: response.responseJSON.message.config[0],
+				confirmButtonText : 'Ok'
+			});
+		} else {
+			swal({
+				type 	: 'error',
+				title   : 'An unknown error has occured. The form was not saved.',
+				confirmButtonText : 'Ok'
+			});
+		}
 	}
 
 

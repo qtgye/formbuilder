@@ -22,6 +22,8 @@ App.createModule('editor',(function (app,$) {
 		editors = {},
 		editorTemplate,
 		editorClicked,
+		hasError,
+		errorEditor,
 		currentOpen, // holds the data-id of the open editor
 
 		$editorGuide;
@@ -43,6 +45,7 @@ App.createModule('editor',(function (app,$) {
 
 		self.$parent 	= object.$el;
 		self.$el 		= $(tmpl(editorTemplate,editorData));
+		self.$optionsEl = self.$el.find('textarea[name="options"]');
 		self.$form 		= self.$el.find('form');
 		self.$close 	= self.$el.find('.editor-close');
 
@@ -55,12 +58,44 @@ App.createModule('editor',(function (app,$) {
 		// opens the editor
 		function open () {
 			module.closeEditor();
-			self.$parent.addClass('has-open-editor');
-			currentOpen = self.id;
+			if ( !hasError ) {				
+				self.$parent.addClass('has-open-editor');
+				currentOpen = self.id;
+			}			
 		}
 		// closes the editor
 		function close () {
-			self.$parent.removeClass('has-open-editor');
+			// validate options before closing;
+			if ( object.data.isRadiobox || object.data.isSwitch || object.data.isSelect ) {
+				var formDataString = self.$form.serialize(),
+					optionsVal = self.$optionsEl.val().split(/[\r\n]/),
+					isValid;
+				isValid = optionsVal.length >= 2 &&
+						  optionsVal.every(function (item) {
+						  	return item.match(/[\w\d\s]+,[\w\d\s]+/);
+						  });
+				if ( !isValid ) {
+					swal({
+						title 				: 'Oops!',
+						text 				: "Options must have at least 2 pairs of valid label/vale",
+						type 				: "error",
+						confirmButtonText 	: "Ok"
+					});
+					hasError 	= true;
+					errorEditor = self.id; 
+				} else {
+					self.$parent.removeClass('has-open-editor');
+					currentOpen = null;
+					if ( hasError &&  errorEditor == self.id ) {
+						hasError 	= false;
+						errorEditor = null; 
+					}
+				}
+			} else {
+				self.$parent.removeClass('has-open-editor');
+				currentOpen = null;
+			}
+			
 		}
 		// toggles the editor
 		function toggle () {
@@ -174,9 +209,23 @@ App.createModule('editor',(function (app,$) {
 	// closes the current editor
 	function closeEditor () {
 		if ( currentOpen ) {
-			editors[currentOpen].close();
-			currentOpen = null;
+			editors[currentOpen].close();			
 		}
+	}
+
+	// checks if there is an open editor
+	function hasOpenEditor () {
+		return currentOpen ? true : false;
+	}
+
+	// resets the currentOpen editor
+	function reset () {
+		currentOpen = null;
+	}
+
+	// checks if there is an error
+	function editorHasError () {
+		return hasError;
 	}
 
 	// bind event handlers
@@ -198,6 +247,9 @@ App.createModule('editor',(function (app,$) {
 	module.create 			= create;
 	module.closeEditor		= closeEditor;
 	module.editorClicked	= false;
+	module.hasOpenEditor 	= hasOpenEditor;
+	module.reset 			= reset;
+	module.hasError 		= editorHasError;
 
 
 	// define module init
