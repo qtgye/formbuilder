@@ -40,7 +40,7 @@
 
 					<div class="form-actions js-form-actions pull-right">
 						<div class="btn-group form-actions-new">
-							<div class="btn btn-primary form-save-btn js-form-save">SAVE</div>
+							<div class="btn btn-success form-save-btn js-form-save">SAVE</div>
 							<div class="btn btn-default form-clear-btn js-form-clear">CLEAR</div>	
 						</div>
 						<div class="btn-group form-actions-update">
