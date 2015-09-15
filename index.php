@@ -7,6 +7,7 @@
 	<!-- LIB STYLESHEETS -->
 	<link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="lib/sweetalert/dist/sweetalert.css">
 
 	<!-- CUSTOM STYLESHEETS -->
 	<link rel="stylesheet" href="css/style.css">
