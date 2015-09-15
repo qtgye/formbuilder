@@ -190,6 +190,10 @@ li {
 		overflow: hidden;
 	}
 
+		.js-edit-form {
+			margin-right: 10px;
+		}
+
 	.form-content {
 		min-height: 100px;
 		padding: 5px;
@@ -294,7 +298,7 @@ li {
 
 		.field-peg {
 			display: none;
-			padding: 5px 20px;
+			padding: 5px 10px;
 			border-radius: 3px;
 			background: lightGreen;
 			cursor: move;
@@ -400,7 +404,6 @@ li {
 }
 
 	.editor-container {
-		max-height: 400px;	
 		position: relative;
 		overflow-y: auto;
 	}

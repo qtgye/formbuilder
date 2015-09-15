@@ -48,11 +48,16 @@ App.createModule('editor',(function (app,$) {
 		self.$optionsEl = self.$el.find('textarea[name="options"]');
 		self.$form 		= self.$el.find('form');
 		self.$close 	= self.$el.find('.editor-close');
+		self.$container = self.$el.find('.editor-container');
 
 		self.$el.css({
 			width: $editorGuide.width(),
 			top: $editorGuide.offset().top,
 			left: $editorGuide.offset().left
+		});
+
+		self.$container.css({
+			'max-height' : app.$window.height()-120
 		});
 
 		// opens the editor
@@ -231,7 +236,7 @@ App.createModule('editor',(function (app,$) {
 	// bind event handlers
 	function bindHandlers () {
 		
-		app.$body.on('click',function () {
+		app.$html.on('click',function () {
 			if ( !module.editorClicked ) {
 				closeEditor();
 			}

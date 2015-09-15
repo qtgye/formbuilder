@@ -53,7 +53,7 @@
 
 			</div>
 			
-			<div class="col-md-2">
+			<div class="col-md-1 clearfix">
 				
 				<div class="fields-list-guide js-fields-list-guide">
 				</div>
@@ -79,7 +79,7 @@
 
 			</div>
 
-			<div class="col-md-4 clearfix editor-guide js-editor-guide">
+			<div class="col-md-5 clearfix editor-guide js-editor-guide">
 				
 			</div>
 
