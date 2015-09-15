@@ -206,7 +206,8 @@ App.createModule('defaults',(function (app,$) {
 			showif 			: '',
 			hideif 			: '',
 			options 		: [
-								{label: 'Option1', value: 'option1'}
+								{label: 'Option1', value: 'option1'},
+								{label: 'Option2', value: 'option2'}
 							  ]
 		},
 		'radiobox' 		: {
@@ -219,7 +220,8 @@ App.createModule('defaults',(function (app,$) {
 			showif 			: '',
 			hideif 			: '',
 			options 		: [
-								{label: 'Option1', value: 'option1'}
+								{label: 'Option1', value: 'option1'},
+								{label: 'Option2', value: 'option2'}
 							  ]
 		},
 		'checkbox' 				: {
@@ -234,7 +236,8 @@ App.createModule('defaults',(function (app,$) {
 			showif 			: '',
 			hideif 			: '',
 			options 		: [
-								{label: 'Option1', value: 'option1'}
+								{label: 'Option1', value: 'option1'},
+								{label: 'Option2', value: 'option2'}
 							  ]
 		}
 	},
@@ -244,7 +247,7 @@ App.createModule('defaults',(function (app,$) {
 			description : '',
 			showif 		: "",
 			hideif 		: "",
-			isBatch 	: true,
+			isBatch 	: false,
 			fields 		: []
 	},
 

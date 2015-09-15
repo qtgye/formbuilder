@@ -316,11 +316,11 @@
 								<div class="prop-col">
 									<label for="<%=id%>_isAvailable_radio_true">
 										<input <%= ( data[key] === true ? 'checked' : '' ) %> type="radio" name="isAvailable" value="true" id="<%=id%>_isAvailable_radio_true">
-										True
+										Yes
 									</label>
 									<label for="<%=id%>_isAvailable_radio_false">
 										<input <%= ( data[key] === false ? 'checked' : '' ) %> type="radio" name="isAvailable" value="false" id="<%=id%>_isAvailable_radio_false">
-										False
+										No
 									</label>
 								</div>																
 							</div>
@@ -359,11 +359,11 @@
 								<div class="prop-col">
 									<label for="<%=id%>_required_radio_true">
 										<input <%= ( data[key] === true ? 'checked' : '' ) %> type="radio" name="required" value="true" id="<%=id%>_required_radio_true">
-										True
+										Yes
 									</label>
 									<label for="<%=id%>_required_radio_false">
 										<input <%= ( data[key] === false ? 'checked' : '' ) %> type="radio" name="required" value="false" id="<%=id%>_required_radio_false">
-										False
+										No
 									</label>
 								</div>																
 							</div>
@@ -413,11 +413,11 @@
 								<div class="prop-col">
 									<label for="<%=id%>_allowFuture_radio_true">
 										<input <%= ( data[key] === true ? 'checked' : '' ) %> type="radio" name="allowFuture" value="true" id="<%=id%>_allowFuture_radio_true">
-										True
+										Yes
 									</label>
 									<label for="<%=id%>_allowFuture_radio_false">
 										<input <%= ( data[key] === false ? 'checked' : '' ) %> type="radio" name="allowFuture" value="false" id="<%=id%>_allowFuture_radio_false">
-										False
+										No
 									</label>
 								</div>																
 							</div>
@@ -456,11 +456,11 @@
 								<div class="prop-col">
 									<label for="<%=id%>_multiple_radio_true">
 										<input <%= ( data[key] === true ? 'checked' : '' ) %> type="radio" name="multiple" value="true" id="<%=id%>_multiple_radio_true">
-										True
+										Yes
 									</label>
 									<label for="<%=id%>_multiple_radio_false">
 										<input <%= ( data[key] === false ? 'checked' : '' ) %> type="radio" name="multiple" value="false" id="<%=id%>_multiple_radio_false">
-										False
+										No
 									</label>
 								</div>																
 							</div>
@@ -508,11 +508,11 @@
 								<div class="prop-col">
 									<label for="<%=id%>_isBatch_radio_true">
 										<input <%= ( data[key] === true ? 'checked' : '' ) %> type="radio" name="isBatch" value="true" id="<%=id%>_isBatch_radio_true">
-										True
+										Yes
 									</label>
 									<label for="<%=id%>_isBatch_radio_false">
 										<input <%= ( data[key] === false ? 'checked' : '' ) %> type="radio" name="isBatch" value="false" id="<%=id%>_isBatch_radio_false">
-										False
+										No
 									</label>
 								</div>																
 							</div>
@@ -599,9 +599,13 @@
 									<label for="">Tags :</label>
 								</div>
 								<div class="prop-col">
-									<input type="text" name="tags" value="<%= data[key] %>">
+									<textarea name="tags" rows="5"><%= data[key] %></textarea>
 								</div>								
 							</div>
+						<% } %>
+
+						<% if ( true ) { %>
+
 						<% } %>
 					<% }; %>
 				</form>
