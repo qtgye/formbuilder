@@ -52,7 +52,7 @@ App.createModule('request',(function (app,$) {
 		return $.ajax({
 			url 		: url,
 			method 		: 'POST',
-			contentType : false,
+			dataType 	: 'json',
 			data 		: data,
 			success 	: successCallback,
 			error 		: errorCallback

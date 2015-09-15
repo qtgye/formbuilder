@@ -359,7 +359,7 @@ App.createModule('request',(function (app,$) {
 		return $.ajax({
 			url 		: url,
 			method 		: 'POST',
-			contentType : false,
+			dataType 	: 'json',
 			data 		: data,
 			success 	: successCallback,
 			error 		: errorCallback
@@ -1809,11 +1809,13 @@ App.createModule('form',(function (app,$) {
 	function onSendSuccess (data) {
 		if ( data.flag ) {
 			console.log(data);
-			form.data.id = data.id;
+			if ( data.data ) {
+				form.data.id = data.data.id;
+			}			
 			$formActions.addClass('is-update');
 			swal({
 				type 	: 'success',
-				title   : 'The form was successfuly saved!',
+				title   : data.message,
 				timer 	: 2000
 			});
 		} else {
