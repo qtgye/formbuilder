@@ -161,7 +161,7 @@
 					<h5>Single Line</h5>
 				</div>
 				<div class="field-content js-drag-handle js-field-handle">
-					<label><%=label%></label>
+					<label class="<%=(required?'is-required':'')%>"><%=label%></label>
 					<input type="text" id="<%=key%>" name="<%=key%>" placeholder="<%=placeholder%>" value="<%=value%>" <%=( required? 'required' : '' )%> >
 					<span class="help-block field-description"><%=description%></span>
 				</div>	
@@ -176,7 +176,7 @@
 					<h5>Date</h5>
 				</div>
 				<div class="field-content js-drag-handle js-field-handle">
-					<label><%=label%></label>
+					<label class="<%=(required?'is-required':'')%>"><%=label%></label>
 					<input type="date" id="<%=key%>" name="<%=key%>" <%=( required? 'required' : '' )%> >
 					<span class="help-block field-description"><%=description%></span>
 				</div>		
@@ -191,7 +191,7 @@
 					<h5>Entity</h5>
 				</div>
 				<div class="field-content js-drag-handle js-field-handle">
-					<label><%=label%></label>
+					<label class="<%=(required?'is-required':'')%>"><%=label%></label>
 					<span class="help-block field-description"><%=description%></span>
 				</div>	
 				<i class="disable-icon fa fa-eye-slash fa-lg"></i>					
@@ -205,7 +205,7 @@
 					<h5>Multiline</h5>
 				</div>
 				<div class="field-content js-drag-handle js-field-handle">
-					<label><%=label%></label>
+					<label class="<%=(required?'is-required':'')%>"><%=label%></label>
 					<textarea id="<%=key%>" name="<%=key%>" placeholder="<%=placeholder%>" <%= (required?'required':'') %> ><%=value%></textarea>
 					<span class="help-block field-description"><%=description%></span>
 				</div>	
@@ -220,7 +220,7 @@
 					<h5>Selection</h5>
 				</div>
 				<div class="field-content js-drag-handle js-field-handle">
-					<label><%=label%></label>
+					<label class="<%=(required?'is-required':'')%>"><%=label%></label>
 					<select id="<%=key%>" name="<%=key%>" <%= ( multiple ? 'multiple' : '' ) %> >
 						<% options.forEach(function(option,key){ %>
 				    		<option value="<%=option.value%>" <%= ( value.match(new RegExp(option.value,'i')) || ( !value && key === 0 ) ? 'selected' : '' ) %> ><%=option.label%></option>
@@ -239,7 +239,7 @@
 					<h5>Radio Box</h5>
 				</div>
 				<div class="field-content js-drag-handle js-field-handle">
-					<label><%=label%></label>
+					<label class="<%=(required?'is-required':'')%>"><%=label%></label>
 					<span class="help-block field-description"><%=description%></span>
 					<% options.forEach(function(option,key){ %>
 						<label>
@@ -258,7 +258,7 @@
 					<h5>Checkbox</h5>
 				</div>
 				<div class="field-content js-drag-handle js-field-handle">
-					<label><%=label%></label>
+					<label class="<%=(required?'is-required':'')%>"><%=label%></label>
 					<span class="help-block field-description"><%=description%></span>
 					<% options.forEach(function(option,key) { %>
 						<label>
@@ -294,8 +294,6 @@
 				</li>
 			<% }); %>			
 		</script>
-
-		
 
 		<!-- editor template -->
 		<script class="editor-template" id="tmpl-editor" type="text/html">

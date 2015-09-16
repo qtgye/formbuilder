@@ -348,6 +348,17 @@ li {
 		display: block;
 	}
 
+label.is-required {
+	position: relative;
+}
+label.is-required:before {
+	content: '*';
+	color: red;
+	font-weight: bolder;
+	position: absolute;
+    left: -0.75em;
+}
+
 
 /* Action buttons styles */
 .actions {
