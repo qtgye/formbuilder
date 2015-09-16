@@ -49,6 +49,7 @@ App.createModule('editor',(function (app,$) {
 		self.$form 		= self.$el.find('form');
 		self.$close 	= self.$el.find('.editor-close');
 		self.$container = self.$el.find('.editor-container');
+		self.$value 	= self.$el.find('[data-key="value"]');
 		// allowMultiple based elems
 		self.$allowMultiple = self.$el.find('[data-key="multiple"]');
 		self.$min 			= self.$el.find('[data-key="min"]');
@@ -58,6 +59,11 @@ App.createModule('editor',(function (app,$) {
 		var $isSwitch = self.$el.find('[data-key="isSwitch"]');
 		if ( $isSwitch.length > 0 ) {
 			$isSwitch.prependTo(self.$form);
+		}
+		// ensure min/max are after the default value
+		if ( self.$max.length > 0 )  {
+			self.$max.insertAfter(self.$value);
+			self.$min.insertAfter(self.$value);
 		}
 
 		self.$el.css({

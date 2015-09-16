@@ -184,6 +184,15 @@ App.createModule('form',(function (app,$) {
 				newFormData.description 	= data.data.description;
 				newFormData.tags 			= data.data.tags;
 				newFormData.config			= data.data.config;
+				// look for select with multiple == false to add min/max
+				newFormData.config.forEach(function (sectionData,sIndex) {
+					sectionData.fields.forEach(function (fieldData,fIndex) {
+						if ( ('multiple' in fieldData) && fieldData.multiple === false ) {
+							fieldData.min = 0;
+							fieldData.max = 0;
+						}
+					});
+				});
 				console.log('new form data:');
 				console.log(newFormData);
 				replaceForm(newFormData);
