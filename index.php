@@ -310,7 +310,7 @@
 					
 					<% for ( key in data ) { %>
 						<% if ( key == 'isAvailable' ) {%>
-							<div class="prop" data-key"isAvailable">
+							<div class="prop" data-key="isAvailable">
 								<div class="prop-col">
 									<label for="">Show on start :</label>
 								</div>
@@ -326,7 +326,7 @@
 								</div>																
 							</div>
 						<% } else if ( key == 'name' ) { %>
-							<div class="prop" data-key="name">
+							<div class="prop" data-key=="name">
 								<div class="prop-col">
 									<label>Name :</label>
 								</div>
@@ -335,7 +335,7 @@
 								</div>								
 							</div>
 						<% } else if ( key == 'title' ) { %>
-							<div class="prop" data-key="title">
+							<div class="prop" data-key=="title">
 								<div class="prop-col">
 									<label>Title :</label>
 								</div>
@@ -344,7 +344,7 @@
 								</div>								
 							</div>
 						<% } else if ( key == 'key' ) { %>
-							<div class="prop" data-key"key">
+							<div class="prop" data-key="key">
 								<div class="prop-col">
 									<label for="">Key :</label>
 								</div>
@@ -353,7 +353,7 @@
 								</div>								
 							</div>
 						<% } else if ( key == 'required' ) {%>
-							<div class="prop" data-key"required">
+							<div class="prop" data-key="required">
 								<div class="prop-col">
 									<label for="">Required :</label>	
 								</div>
@@ -369,7 +369,7 @@
 								</div>																
 							</div>
 						<% } else if ( key == 'label' ) { %>
-							<div class="prop" data-key"label">
+							<div class="prop" data-key="label">
 								<div class="prop-col">
 									<label for="">Label :</label>
 								</div>
@@ -378,7 +378,7 @@
 								</div>								
 							</div>
 						<% } else if ( key == 'placeholder' ) { %>
-							<div class="prop" data-key"placeholder">
+							<div class="prop" data-key="placeholder">
 								<div class="prop-col">
 									<label for="">Placeholder :</label>
 								</div>
@@ -387,7 +387,7 @@
 								</div>								
 							</div>
 						<% } else if ( key == 'value' ) { %>
-							<div class="prop" data-key"value">
+							<div class="prop" data-key="value">
 								<div class="prop-col">
 									<label for="">Default value :</label>
 								</div>
@@ -402,7 +402,7 @@
 								</div>								
 							</div>		
 						<% } else if ( key == 'allowFuture' ) { %>
-							<div class="prop" data-key"allowFuture">
+							<div class="prop" data-key="allowFuture">
 								<div class="prop-col">
 									<label for="">Allow Future?</label>
 								</div>
@@ -418,7 +418,7 @@
 								</div>																
 							</div>
 						<% } else if ( key == 'format' ) { %>
-							<div class="prop" data-key"format">
+							<div class="prop" data-key="format">
 								<div class="prop-col">
 									<label for="">Format :</label>
 								</div>
@@ -427,7 +427,7 @@
 								</div>								
 							</div>
 						<% } else if ( key == 'min' ) { %>
-							<div class="prop" data-key"min">
+							<div class="prop" data-key="min">
 								<div class="prop-col">
 									<label for="">Min :</label>
 								</div>
@@ -436,7 +436,7 @@
 								</div>								
 							</div>
 						<% } else if ( key == 'max' ) { %>
-							<div class="prop" data-key"max">
+							<div class="prop" data-key="max">
 								<div class="prop-col">
 									<label for="">Max :</label>
 								</div>
@@ -445,7 +445,7 @@
 								</div>								
 							</div>
 						<% } else if ( key == 'multiple' ) {%>
-							<div class="prop" data-key"multiple">
+							<div class="prop" data-key="multiple">
 								<div class="prop-col">
 									<label for="">Allow multiple :</label>	
 								</div>
@@ -461,7 +461,7 @@
 								</div>																
 							</div>
 						<% } else if ( key == 'description' ) { %>
-							<div class="prop" data-key"description">
+							<div class="prop" data-key="description">
 								<div class="prop-col">
 									<label for="">Description :</label>
 								</div>
@@ -470,7 +470,7 @@
 								</div>								
 							</div>
 						<% } else if ( key == 'showif' ) { %>
-							<div class="prop" data-key"showif">
+							<div class="prop" data-key="showif">
 								<div class="prop-col">
 									<label for="">Show if :</label>
 								</div>
@@ -479,7 +479,7 @@
 								</div>								
 							</div>
 						<% } else if ( key == 'hideif' ) { %>
-							<div class="prop" data-key"hideif">
+							<div class="prop" data-key="hideif">
 								<div class="prop-col">
 									<label for="">Hide if :</label>
 								</div>
@@ -488,7 +488,7 @@
 								</div>								
 							</div>
 						<% } else if ( key == 'restriction' ) { %>
-							<div class="prop" data-key"restriction">
+							<div class="prop" data-key="restriction">
 								<div class="prop-col">
 									<label for="">Restriction :</label>
 								</div>
@@ -497,7 +497,7 @@
 								</div>								
 							</div>
 						<% } else if ( key == 'isBatch' ) {%>
-							<div class="prop" data-key"isBatch">
+							<div class="prop" data-key="isBatch">
 								<div class="prop-col">
 									<label for="">Is Batch :</label>	
 								</div>
@@ -513,7 +513,7 @@
 								</div>																
 							</div>
 						<% } else if ( key == 'isRadiobox' || key == 'isSwitch' ) {%>
-							<div class="prop" data-key"isSwitch">
+							<div class="prop" data-key="isSwitch">
 								<div class="prop-col">
 									<label for="">Use Switch Layout :</label>	
 								</div>
@@ -529,7 +529,7 @@
 								</div>																
 							</div>
 						<% } else if ( key == 'options' ) { %>
-							<div class="prop" data-key"options">
+							<div class="prop" data-key="options">
 								<div class="prop-col">
 									<label for="">Options :</label>
 								</div>
@@ -538,7 +538,7 @@
 								</div>								
 							</div>
 						<% } else if ( key == 'user_id' ) { %>
-							<div class="prop" data-key"user_id">
+							<div class="prop" data-key="user_id">
 								<div class="prop-col">
 									<label for="">User ID :</label>
 								</div>
@@ -553,7 +553,7 @@
 								</div>								
 							</div>
 						<% } else if ( key == 'account_id' ) { %>
-							<div class="prop" data-key"account_id">
+							<div class="prop" data-key="account_id">
 								<div class="prop-col">
 									<label for="">Account ID :</label>
 								</div>
@@ -568,7 +568,7 @@
 								</div>								
 							</div>
 						<% } else if ( key == 'status' ) { %>
-							<div class="prop" data-key"status">
+							<div class="prop" data-key="status">
 								<div class="prop-col">
 									<label for="">Status :</label>
 								</div>
@@ -590,7 +590,7 @@
 								</div>								
 							</div>
 						<% } else if ( key == 'tags' ) { %>
-							<div class="prop" data-key"tags">
+							<div class="prop" data-key="tags">
 								<div class="prop-col">
 									<label for="">Tags :</label>
 								</div>

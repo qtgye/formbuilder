@@ -96,6 +96,11 @@ App.createModule('sections',(function (app,$) {
 				if ( fieldData.id ) {
 					delete fieldData.id;
 				}
+				// process min/max
+				if ( 'multiple' in fieldData && fieldData.multiple === false ) {
+					delete fieldData.min;
+					delete fieldData.max;
+				}
 				fieldsData[index] = fieldData;
 			});
 

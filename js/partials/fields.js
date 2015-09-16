@@ -104,10 +104,10 @@ App.createModule('fields',(function (app,$) {
 
 			// replace isSwitch/isRadio with selected property
 			if ( 'isSwitch' in newData ) {
-				if ( newData.isSwitch === true || self.data.isRadiobox  ) {
+				if ( newData.isSwitch === true || self.data.isRadiobox === false  ) {
 					self.data.isSwitch = true;
 					delete self.data.isRadiobox;
-				} else if ( newData.isSwitch === false || self.data.isSwitch ) {
+				} else if ( newData.isSwitch === false || self.data.isRadiobox === true ) {
 					self.data.isRadiobox = true;
 					delete self.data.isSwitch;
 				}

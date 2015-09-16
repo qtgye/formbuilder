@@ -637,6 +637,16 @@ App.createModule('editor',(function (app,$) {
 		self.$form 		= self.$el.find('form');
 		self.$close 	= self.$el.find('.editor-close');
 		self.$container = self.$el.find('.editor-container');
+		// allowMultiple based elems
+		self.$allowMultiple = self.$el.find('[data-key="multiple"]');
+		self.$min 			= self.$el.find('[data-key="min"]');
+		self.$max 			= self.$el.find('[data-key="max"]');
+
+		// ensure isSwitch is always on top
+		var $isSwitch = self.$el.find('[data-key="isSwitch"]');
+		if ( $isSwitch.length > 0 ) {
+			$isSwitch.prependTo(self.$form);
+		}
 
 		self.$el.css({
 			width: $editorGuide.width(),
@@ -727,6 +737,17 @@ App.createModule('editor',(function (app,$) {
 				newData[pair.name] = pair.value;
 			});			
 
+			// show/hide min/max acc. to allowMultiple
+			if ( ('multiple' in newData) ) {
+				if ( newData.multiple === true ) {
+					self.$min.add(self.$max).toggle(true);
+				}
+				else {
+					self.$min.add(self.$max).toggle(false);
+				}
+			}
+
+
 			return newData;
 			
 		}
@@ -740,6 +761,9 @@ App.createModule('editor',(function (app,$) {
 
 		// add tp store
 		editors[self.id] = self;
+
+		// init extractData to trigger min/max visibility
+		extractData();
 
 		return self;
 	}
@@ -978,10 +1002,10 @@ App.createModule('fields',(function (app,$) {
 
 			// replace isSwitch/isRadio with selected property
 			if ( 'isSwitch' in newData ) {
-				if ( newData.isSwitch === true || self.data.isRadiobox  ) {
+				if ( newData.isSwitch === true || self.data.isRadiobox === false  ) {
 					self.data.isSwitch = true;
 					delete self.data.isRadiobox;
-				} else if ( newData.isSwitch === false || self.data.isSwitch ) {
+				} else if ( newData.isSwitch === false || self.data.isRadiobox === true ) {
 					self.data.isRadiobox = true;
 					delete self.data.isSwitch;
 				}
@@ -1236,6 +1260,11 @@ App.createModule('sections',(function (app,$) {
 				var fieldData = cloneObject(_field.data);
 				if ( fieldData.id ) {
 					delete fieldData.id;
+				}
+				// process min/max
+				if ( 'multiple' in fieldData && fieldData.multiple === false ) {
+					delete fieldData.min;
+					delete fieldData.max;
 				}
 				fieldsData[index] = fieldData;
 			});
