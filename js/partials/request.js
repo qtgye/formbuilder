@@ -51,9 +51,10 @@ App.createModule('request',(function (app,$) {
 		var url = POST.url + ( data.id ? '/' + data.id : '');
 		return $.ajax({
 			url 		: url,
+			contentType : 'application/json',
 			method 		: 'POST',
 			dataType 	: 'json',
-			data 		: data,
+			data 		: JSON.stringify(data),
 			success 	: successCallback,
 			error 		: errorCallback
 		});
