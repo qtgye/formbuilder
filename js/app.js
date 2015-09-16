@@ -746,10 +746,10 @@ App.createModule('editor',(function (app,$) {
 			// show/hide min/max acc. to allowMultiple
 			if ( ('multiple' in newData) ) {
 				if ( newData.multiple === true ) {
-					self.$min.add(self.$max).toggle(true);
+					self.$min.add(self.$max).removeClass('hidden');
 				}
 				else {
-					self.$min.add(self.$max).toggle(false);
+					self.$min.add(self.$max).addClass('hidden');
 				}
 			}
 
