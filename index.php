@@ -177,7 +177,7 @@
 				</div>
 				<div class="field-content js-drag-handle js-field-handle">
 					<label class="<%=(required?'is-required':'')%>"><%=label%></label>
-					<input type="date" id="<%=key%>" name="<%=key%>" <%=( required? 'required' : '' )%> >
+					<input type="date" value="<%=value%>" id="<%=key%>" name="<%=key%>" <%=( required? 'required' : '' )%> >
 					<span class="help-block field-description"><%=description%></span>
 				</div>		
 				<i class="disable-icon fa fa-eye-slash fa-lg"></i>				
@@ -395,7 +395,7 @@
 									<% } else if ( type.match(/(multiline)/) ) { %>
 										<textarea name="value" rows="5"><%= data[key] %></textarea>
 									<% } else if ( type.match(/(date)/) ) { %>
-										<input type="date" name="<%=key%>">
+										<input type="date" name="<%=key%>" value="<%=data[key]%>">
 									<% } %>
 								</div>								
 							</div>		
