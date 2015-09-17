@@ -1943,6 +1943,9 @@ App.createModule('form',(function (app,$) {
 		bindGlobalHandlers();
 		initializeFormLoader();
 
+		// create initial form
+		module.create(cloneObject(Defaults.form));
+
 		// loaded template if id is present
 		var pathname = window.location.pathname;
 		if ( pathname.length > 0 ) {
@@ -1953,11 +1956,7 @@ App.createModule('form',(function (app,$) {
 				title 				: 'Loading template...',
 				showConfirmButton 	: false
 			});	
-		} else {
-			// create initial form
-			module.create(cloneObject(Defaults.form));
 		}
-
 	};
 
 	// retrn module object
