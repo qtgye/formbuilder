@@ -350,7 +350,25 @@ App.createModule('request',(function (app,$) {
 					}).join('&');
 			}
 		}
-	};
+	},
+
+	nativeRequest = (function () {
+		var request;
+		if (window.XMLHttpRequest) { // Mozilla, Safari, ...
+		  request = new XMLHttpRequest();
+		} else if (window.ActiveXObject) { // IE
+		  try {
+		    request = new ActiveXObject('Msxml2.XMLHTTP');
+		  } 
+		  catch (e) {
+		    try {
+		      request = new ActiveXObject('Microsoft.XMLHTTP');
+		    } 
+		    catch (e) {}
+		  }
+		}
+		return request;
+	})();
 
 	// define private functions
 	// ====================================================================================
@@ -358,16 +376,52 @@ App.createModule('request',(function (app,$) {
 	// sends a request
 	function send (data,successCallback,errorCallback) {
 		var url = POST.url + ( data.id ? '/' + data.id : '');
+		// process data before sending
+		var jsonString = JSON.stringify(data);
+		jsonString = jsonString.replace(/\"\d+\"/g,function (match) {
+			return match.replace('"','','g');
+		});
+
 		return $.ajax({
 			url 		: url,
 			contentType : 'application/json',
 			method 		: 'POST',
 			dataType 	: 'json',
-			data 		: JSON.stringify(data),
+			data 		: jsonString,
 			success 	: successCallback,
 			error 		: errorCallback
 		});
 	}
+
+	// sends a request using native xmlHTTP request
+	// function nativeSend (data,successCallback,errorCallback) {
+	// 	var url = POST.url + ( data.id ? '/' + data.id : '');
+		
+
+	// 	nativeRequest.addEventListener("load", function (r) {
+	// 		var jsonData = JSON.parse(r.originalTarget.responseText);
+	// 		if ( jsonData.flag ) {
+	// 			successCallback(jsonData);
+	// 		} else {
+	// 			errorCallback(jsonData);
+	// 		}			
+	// 	});
+	// 	nativeRequest.addEventListener("error", function (response) {
+	// 		console.log(response);
+	// 	});
+
+	// 	// process data before sending
+	// 	var jsonString = JSON.stringify(data);
+	// 	// jsonString = jsonString.replace(/\"\d+\"/g,('$&').replace('\"',''));
+	// 	jsonString = jsonString.replace(/\"\d+\"/g,function (match) {
+	// 		return match.replace('"','','g');
+	// 	});
+	// 	console.log(jsonString);
+
+	// 	nativeRequest.open('POST', url, true);
+	// 	nativeRequest.setRequestHeader('Content-Type', 'application/json');
+	// 	nativeRequest.send(jsonString);
+	// }
 
 	// gets a list of latest forms
 	function get (successCallback,errorCallback) {
@@ -395,9 +449,10 @@ App.createModule('request',(function (app,$) {
 	// define public application interface
 	// ====================================================================================
 
-	module.send 	= send;
-	module.get 		= get;
-	module.getForm 	= getForm;
+	module.send 		= send;
+	// module.nativeSend 	= nativeSend;
+	module.get 			= get;
+	module.getForm 		= getForm;
 
 	// define module init
 	// ====================================================================================
@@ -1878,11 +1933,24 @@ App.createModule('form',(function (app,$) {
 
 	// handles sent data error
 	function onSendError (response) {
-		if ( response.responseJSON.message ) {
+		console.log(response);
+		if ( typeof response.message == 'object' ) {
+			var text = [];
+			Object.keys(response.message).forEach(function (key) {
+				text.push(response.message[key]);
+			});
+			text = text.join('\r\n');
 			swal({
 				type 	: 'error',
 				title   : 'The form was not saved due to error.',
-				text 	: response.responseJSON.message.config[0],
+				text 	: text,
+				confirmButtonText : 'Ok'
+			});
+		} else if ( typeof response.message == 'string' ) {
+			swal({
+				type 	: 'error',
+				title   : 'The form was not saved due to error.',
+				text 	: response.message,
 				confirmButtonText : 'Ok'
 			});
 		} else {

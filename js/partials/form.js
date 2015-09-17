@@ -392,11 +392,24 @@ App.createModule('form',(function (app,$) {
 
 	// handles sent data error
 	function onSendError (response) {
-		if ( response.responseJSON.message ) {
+		console.log(response);
+		if ( typeof response.message == 'object' ) {
+			var text = [];
+			Object.keys(response.message).forEach(function (key) {
+				text.push(response.message[key]);
+			});
+			text = text.join('\r\n');
 			swal({
 				type 	: 'error',
 				title   : 'The form was not saved due to error.',
-				text 	: response.responseJSON.message.config[0],
+				text 	: text,
+				confirmButtonText : 'Ok'
+			});
+		} else if ( typeof response.message == 'string' ) {
+			swal({
+				type 	: 'error',
+				title   : 'The form was not saved due to error.',
+				text 	: response.message,
 				confirmButtonText : 'Ok'
 			});
 		} else {

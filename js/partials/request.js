@@ -41,7 +41,25 @@ App.createModule('request',(function (app,$) {
 					}).join('&');
 			}
 		}
-	};
+	},
+
+	nativeRequest = (function () {
+		var request;
+		if (window.XMLHttpRequest) { // Mozilla, Safari, ...
+		  request = new XMLHttpRequest();
+		} else if (window.ActiveXObject) { // IE
+		  try {
+		    request = new ActiveXObject('Msxml2.XMLHTTP');
+		  } 
+		  catch (e) {
+		    try {
+		      request = new ActiveXObject('Microsoft.XMLHTTP');
+		    } 
+		    catch (e) {}
+		  }
+		}
+		return request;
+	})();
 
 	// define private functions
 	// ====================================================================================
@@ -49,16 +67,52 @@ App.createModule('request',(function (app,$) {
 	// sends a request
 	function send (data,successCallback,errorCallback) {
 		var url = POST.url + ( data.id ? '/' + data.id : '');
+		// process data before sending
+		var jsonString = JSON.stringify(data);
+		jsonString = jsonString.replace(/\"\d+\"/g,function (match) {
+			return match.replace('"','','g');
+		});
+
 		return $.ajax({
 			url 		: url,
 			contentType : 'application/json',
 			method 		: 'POST',
 			dataType 	: 'json',
-			data 		: JSON.stringify(data),
+			data 		: jsonString,
 			success 	: successCallback,
 			error 		: errorCallback
 		});
 	}
+
+	// sends a request using native xmlHTTP request
+	// function nativeSend (data,successCallback,errorCallback) {
+	// 	var url = POST.url + ( data.id ? '/' + data.id : '');
+		
+
+	// 	nativeRequest.addEventListener("load", function (r) {
+	// 		var jsonData = JSON.parse(r.originalTarget.responseText);
+	// 		if ( jsonData.flag ) {
+	// 			successCallback(jsonData);
+	// 		} else {
+	// 			errorCallback(jsonData);
+	// 		}			
+	// 	});
+	// 	nativeRequest.addEventListener("error", function (response) {
+	// 		console.log(response);
+	// 	});
+
+	// 	// process data before sending
+	// 	var jsonString = JSON.stringify(data);
+	// 	// jsonString = jsonString.replace(/\"\d+\"/g,('$&').replace('\"',''));
+	// 	jsonString = jsonString.replace(/\"\d+\"/g,function (match) {
+	// 		return match.replace('"','','g');
+	// 	});
+	// 	console.log(jsonString);
+
+	// 	nativeRequest.open('POST', url, true);
+	// 	nativeRequest.setRequestHeader('Content-Type', 'application/json');
+	// 	nativeRequest.send(jsonString);
+	// }
 
 	// gets a list of latest forms
 	function get (successCallback,errorCallback) {
@@ -86,9 +140,10 @@ App.createModule('request',(function (app,$) {
 	// define public application interface
 	// ====================================================================================
 
-	module.send 	= send;
-	module.get 		= get;
-	module.getForm 	= getForm;
+	module.send 		= send;
+	// module.nativeSend 	= nativeSend;
+	module.get 			= get;
+	module.getForm 		= getForm;
 
 	// define module init
 	// ====================================================================================
