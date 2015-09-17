@@ -162,7 +162,7 @@
 				</div>
 				<div class="field-content js-drag-handle js-field-handle">
 					<label class="<%=(required?'is-required':'')%>"><%=label%></label>
-					<input type="text" id="<%=key%>" name="<%=key%>" placeholder="<%=placeholder%>" value="<%=value%>" <%=( required? 'required' : '' )%> >
+					<input class="input-block" type="text" id="<%=key%>" name="<%=key%>" placeholder="<%=placeholder%>" value="<%=value%>" <%=( required? 'required' : '' )%> >
 					<span class="help-block field-description"><%=description%></span>
 				</div>	
 				<i class="disable-icon fa fa-eye-slash fa-lg"></i>		
@@ -206,7 +206,7 @@
 				</div>
 				<div class="field-content js-drag-handle js-field-handle">
 					<label class="<%=(required?'is-required':'')%>"><%=label%></label>
-					<textarea id="<%=key%>" name="<%=key%>" placeholder="<%=placeholder%>" <%= (required?'required':'') %> ><%=value%></textarea>
+					<textarea class="input-block" id="<%=key%>" name="<%=key%>" placeholder="<%=placeholder%>" <%= (required?'required':'') %> ><%=value%></textarea>
 					<span class="help-block field-description"><%=description%></span>
 				</div>	
 				<i class="disable-icon fa fa-eye-slash fa-lg"></i>					
@@ -242,8 +242,8 @@
 					<label class="<%=(required?'is-required':'')%>"><%=label%></label>
 					<span class="help-block field-description"><%=description%></span>
 					<% options.forEach(function(option,key){ %>
-						<label>
-							<input type="radio" name="<%=id%>" value="<%=option.value%>" <%= ( value.match(new RegExp(option.value,'i')) || ( !value && key === 0 ) ? 'checked' : '' ) %> ><%=option.label%>
+						<label class="label-block">
+							<input type="radio" name="<%=id%>" value="<%=option.value%>" <%= ( value.match(new RegExp(option.value,'i')) || ( !value && key === 0 ) ? 'checked' : '' ) %> > <%=option.label%>
 						</label>
 					<% }); %>
 				</div>	
@@ -261,8 +261,8 @@
 					<label class="<%=(required?'is-required':'')%>"><%=label%></label>
 					<span class="help-block field-description"><%=description%></span>
 					<% options.forEach(function(option,key) { %>
-						<label>
-							<input type="checkbox" name="<%=option.key%>" value="<%=option.value%>" <%= ( value.match(new RegExp(option.value,'i')) || ( !value && key === 0 ) ? 'checked' : '' ) %> ><%=option.label%>
+						<label class="label-block">
+							<input type="checkbox" name="<%=option.key%>" value="<%=option.value%>" <%= ( value.match(new RegExp(option.value,'i')) || ( !value && key === 0 ) ? 'checked' : '' ) %> > <%=option.label%>
 						</label>
 					<% }); %>					
 				</div>		
