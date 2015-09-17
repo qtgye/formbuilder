@@ -1654,9 +1654,14 @@ App.createModule('form',(function (app,$) {
 				$el.click(function (e) {
 					e.preventDefault();
 					if ( !formLoader.isFetching ) {
-						$el.addClass('is-loading');
 						fetchedFormId = formId;
+						$el.addClass('is-loading');										
 						Request.getForm(formId,onFetchFormSuccess);
+						swal({
+							type 				: 'info',
+							title 				: 'Loading template...',
+							showConfirmButton 	: false
+						});		
 					}					
 				});
 			});
@@ -1689,6 +1694,11 @@ App.createModule('form',(function (app,$) {
 				console.log(newFormData);
 				replaceForm(newFormData);
 				$formActions.addClass('is-update');
+				swal({
+					type 				: 'success',
+					title 				: 'Template successfuly loaded!',
+					showConfirmButton 	: false
+				});
 			} else {
 				// the form cannot be loaded
 			}			
@@ -1933,8 +1943,21 @@ App.createModule('form',(function (app,$) {
 		defineVariables();
 		bindGlobalHandlers();
 		initializeFormLoader();
-		// create initial form
-		module.create(cloneObject(Defaults.form));
+
+		// loaded template if id is present
+		var pathname = window.location.pathname;
+		if ( pathname ) {
+			var templateId = pathname.slice(1);			
+			Request.getForm(templateId,onFetchFormSuccess);
+			swal({
+				type 				: 'info',
+				title 				: 'Loading template...',
+				showConfirmButton 	: false
+			});	
+		} else {
+			// create initial form
+			module.create(cloneObject(Defaults.form));
+		}
 
 	};
 
