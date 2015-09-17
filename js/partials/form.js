@@ -368,7 +368,8 @@ App.createModule('form',(function (app,$) {
 			swal({
 				type 				: 'success',
 				title 				: 'Template successfuly loaded!',
-				showConfirmButton 	: false
+				showConfirmButton 	: false,
+				timer 				: 2000
 			});
 		} else {
 			// the form cannot be loaded
