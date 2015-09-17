@@ -173,44 +173,7 @@ App.createModule('form',(function (app,$) {
 					}					
 				});
 			});
-		}
-
-		// handles successful form fetch
-		function onFetchFormSuccess (data) {			
-			// prepare new data for replacement
-			var newFormData = {};
-			if ( newFormData ) {				
-				formLoader.reset();
-				newFormData.id 				= fetchedFormId;
-				newFormData.user_id 		= data.data.user_id;		
-				newFormData.account_id 		= data.data.account_id;		
-				newFormData.status 			= data.data.status;		
-				newFormData.title 			= data.data.title;
-				newFormData.description 	= data.data.description;
-				newFormData.tags 			= data.data.tags;
-				newFormData.config			= data.data.config;
-				// look for select with multiple == false to add min/max
-				newFormData.config.forEach(function (sectionData,sIndex) {
-					sectionData.fields.forEach(function (fieldData,fIndex) {
-						if ( ('multiple' in fieldData) && fieldData.multiple === false ) {
-							fieldData.min = 0;
-							fieldData.max = 0;
-						}
-					});
-				});
-				console.log('new form data:');
-				console.log(newFormData);
-				replaceForm(newFormData);
-				$formActions.addClass('is-update');
-				swal({
-					type 				: 'success',
-					title 				: 'Template successfuly loaded!',
-					showConfirmButton 	: false
-				});
-			} else {
-				// the form cannot be loaded
-			}			
-		}
+		}		
 
 		$formLoaderBtn.on('click',function () {
 			if ( !formLoader.isFetching ) {
@@ -375,6 +338,43 @@ App.createModule('form',(function (app,$) {
 		form.data.config = extractContentData();
 		return form.data;
 	}	
+
+	// handles successful form fetch
+	function onFetchFormSuccess (data) {			
+		// prepare new data for replacement
+		var newFormData = {};
+		if ( newFormData ) {				
+			formLoader.reset();
+			newFormData.id 				= fetchedFormId;
+			newFormData.user_id 		= data.data.user_id;		
+			newFormData.account_id 		= data.data.account_id;		
+			newFormData.status 			= data.data.status;		
+			newFormData.title 			= data.data.title;
+			newFormData.description 	= data.data.description;
+			newFormData.tags 			= data.data.tags;
+			newFormData.config			= data.data.config;
+			// look for select with multiple == false to add min/max
+			newFormData.config.forEach(function (sectionData,sIndex) {
+				sectionData.fields.forEach(function (fieldData,fIndex) {
+					if ( ('multiple' in fieldData) && fieldData.multiple === false ) {
+						fieldData.min = 0;
+						fieldData.max = 0;
+					}
+				});
+			});
+			console.log('new form data:');
+			console.log(newFormData);
+			replaceForm(newFormData);
+			$formActions.addClass('is-update');
+			swal({
+				type 				: 'success',
+				title 				: 'Template successfuly loaded!',
+				showConfirmButton 	: false
+			});
+		} else {
+			// the form cannot be loaded
+		}			
+	}
 
 	// handles sent data success
 	function onSendSuccess (data) {
