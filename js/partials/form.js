@@ -114,10 +114,10 @@ App.createModule('form',(function (app,$) {
 			$formListClose 			= $formLoader.find('.js-form-list-close'),
 			formListTemplateString	= $('#tmplFormsList')[0].innerHTML,
 			latestForms 			= [],
-			isFetching 				= false,
-			fetchedFormId 			= null;
+			isFetching 				= false;
 
 		formLoader 	= {};
+		formLoader.fetchedFormId = null;
 
 		// Gets form ids from cookie
 		function getLatestForms () {
@@ -161,7 +161,7 @@ App.createModule('form',(function (app,$) {
 				$el.click(function (e) {
 					e.preventDefault();
 					if ( !formLoader.isFetching ) {
-						fetchedFormId = formId;
+						formLoader.fetchedFormId = formId;
 						$el.addClass('is-loading');										
 						Request.getForm(formId,onFetchFormSuccess);
 						swal({
@@ -344,7 +344,7 @@ App.createModule('form',(function (app,$) {
 		var newFormData = {};
 		if ( newFormData ) {				
 			formLoader.reset();
-			newFormData.id 				= fetchedFormId;
+			newFormData.id 				= formLoader.fetchedFormId;
 			newFormData.user_id 		= data.data.user_id;		
 			newFormData.account_id 		= data.data.account_id;		
 			newFormData.status 			= data.data.status;		
