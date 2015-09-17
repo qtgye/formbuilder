@@ -106,11 +106,8 @@ App.createModule('form',(function (app,$) {
 
 
 	// Initializes the form loader at the header
-	function initializeFormLoader () {
-		var formLoader 				= {
-				isFetching 	: false
-			},
-			$formLoader 			= $('.js-form-loader'),
+	function initializeFormLoader () {		
+		var $formLoader 			= $('.js-form-loader'),
 			$formLoaderBtn 			= $formLoader.find('.js-load-btn'),
 			$formLoaderDropdown 	= $formLoader.find('.js-form-loader-dropdown'),
 			$formList 				= $formLoader.find('.js-form-list'),
@@ -119,6 +116,8 @@ App.createModule('form',(function (app,$) {
 			latestForms 			= [],
 			isFetching 				= false,
 			fetchedFormId 			= null;
+
+		formLoader 	= {};
 
 		// Gets form ids from cookie
 		function getLatestForms () {
@@ -145,8 +144,8 @@ App.createModule('form',(function (app,$) {
 			formLoader.isFetching = false;
 			$formList.empty();
 			$formLoader.removeClass('is-open');
-
 		}
+		formLoader.reset = reset;
 
 		// renders the fetched forms in list
 		function renderFetchedForms () {
@@ -454,7 +453,7 @@ App.createModule('form',(function (app,$) {
 
 		// loaded template if id is present
 		var pathname = window.location.pathname;
-		if ( pathname ) {
+		if ( pathname.length > 0 ) {
 			var templateId = pathname.slice(1);			
 			Request.getForm(templateId,onFetchFormSuccess);
 			swal({
