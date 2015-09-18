@@ -696,7 +696,7 @@ App.createModule('editor',(function (app,$) {
 					isValid;
 				isValid = optionsVal.length >= 2 &&
 						  optionsVal.every(function (item) {
-						  	return item.match(/[\w\d\s]+,[\w\d\s]+/);
+						  	return item.match(/(^\"?[^\"]+\"?$|[^"]+),[\w\d\s]+/);
 						  });
 				if ( !isValid ) {
 					swal({
