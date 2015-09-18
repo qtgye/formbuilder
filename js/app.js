@@ -1945,7 +1945,7 @@ App.createModule('form',(function (app,$) {
 		alert('error');
 		if ( response.responseJSON && !response.responseJSON.flag ) {
 			swal({
-				type 				: 'eror',
+				type 				: 'error',
 				title 				: 'The template cannot be loaded due to an error.',
 				text 				: response.responseJSON.message,
 				showConfirmButton 	: true,
