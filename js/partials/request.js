@@ -79,6 +79,11 @@ App.createModule('request',(function (app,$) {
 
 	// gets a form by id
 	function getForm (id,successCallback,errorCallback) {
+		swal({
+			type 				: 'info',
+			title 				: 'Loading template...',
+			showConfirmButton 	: false
+		});
 		return $.ajax({
 			url 		: GET.url + '/' + id,
 			method 		: 'GET',

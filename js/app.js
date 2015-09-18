@@ -388,6 +388,11 @@ App.createModule('request',(function (app,$) {
 
 	// gets a form by id
 	function getForm (id,successCallback,errorCallback) {
+		swal({
+			type 				: 'info',
+			title 				: 'Loading template...',
+			showConfirmButton 	: false
+		});
 		return $.ajax({
 			url 		: GET.url + '/' + id,
 			method 		: 'GET',
@@ -1655,12 +1660,7 @@ App.createModule('form',(function (app,$) {
 					if ( !formLoader.isFetching ) {
 						formLoader.fetchedFormId = formId;
 						$el.addClass('is-loading');										
-						Request.getForm(formId,onFetchFormSuccess);
-						swal({
-							type 				: 'info',
-							title 				: 'Loading template...',
-							showConfirmButton 	: false
-						});		
+						Request.getForm(formId,onFetchFormSuccess,onFetchFormError);								
 					}					
 				});
 			});
@@ -1831,10 +1831,9 @@ App.createModule('form',(function (app,$) {
 	}	
 
 	// handles successful form fetch
-	function onFetchFormSuccess (data) {			
-		// prepare new data for replacement
+	function onFetchFormSuccess (data) {	
 		var newFormData = {};
-		if ( newFormData ) {				
+		if ( data.flag ) {				
 			formLoader.reset();
 			newFormData.id 				= formLoader.fetchedFormId;
 			newFormData.user_id 		= data.data.user_id;		
@@ -1877,7 +1876,12 @@ App.createModule('form',(function (app,$) {
 			}		
 			
 		} else {
-			// the form cannot be loaded
+			swal({
+				type 	: 'error',
+				title   : 'The form was not saved due to an error.',
+				text 	: data.message,
+				confirmButtonText : 'Ok'
+			});
 		}			
 	}
 
@@ -1932,6 +1936,20 @@ App.createModule('form',(function (app,$) {
 				type 	: 'error',
 				title   : 'An unknown error has occured. The form was not saved.',
 				confirmButtonText : 'Ok'
+			});
+		}
+	}
+
+	// handles form fetch error
+	function onFetchFormError (response) {
+		alert('error');
+		if ( response.responseJSON && !response.responseJSON.flag ) {
+			swal({
+				type 				: 'eror',
+				title 				: 'The template cannot be loaded due to an error.',
+				text 				: response.responseJSON.message,
+				showConfirmButton 	: true,
+				confirmButtonText 	: 'Ok'
 			});
 		}
 	}
