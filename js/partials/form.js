@@ -434,10 +434,29 @@ App.createModule('form',(function (app,$) {
 				text 	: response.message,
 				confirmButtonText : 'Ok'
 			});
+		} else if ( response.responseJSON && typeof response.responseJSON.message == 'string') {
+			swal({
+				type 	: 'error',
+				title   : 'The form was not saved due to error.',
+				text 	: response.responseJSON.message,
+				confirmButtonText : 'Ok'
+			});
+		} else if ( response.responseJSON && typeof response.responseJSON.message == 'object') {
+			var text = [];
+			Object.keys(response.responseJSON.message).forEach(function (key) {
+				text.push(response.responseJSON.message[key]);
+			});
+			text = text.join('\r\n');
+			swal({
+				type 	: 'error',
+				title   : 'The form was not saved due to error.',
+				text 	: text,
+				confirmButtonText : 'Ok'
+			});
 		} else {
 			swal({
 				type 	: 'error',
-				title   : 'An unknown error has occured. The form was not saved.',
+				title   : 'The form was not saved due to an unknown error.',
 				confirmButtonText : 'Ok'
 			});
 		}

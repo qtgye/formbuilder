@@ -360,8 +360,10 @@ App.createModule('request',(function (app,$) {
 		var url = POST.url + ( data.id ? '/' + data.id : '');
 		// process data before sending
 		var jsonString = JSON.stringify(data);
-		jsonString = jsonString.replace(/\"\d+\"/g,function (match) {
-			return match.replace('"','','g');
+		jsonString = jsonString.replace(/\"(min|max)\":\"\d+\"/g,function (match) {
+			var key = match.slice(0,5),
+				stringedInt = match.slice(match.match(':').index+1);
+			return key + ':' + stringedInt.replace('"','','g');
 		});
 
 		return $.ajax({
@@ -1931,10 +1933,29 @@ App.createModule('form',(function (app,$) {
 				text 	: response.message,
 				confirmButtonText : 'Ok'
 			});
+		} else if ( response.responseJSON && typeof response.responseJSON.message == 'string') {
+			swal({
+				type 	: 'error',
+				title   : 'The form was not saved due to error.',
+				text 	: response.responseJSON.message,
+				confirmButtonText : 'Ok'
+			});
+		} else if ( response.responseJSON && typeof response.responseJSON.message == 'object') {
+			var text = [];
+			Object.keys(response.responseJSON.message).forEach(function (key) {
+				text.push(response.responseJSON.message[key]);
+			});
+			text = text.join('\r\n');
+			swal({
+				type 	: 'error',
+				title   : 'The form was not saved due to error.',
+				text 	: text,
+				confirmButtonText : 'Ok'
+			});
 		} else {
 			swal({
 				type 	: 'error',
-				title   : 'An unknown error has occured. The form was not saved.',
+				title   : 'The form was not saved due to an unknown error.',
 				confirmButtonText : 'Ok'
 			});
 		}
