@@ -223,7 +223,7 @@
 					<label class="<%=(required?'is-required':'')%>"><%=label%></label>
 					<select id="<%=key%>" name="<%=key%>" <%= ( multiple ? 'multiple' : '' ) %> >
 						<% options.forEach(function(option,key){ %>
-				    		<option value="<%=option.value%>" <%= ( value.match(new RegExp(option.value,'i')) || ( !value && key === 0 ) ? 'selected' : '' ) %> ><%=option.label%></option>
+				    		<option value="<%=option.value%>" <%= ( value.match(new RegExp(option.value,'i')) || ( !value && key === 0 ) ? 'selected' : '' ) %> ><%=option.label.replace(/(^\"|\"$)/gi,'')%></option>
 						<% }); %>
 					</select>
 					<span class="help-block field-description"><%=description%></span>

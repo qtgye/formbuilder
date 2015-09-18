@@ -744,8 +744,20 @@ App.createModule('editor',(function (app,$) {
 				// Convert options into array				
 				if ( pair.name == 'options' ) {
 					var arr = pair.value.split('\r\n').map(function (option) {
-						var opt = option.split(',');
-						return { label: opt[0], value: opt[1]};
+						var label,value;
+						// checked for quoted input
+						if ( option.match(/\"[^\"]+"/) ) {
+							label = option.match(/\"[^\"]+"/)[0];
+							value = option.slice(label.length+1);
+							console.log(label);
+							console.log(value);
+						}
+						else {
+							var opt = option.split(',');
+							label = opt[0];
+							value = opt[1];
+						}						
+						return { label: label, value: value};
 					});
 					pair.value = arr;
 				}				
