@@ -239,7 +239,7 @@
 					<h5>Radio Box</h5>
 				</div>
 				<div class="field-content js-drag-handle js-field-handle">
-					<label class="<%=(required?'is-required':'')%>"><%=label%></label>
+					<label ><%=label%></label>
 					<span class="help-block field-description"><%=description%></span>
 					<% options.forEach(function(option,key){ %>
 						<label class="label-block">
