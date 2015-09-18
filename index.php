@@ -243,7 +243,7 @@
 					<span class="help-block field-description"><%=description%></span>
 					<% options.forEach(function(option,key){ %>
 						<label class="label-block">
-							<input type="radio" name="<%=id%>" value="<%=option.value%>" <%= ( value.match(new RegExp(option.value,'i')) || ( !value && key === 0 ) ? 'checked' : '' ) %> > <%=option.label%>
+							<input type="radio" name="<%=id%>" value="<%=option.value%>" <%= ( value.match(new RegExp(option.value,'i')) || ( !value && key === 0 ) ? 'checked' : '' ) %> > <%=option.label.replace(/(^\"|\"$)/gi,'')%>
 						</label>
 					<% }); %>
 				</div>	
@@ -262,7 +262,7 @@
 					<span class="help-block field-description"><%=description%></span>
 					<% options.forEach(function(option,key) { %>
 						<label class="label-block">
-							<input type="checkbox" name="<%=option.key%>" value="<%=option.value%>" <%= ( value.match(new RegExp(option.value,'i')) || ( !value && key === 0 ) ? 'checked' : '' ) %> > <%=option.label%>
+							<input type="checkbox" name="<%=option.key%>" value="<%=option.value%>" <%= ( value.match(new RegExp(option.value,'i')) || ( !value && key === 0 ) ? 'checked' : '' ) %> > <%=option.label.replace(/(^\"|\"$)/gi,'')%>
 						</label>
 					<% }); %>					
 				</div>		
