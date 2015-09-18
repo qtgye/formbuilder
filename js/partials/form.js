@@ -365,14 +365,25 @@ App.createModule('form',(function (app,$) {
 			});
 			console.log('new form data:');
 			console.log(newFormData);
-			replaceForm(newFormData);
-			$formActions.addClass('is-update');
-			swal({
-				type 				: 'success',
-				title 				: 'Template successfuly loaded!',
-				showConfirmButton 	: false,
-				timer 				: 2000
-			});
+			try  {
+				replaceForm(newFormData);
+				$formActions.addClass('is-update');
+				swal({
+					type 				: 'success',
+					title 				: 'Template successfuly loaded!',
+					showConfirmButton 	: false,
+					timer 				: 2000
+				});
+			} catch (e) {
+				swal({
+					type 				: 'eror',
+					title 				: 'The template cannot be loaded due to an error.',
+					showConfirmButton 	: true,
+					confirmButtonText 	: 'Ok'
+				});
+				console.log(e);
+			}		
+			
 		} else {
 			// the form cannot be loaded
 		}			
