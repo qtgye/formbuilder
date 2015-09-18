@@ -51,11 +51,11 @@ App.createModule('request',(function (app,$) {
 		var url = POST.url + ( data.id ? '/' + data.id : '');
 		// process data before sending
 		var jsonString = JSON.stringify(data);
-		jsonString = jsonString.replace(/\"(min|max)\":\"\d+\"/g,function (match) {
-			var key = match.slice(0,5),
-				stringedInt = match.slice(match.match(':').index+1);
-			return key + ':' + stringedInt.replace('"','','g');
-		});
+		// jsonString = jsonString.replace(/\"(min|max)\":\"\d+\"/g,function (match) {
+		// 	var key = match.slice(0,5),
+		// 		stringedInt = match.slice(match.match(':').index+1);
+		// 	return key + ':' + stringedInt.replace('"','','g');
+		// });
 
 		return $.ajax({
 			url 		: url,
