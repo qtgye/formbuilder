@@ -1867,7 +1867,7 @@ App.createModule('form',(function (app,$) {
 				});
 			} catch (e) {
 				swal({
-					type 				: 'eror',
+					type 				: 'error',
 					title 				: 'The template cannot be loaded due to an error.',
 					showConfirmButton 	: true,
 					confirmButtonText 	: 'Ok'
@@ -1942,7 +1942,6 @@ App.createModule('form',(function (app,$) {
 
 	// handles form fetch error
 	function onFetchFormError (response) {
-		alert('error');
 		if ( response.responseJSON && !response.responseJSON.flag ) {
 			swal({
 				type 				: 'error',
