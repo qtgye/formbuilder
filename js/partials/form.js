@@ -485,7 +485,7 @@ App.createModule('form',(function (app,$) {
 		var pathname = window.location.pathname;
 		if ( pathname.length > 1 ) {
 			formLoader.fetchedFormId = pathname.slice(1);			
-			Request.getForm(formLoader.fetchedFormId,onFetchFormSuccess);
+			Request.getForm(formLoader.fetchedFormId,onFetchFormSuccess,onFetchFormError);
 			swal({
 				type 				: 'info',
 				title 				: 'Loading template...',
