@@ -136,7 +136,7 @@ App.createModule('editor',(function (app,$) {
 
 			var newData 	= {},
 				formData 	= self.$form.serializeArray();
-			
+				
 			formData.forEach(function (pair) {
 				// Convert options into array				
 				if ( pair.name == 'options' ) {
@@ -163,6 +163,10 @@ App.createModule('editor',(function (app,$) {
 					pair.value = true;
 				} else if ( pair.value == "false" ) {
 					pair.value = false;
+				}
+				// Convert to int
+				if ( pair.name == "min" || pair.name == "max" ) {
+					pair.value = parseInt(pair.value);
 				}
 				newData[pair.name] = pair.value;
 			});			

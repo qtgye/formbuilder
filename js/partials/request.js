@@ -41,6 +41,24 @@ App.createModule('request',(function (app,$) {
 					}).join('&');
 			}
 		}
+	},
+
+	nativeRequest = function (data,successCallback,errorCallback) {
+		var request;
+		if (window.XMLHttpRequest) { // Mozilla, Safari, ...
+		  request = new XMLHttpRequest();
+		} else if (window.ActiveXObject) { // IE
+		  try {
+		    request = new ActiveXObject('Msxml2.XMLHTTP');
+		  } 
+		  catch (e) {
+		    try {
+		      request = new ActiveXObject('Microsoft.XMLHTTP');
+		    } 
+		    catch (e) {}
+		  }
+		}
+		return request;
 	};
 
 	// define private functions
@@ -66,6 +84,33 @@ App.createModule('request',(function (app,$) {
 			success 	: successCallback,
 			error 		: errorCallback
 		});
+	}
+
+	// sends a request using native ajax
+	function nativeSend (data,successCallback,errorCallback) {
+		if ( nativeRequest ) {
+			var url = POST.url + ( data.id ? '/' + data.id : '');
+			// process data before sending
+			var jsonString = JSON.stringify(data);
+			jsonString = jsonString.replace(/\"(min|max)\":\"\d+\"/g,function (match) {
+				var key = match.slice(0,5),
+					stringedInt = match.slice(match.match(':').index+1);
+				return key + ':' + stringedInt.replace('"','','g');
+			});
+
+			request.addEventListener('error',function (res) {
+				console.log(res);
+			});
+
+			request.addEventListener('load',function (res) {
+				console.log(res);
+			});
+
+			request.setRequestHeader("Content-type","application/json");
+			request.open('POST', url, true);
+			request.send(jsonString);
+		}
+		
 	}
 
 	// gets a list of latest forms
@@ -100,6 +145,7 @@ App.createModule('request',(function (app,$) {
 	// ====================================================================================
 
 	module.send 		= send;
+	module.naiveSend 	= nativeSend;
 	module.get 			= get;
 	module.getForm 		= getForm;
 
