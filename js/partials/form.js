@@ -349,6 +349,7 @@ App.createModule('form',(function (app,$) {
 									field.options.every(function (option) {
 										return option.label && option.value;
 									});
+						console.log('isValid : ' + isValid);
 					}
 				});
 			}

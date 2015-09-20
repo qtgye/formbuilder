@@ -1092,6 +1092,17 @@ App.createModule('fields',(function (app,$) {
 			
 			updateFieldDOM(self,self.data);
 
+			// validate options if any
+			if ( self.data.options ) {
+				var isValid = 	field.options.length > 1 &&
+									field.options.every(function (option) {
+										return option.label && option.value;
+									});
+				if ( isValid ) {
+					Editor.hasError = true;
+				}
+			}
+
 			if ( !self.data.isAvailable ) {
 				self.$el.addClass('is-disabled');
 			} else {
@@ -1906,6 +1917,7 @@ App.createModule('form',(function (app,$) {
 									field.options.every(function (option) {
 										return option.label && option.value;
 									});
+						console.log('isValid : ' + isValid);
 					}
 				});
 			}
