@@ -1100,7 +1100,6 @@ App.createModule('fields',(function (app,$) {
 								});
 				if ( isValid ) {
 					Editor.hasError = true;
-					Editor.errorFields.push(self.id);
 				}
 			}
 
@@ -1899,7 +1898,7 @@ App.createModule('form',(function (app,$) {
 		// verify newData
 		if ( newData && newData.title ) {
 			removeForm();
-			create(newData);			
+			create(newData);
 			Editor.closeEditor();
 		}		
 	}

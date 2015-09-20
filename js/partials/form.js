@@ -328,7 +328,7 @@ App.createModule('form',(function (app,$) {
 		// verify newData
 		if ( newData && newData.title ) {
 			removeForm();
-			create(newData);			
+			create(newData);
 			Editor.closeEditor();
 		}		
 	}

@@ -123,7 +123,6 @@ App.createModule('fields',(function (app,$) {
 								});
 				if ( isValid ) {
 					Editor.hasError = true;
-					Editor.errorFields.push(self.id);
 				}
 			}
 
