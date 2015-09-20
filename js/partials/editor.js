@@ -45,6 +45,7 @@ App.createModule('editor',(function (app,$) {
 		self.id 		= editorData.id;
 
 		self.$parent 	= object.$el;
+		console.log(self.$parent);
 		self.$el 		= $(tmpl(editorTemplate,editorData));
 		self.$optionsEl = self.$el.find('textarea[name="options"]');
 		self.$form 		= self.$el.find('form');

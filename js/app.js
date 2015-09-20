@@ -689,6 +689,7 @@ App.createModule('editor',(function (app,$) {
 		self.id 		= editorData.id;
 
 		self.$parent 	= object.$el;
+		console.log(self.$parent);
 		self.$el 		= $(tmpl(editorTemplate,editorData));
 		self.$optionsEl = self.$el.find('textarea[name="options"]');
 		self.$form 		= self.$el.find('form');
@@ -1042,7 +1043,6 @@ App.createModule('fields',(function (app,$) {
 		}
 
 		self.data 			= cloneObject(self.data); // make sure data is not a reference
-		console.log(self.data);
 		// make sure booleans are not casted as strings
 		for ( var key in self.data ) {
 			if ( self.data[key] === "true" ) {
@@ -1094,8 +1094,8 @@ App.createModule('fields',(function (app,$) {
 
 			// validate options if any
 			if ( self.data.options ) {
-				var isValid = 	field.options.length > 1 &&
-									field.options.every(function (option) {
+				var isValid = 	self.data.options.length > 1 &&
+									self.data.options.every(function (option) {
 										return option.label && option.value;
 									});
 				if ( isValid ) {
@@ -1124,6 +1124,8 @@ App.createModule('fields',(function (app,$) {
 			var newData = self.editor.extractData();
 			self.update(newData);
 		});
+
+		console.log(self.editor.id);
 
 		// add action buttons
 		// ------------------------
@@ -1882,11 +1884,9 @@ App.createModule('form',(function (app,$) {
 	function replaceForm (newData) {
 		// verify newData
 		if ( newData && newData.title ) {
-			Editor.reset();
 			removeForm();
 			create(newData);			
-			Editor.closeEditor();		
-			Editor.reset();
+			Editor.closeEditor();
 		}		
 	}
 

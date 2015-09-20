@@ -314,11 +314,9 @@ App.createModule('form',(function (app,$) {
 	function replaceForm (newData) {
 		// verify newData
 		if ( newData && newData.title ) {
-			Editor.reset();
 			removeForm();
 			create(newData);			
-			Editor.closeEditor();		
-			Editor.reset();
+			Editor.closeEditor();
 		}		
 	}
 
