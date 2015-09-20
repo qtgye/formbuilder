@@ -657,6 +657,8 @@ App.createModule('editor',(function (app,$) {
 	// ====================================================================================
 	var module = {};
 
+	module.hasError = false;
+
 
 
 	// define private variables
@@ -666,7 +668,6 @@ App.createModule('editor',(function (app,$) {
 		editors = {},
 		editorTemplate,
 		editorClicked,
-		hasError,
 		errorEditor,
 		currentOpen, // holds the data-id of the open editor
 
@@ -723,7 +724,7 @@ App.createModule('editor',(function (app,$) {
 		// opens the editor
 		function open () {
 			module.closeEditor();
-			if ( !hasError ) {				
+			if ( !module.hasError ) {				
 				self.$parent.addClass('has-open-editor');
 				currentOpen = self.id;
 			}			
@@ -747,13 +748,13 @@ App.createModule('editor',(function (app,$) {
 						showConfirmButton 	: true,
 						confirmButtonText 	: "Ok"
 					});
-					hasError 	= true;
+					module.hasError 	= true;
 					errorEditor = self.id; 
 				} else {
 					self.$parent.removeClass('has-open-editor');
 					currentOpen = null;
-					if ( hasError &&  errorEditor == self.id ) {
-						hasError 	= false;
+					if ( module.hasError &&  errorEditor == self.id ) {
+						module.hasError 	= false;
 						errorEditor = null; 
 					}
 				}
@@ -921,7 +922,7 @@ App.createModule('editor',(function (app,$) {
 
 	// checks if there is an error
 	function editorHasError () {
-		return hasError;
+		return module.hasError;
 	}
 
 	// bind event handlers
@@ -945,7 +946,6 @@ App.createModule('editor',(function (app,$) {
 	module.editorClicked	= false;
 	module.hasOpenEditor 	= hasOpenEditor;
 	module.reset 			= reset;
-	module.hasError 		= editorHasError;
 
 
 	// define module init
@@ -1783,7 +1783,7 @@ App.createModule('form',(function (app,$) {
 	function bindGlobalHandlers () {
 		// get the form contents data
 		$saveBtn.on('click',function () {
-			if ( isFormDataValid() && !Editor.hasError() ) {
+			if ( isFormDataValid() && !Editor.hasError ) {
 				var formData 	= cloneObject(getFormData());
 				console.log('data to send:');
 				console.log(formData);
@@ -1797,7 +1797,7 @@ App.createModule('form',(function (app,$) {
 				Editor.closeEditor();
 				Request.send(formData,onSendSuccess,onSendError);
 			} else {
-				
+
 			}
 		});
 		// clears the form contents and data
@@ -1994,9 +1994,9 @@ App.createModule('form',(function (app,$) {
 
 	// handles sent data error
 	function onSendError (response) {
-		console.log(response);
+		var text = [];
 		if ( typeof response.message == 'object' ) {
-			var text = [];
+			text = [];
 			Object.keys(response.message).forEach(function (key) {
 				text.push(response.message[key]);
 			});
@@ -2022,7 +2022,7 @@ App.createModule('form',(function (app,$) {
 				confirmButtonText : 'Ok'
 			});
 		} else if ( response.responseJSON && typeof response.responseJSON.message == 'object') {
-			var text = [];
+			text = [];
 			Object.keys(response.responseJSON.message).forEach(function (key) {
 				text.push(response.responseJSON.message[key]);
 			});

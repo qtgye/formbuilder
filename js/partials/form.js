@@ -226,7 +226,7 @@ App.createModule('form',(function (app,$) {
 	function bindGlobalHandlers () {
 		// get the form contents data
 		$saveBtn.on('click',function () {
-			if ( isFormDataValid() && !Editor.hasError() ) {
+			if ( isFormDataValid() && !Editor.hasError ) {
 				var formData 	= cloneObject(getFormData());
 				console.log('data to send:');
 				console.log(formData);
@@ -240,7 +240,7 @@ App.createModule('form',(function (app,$) {
 				Editor.closeEditor();
 				Request.send(formData,onSendSuccess,onSendError);
 			} else {
-				
+
 			}
 		});
 		// clears the form contents and data
@@ -437,9 +437,9 @@ App.createModule('form',(function (app,$) {
 
 	// handles sent data error
 	function onSendError (response) {
-		console.log(response);
+		var text = [];
 		if ( typeof response.message == 'object' ) {
-			var text = [];
+			text = [];
 			Object.keys(response.message).forEach(function (key) {
 				text.push(response.message[key]);
 			});
@@ -465,7 +465,7 @@ App.createModule('form',(function (app,$) {
 				confirmButtonText : 'Ok'
 			});
 		} else if ( response.responseJSON && typeof response.responseJSON.message == 'object') {
-			var text = [];
+			text = [];
 			Object.keys(response.responseJSON.message).forEach(function (key) {
 				text.push(response.responseJSON.message[key]);
 			});

@@ -105,28 +105,6 @@
 
 
 	<div id="templates" class="hidden">
-		
-		<!-- modal partials -->
-		<div class="modal-saving">
-			<h3>
-				<i class="fa fa-spinner fa-pulse"></i> Saving form
-			</h3>
-		</div>
-		<div class="modal-save-success">
-			<h3>
-				<i class="fa fa-check"></i> Form saved!
-			</h3>
-			<div class="btn btn-default modal-close">OK</div>
-		</div>
-		<div class="modal-save-error">
-			<h3>
-				<i class="fa fa-warning"></i> Form was not saved!
-			</h3>
-			<div class="modal-error-content">
-				dfsdnflksbfsdhfhsds lkfhdsklfhldkfhl
-			</div>
-			<div class="btn btn-default modal-close">OK</div>
-		</div>
 
 		<!-- form -->
 		<script class="form-template" id="tmpl-read-form" type="text/html">
@@ -298,8 +276,6 @@
 		<!-- editor template -->
 		<script class="editor-template" id="tmpl-editor" type="text/html">
 			<div class="editor" data-id="<%=id%>">
-
-				<%console.log(data);%>
 
 				<div class="editor-close">&times;</div>
 				<div class="editor-container" data-id="<%=id%>">

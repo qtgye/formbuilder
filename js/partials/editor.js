@@ -13,6 +13,8 @@ App.createModule('editor',(function (app,$) {
 	// ====================================================================================
 	var module = {};
 
+	module.hasError = false;
+
 
 
 	// define private variables
@@ -22,7 +24,6 @@ App.createModule('editor',(function (app,$) {
 		editors = {},
 		editorTemplate,
 		editorClicked,
-		hasError,
 		errorEditor,
 		currentOpen, // holds the data-id of the open editor
 
@@ -79,7 +80,7 @@ App.createModule('editor',(function (app,$) {
 		// opens the editor
 		function open () {
 			module.closeEditor();
-			if ( !hasError ) {				
+			if ( !module.hasError ) {				
 				self.$parent.addClass('has-open-editor');
 				currentOpen = self.id;
 			}			
@@ -103,13 +104,13 @@ App.createModule('editor',(function (app,$) {
 						showConfirmButton 	: true,
 						confirmButtonText 	: "Ok"
 					});
-					hasError 	= true;
+					module.hasError 	= true;
 					errorEditor = self.id; 
 				} else {
 					self.$parent.removeClass('has-open-editor');
 					currentOpen = null;
-					if ( hasError &&  errorEditor == self.id ) {
-						hasError 	= false;
+					if ( module.hasError &&  errorEditor == self.id ) {
+						module.hasError 	= false;
 						errorEditor = null; 
 					}
 				}
@@ -277,7 +278,7 @@ App.createModule('editor',(function (app,$) {
 
 	// checks if there is an error
 	function editorHasError () {
-		return hasError;
+		return module.hasError;
 	}
 
 	// bind event handlers
@@ -301,7 +302,6 @@ App.createModule('editor',(function (app,$) {
 	module.editorClicked	= false;
 	module.hasOpenEditor 	= hasOpenEditor;
 	module.reset 			= reset;
-	module.hasError 		= editorHasError;
 
 
 	// define module init
