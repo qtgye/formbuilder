@@ -1795,7 +1795,7 @@ App.createModule('form',(function (app,$) {
 	function bindGlobalHandlers () {
 		// get the form contents data
 		$saveBtn.on('click',function () {
-			if ( isFormDataValid() && !Editor.hasError ) {
+			if ( isFormDataValid() ) {
 				var formData 	= cloneObject(getFormData());
 				console.log('data to send:');
 				console.log(formData);
