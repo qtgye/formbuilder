@@ -24,6 +24,7 @@ App.createModule('form',(function (app,$) {
 	Editor,
 
 	sortableInitialized = false,
+	formDataError = [],
 
 	data,
 	template,
@@ -122,7 +123,7 @@ App.createModule('form',(function (app,$) {
 		// Gets form ids from cookie
 		function getLatestForms () {
 			$formLoader.addClass('is-fetching');
-			Request.get(onGetForms);
+			Request.get(onGetForms,onGetFormsError);
 		}
 
 		// handles form list GET
@@ -137,6 +138,11 @@ App.createModule('form',(function (app,$) {
 				// error
 			}
 			formLoader.isFetching = false;
+		}
+
+		// handles error in fetching forms
+		function onGetFormsError (response) {
+			console.log(response);
 		}
 
 		// resets the form loader
@@ -226,7 +232,8 @@ App.createModule('form',(function (app,$) {
 	function bindGlobalHandlers () {
 		// get the form contents data
 		$saveBtn.on('click',function () {
-			if ( isFormDataValid() ) {
+			validateForm();
+			if ( formDataError.length === 0 ) {
 				var formData 	= cloneObject(getFormData());
 				console.log('data to send:');
 				console.log(formData);
@@ -240,7 +247,13 @@ App.createModule('form',(function (app,$) {
 				Editor.closeEditor();
 				Request.send(formData,onSendSuccess,onSendError);
 			} else {
-
+				swal({
+					type 				: 'error',
+					title   			: 'The form cannot be saved due to error.',
+					text 				: formDataError.join('\r\n'),
+					allowEscapeKey 		: true,
+					confirmButtonText	: 'Ok'
+				});
 			}
 		});
 		// clears the form contents and data
@@ -336,18 +349,30 @@ App.createModule('form',(function (app,$) {
 	}	
 
 	// validates form data prior to sending
-	function isFormDataValid () {
+	function validateForm () {
 		var isValid = true;
+		formDataError = [];
 		getFormData().config.forEach(function (section) {
 			if ( section.fields ) {
-				section.fields.forEach(function (field) {
+				section.fields.forEach(function (_field) {
 					// validate options
-					if ( field.options ) {
-						isValid = 	field.options.length > 2 &&
-									field.options.every(function (option) {
-										return option.label && option.value;
-									});
-						console.log('isValid : ' + isValid);
+					if ( _field.options ) {
+						if ( _field.options.length > 1 ) {
+							if ( _field.options instanceof Array ) {
+								_field.options.forEach(function (option) {
+									if ( !option.label || !option.value ) {
+										isValid = false;	
+										formDataError.push('Options must have at least two pairs of valid label and value.');							
+									}
+								});
+							} else {								
+								isValid = false;
+								formDataError.push('Options must have at least two pairs of valid label and value.');
+							}
+						} else {
+							isValid = false;
+							formDataError.push('Options must have at least two pairs of valid label and value.');
+						}
 					}
 				});
 			}

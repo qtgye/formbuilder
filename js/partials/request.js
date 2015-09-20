@@ -55,7 +55,7 @@ App.createModule('request',(function (app,$) {
 		    try {
 		      request = new ActiveXObject('Microsoft.XMLHTTP');
 		    } 
-		    catch (e) {}
+		    catch (err) {}
 		  }
 		}
 		return request;

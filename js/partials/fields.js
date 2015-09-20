@@ -22,6 +22,7 @@ App.createModule('fields',(function (app,$) {
 		templates 	= {},
 		Defaults 	= app.defaults,
 		Editor 		= app.editor,
+		errorFields = [],
 		checker 	= {
 				isSingleline	: 'singleline'	,
 				isDate 			: 'date'		,
@@ -117,11 +118,12 @@ App.createModule('fields',(function (app,$) {
 			// validate options if any
 			if ( self.data.options ) {
 				var isValid = 	self.data.options.length > 1 &&
-									self.data.options.every(function (option) {
-										return option.label && option.value;
-									});
+								self.data.options.every(function (option) {
+									return option.label && option.value;
+								});
 				if ( isValid ) {
 					Editor.hasError = true;
+					Editor.errorFields.push(self.id);
 				}
 			}
 
