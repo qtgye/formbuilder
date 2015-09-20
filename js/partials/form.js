@@ -313,6 +313,7 @@ App.createModule('form',(function (app,$) {
 		form.data.title 		= newData.title;
 		form.data.description 	= newData.description;
 		form.data.tags 			= newData.tags;
+		form.data.status 			= newData.status;
 		form.$formTitle.text(newData.title);
 	}
 
