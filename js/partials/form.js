@@ -226,7 +226,7 @@ App.createModule('form',(function (app,$) {
 	function bindGlobalHandlers () {
 		// get the form contents data
 		$saveBtn.on('click',function () {
-			if ( !Editor.hasError() ) {
+			if ( isFormDataValid() && !Editor.hasError() ) {
 				var formData 	= cloneObject(getFormData());
 				console.log('data to send:');
 				console.log(formData);
@@ -239,7 +239,9 @@ App.createModule('form',(function (app,$) {
 				});
 				Editor.closeEditor();
 				Request.send(formData,onSendSuccess,onSendError);
-			}			
+			} else {
+				
+			}
 		});
 		// clears the form contents and data
 		$clearBtn.on('click',clearFormContent);
@@ -312,10 +314,11 @@ App.createModule('form',(function (app,$) {
 	function replaceForm (newData) {
 		// verify newData
 		if ( newData && newData.title ) {
-			removeForm();
-			create(newData);
 			Editor.reset();
+			removeForm();
+			create(newData);			
 			Editor.closeEditor();		
+			Editor.reset();
 		}		
 	}
 
@@ -333,6 +336,25 @@ App.createModule('form',(function (app,$) {
 		form.data.config = extractContentData();
 		return form.data;
 	}	
+
+	// validates form data prior to sending
+	function isFormDataValid () {
+		var isValid = true;
+		getFormData().config.forEach(function (section) {
+			if ( section.fields ) {
+				section.fields.forEach(function (field) {
+					// validate options
+					if ( field.options ) {
+						isValid = 	field.options.length > 1 &&
+									field.options.every(function (option) {
+										return option.label && option.value;
+									});
+					}
+				});
+			}
+		});
+		return isValid;
+	}
 
 	// handles successful form fetch
 	function onFetchFormSuccess (data) {	
