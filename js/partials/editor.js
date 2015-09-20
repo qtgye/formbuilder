@@ -13,8 +13,6 @@ App.createModule('editor',(function (app,$) {
 	// ====================================================================================
 	var module = {};
 
-	module.hasError = false;
-
 
 
 	// define private variables
@@ -24,6 +22,7 @@ App.createModule('editor',(function (app,$) {
 		editors = {},
 		editorTemplate,
 		editorClicked,
+		hasError,
 		errorEditor,
 		currentOpen, // holds the data-id of the open editor
 
@@ -45,7 +44,6 @@ App.createModule('editor',(function (app,$) {
 		self.id 		= editorData.id;
 
 		self.$parent 	= object.$el;
-		console.log(self.$parent);
 		self.$el 		= $(tmpl(editorTemplate,editorData));
 		self.$optionsEl = self.$el.find('textarea[name="options"]');
 		self.$form 		= self.$el.find('form');
@@ -81,7 +79,7 @@ App.createModule('editor',(function (app,$) {
 		// opens the editor
 		function open () {
 			module.closeEditor();
-			if ( !module.hasError ) {				
+			if ( !hasError ) {				
 				self.$parent.addClass('has-open-editor');
 				currentOpen = self.id;
 			}			
@@ -105,13 +103,13 @@ App.createModule('editor',(function (app,$) {
 						showConfirmButton 	: true,
 						confirmButtonText 	: "Ok"
 					});
-					module.hasError 	= true;
+					hasError 	= true;
 					errorEditor = self.id; 
 				} else {
 					self.$parent.removeClass('has-open-editor');
 					currentOpen = null;
-					if ( module.hasError &&  errorEditor == self.id ) {
-						module.hasError 	= false;
+					if ( hasError &&  errorEditor == self.id ) {
+						hasError 	= false;
 						errorEditor = null; 
 					}
 				}
@@ -279,7 +277,7 @@ App.createModule('editor',(function (app,$) {
 
 	// checks if there is an error
 	function editorHasError () {
-		return module.hasError;
+		return hasError;
 	}
 
 	// bind event handlers
@@ -303,6 +301,7 @@ App.createModule('editor',(function (app,$) {
 	module.editorClicked	= false;
 	module.hasOpenEditor 	= hasOpenEditor;
 	module.reset 			= reset;
+	module.hasError 		= editorHasError;
 
 
 	// define module init
