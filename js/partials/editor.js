@@ -100,6 +100,7 @@ App.createModule('editor',(function (app,$) {
 						title 				: 'Oops!',
 						text 				: "Options must have at least 2 pairs of valid label/vale",
 						type 				: "error",
+						showConfirmButton 	: true,
 						confirmButtonText 	: "Ok"
 					});
 					hasError 	= true;

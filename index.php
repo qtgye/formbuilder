@@ -566,7 +566,7 @@
 								</div>								
 							</div>
 						<% } else if ( key == 'status' ) { %>
-							<div class="prop" data-key="status">
+							<div class="prop editor-field-status" data-key="status">
 								<div class="prop-col">
 									<label for="">Status :</label>
 								</div>

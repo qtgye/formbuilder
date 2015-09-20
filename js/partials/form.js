@@ -247,7 +247,7 @@ App.createModule('form',(function (app,$) {
 		$createBtn.on('click',function () {
 			var defaultForm = cloneObject(Defaults.form);
 			replaceForm(defaultForm);
-			$formActions.removeClass('is-update');
+			app.$body.removeClass('is-update');
 		});
 	}
 
@@ -281,14 +281,14 @@ App.createModule('form',(function (app,$) {
 	}
 
 	// clears the form content
-	function clearFormContent () {
-		Editor.reset();
+	function clearFormContent () {		
 		getContentObjects().forEach(function (_section) {
 			_section.remove();
 		});
 		form.data.config = [];
 		form.$formContent.empty();
 		sortableInitialized = false;
+		Editor.reset();
 	}
 
 	// updates the form data
@@ -314,7 +314,8 @@ App.createModule('form',(function (app,$) {
 		if ( newData && newData.title ) {
 			removeForm();
 			create(newData);
-			Editor.closeEditor();			
+			Editor.reset();
+			Editor.closeEditor();		
 		}		
 	}
 
@@ -361,7 +362,7 @@ App.createModule('form',(function (app,$) {
 			console.log(newFormData);
 			try  {
 				replaceForm(newFormData);
-				$formActions.addClass('is-update');
+				app.$body.addClass('is-update');
 				swal({
 					type 				: 'success',
 					title 				: 'Template successfuly loaded!',
@@ -395,7 +396,7 @@ App.createModule('form',(function (app,$) {
 			if ( data.data ) {
 				form.data.id = data.data.id;
 			}			
-			$formActions.addClass('is-update');
+			app.$body.addClass('is-update');
 			swal({
 				type 	: 'success',
 				title   : data.message,

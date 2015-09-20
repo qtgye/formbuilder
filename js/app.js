@@ -378,11 +378,6 @@ App.createModule('request',(function (app,$) {
 		var url = POST.url + ( data.id ? '/' + data.id : '');
 		// process data before sending
 		var jsonString = JSON.stringify(data);
-		// jsonString = jsonString.replace(/\"(min|max)\":\"\d+\"/g,function (match) {
-		// 	var key = match.slice(0,5),
-		// 		stringedInt = match.slice(match.match(':').index+1);
-		// 	return key + ':' + stringedInt.replace('"','','g');
-		// });
 
 		return $.ajax({
 			url 		: url,
@@ -749,6 +744,7 @@ App.createModule('editor',(function (app,$) {
 						title 				: 'Oops!',
 						text 				: "Options must have at least 2 pairs of valid label/vale",
 						type 				: "error",
+						showConfirmButton 	: true,
 						confirmButtonText 	: "Ok"
 					});
 					hasError 	= true;
@@ -1808,7 +1804,7 @@ App.createModule('form',(function (app,$) {
 		$createBtn.on('click',function () {
 			var defaultForm = cloneObject(Defaults.form);
 			replaceForm(defaultForm);
-			$formActions.removeClass('is-update');
+			app.$body.removeClass('is-update');
 		});
 	}
 
@@ -1842,14 +1838,14 @@ App.createModule('form',(function (app,$) {
 	}
 
 	// clears the form content
-	function clearFormContent () {
-		Editor.reset();
+	function clearFormContent () {		
 		getContentObjects().forEach(function (_section) {
 			_section.remove();
 		});
 		form.data.config = [];
 		form.$formContent.empty();
 		sortableInitialized = false;
+		Editor.reset();
 	}
 
 	// updates the form data
@@ -1875,7 +1871,8 @@ App.createModule('form',(function (app,$) {
 		if ( newData && newData.title ) {
 			removeForm();
 			create(newData);
-			Editor.closeEditor();			
+			Editor.reset();
+			Editor.closeEditor();		
 		}		
 	}
 
@@ -1922,7 +1919,7 @@ App.createModule('form',(function (app,$) {
 			console.log(newFormData);
 			try  {
 				replaceForm(newFormData);
-				$formActions.addClass('is-update');
+				app.$body.addClass('is-update');
 				swal({
 					type 				: 'success',
 					title 				: 'Template successfuly loaded!',
@@ -1956,7 +1953,7 @@ App.createModule('form',(function (app,$) {
 			if ( data.data ) {
 				form.data.id = data.data.id;
 			}			
-			$formActions.addClass('is-update');
+			app.$body.addClass('is-update');
 			swal({
 				type 	: 'success',
 				title   : data.message,

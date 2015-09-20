@@ -499,6 +499,17 @@ label.label-block {
 	width: 10em;
 }
 
+.editor-field-status {
+	display: none;
+}
+.is-update .editor-field-status {
+	display: table-row;
+}
+
+
+
+
+
 
 /* Modal Styles */
 .modal {
