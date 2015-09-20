@@ -1912,7 +1912,7 @@ App.createModule('form',(function (app,$) {
 				section.fields.forEach(function (field) {
 					// validate options
 					if ( field.options ) {
-						isValid = 	field.options.length > 1 &&
+						isValid = 	field.options.length > 2 &&
 									field.options.every(function (option) {
 										return option.label && option.value;
 									});
