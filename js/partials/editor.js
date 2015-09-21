@@ -13,6 +13,9 @@ App.createModule('editor',(function (app,$) {
 	// ====================================================================================
 	var module = {};
 
+	module.hasError = false;
+	module.errorEditor = null;
+
 
 
 	// define private variables
@@ -22,8 +25,6 @@ App.createModule('editor',(function (app,$) {
 		editors = {},
 		editorTemplate,
 		editorClicked,
-		hasError,
-		errorEditor,
 		currentOpen, // holds the data-id of the open editor
 
 		$editorGuide;
@@ -79,7 +80,8 @@ App.createModule('editor',(function (app,$) {
 		// opens the editor
 		function open () {
 			module.closeEditor();
-			if ( !hasError ) {				
+			console.log(module.hasError);
+			if ( !module.hasError ) {				
 				self.$parent.addClass('has-open-editor');
 				currentOpen = self.id;
 			}			
@@ -90,11 +92,23 @@ App.createModule('editor',(function (app,$) {
 			if ( object.data.isRadiobox || object.data.isSwitch || object.data.isSelect ) {
 				var formDataString = self.$form.serialize(),
 					optionsVal = self.$optionsEl.val().split(/[\r\n]/),
-					isValid;
-				isValid = optionsVal.length >= 2 &&
-						  optionsVal.every(function (item) {
-						  	return item.match(/(^\"?[^\"]+\"?$|[^"]+),[\w\d\s]+/);
-						  });
+					isValid = true;
+				if ( optionsVal.length >= 2 ) {
+					optionsVal.forEach(function (option) {
+						var opt = option.trim();
+						if (
+							!opt.match(/^[\“\"][^“”]+[\”\"],[\“\"][^“”]+[\”\"]$/)
+							&& !opt.match(/^[^,]+,[^,]+$/)
+							&& !opt.match(/^[\“\"][^“”]+[\”\"],[^,]+$/)
+							&& !opt.match(/^[^\,]+,[\“\"][^“”]+[\”\"]$/)
+						) {
+							isValid = false;
+						}
+					});
+				} else {
+					isValid  = false;
+				}
+
 				if ( !isValid ) {
 					swal({
 						title 				: 'Oops!',
@@ -103,14 +117,17 @@ App.createModule('editor',(function (app,$) {
 						showConfirmButton 	: true,
 						confirmButtonText 	: "Ok"
 					});
-					hasError 	= true;
-					errorEditor = self.id; 
+					module.hasError 	= true;
+					module.errorEditor = self.id;
+
 				} else {
 					self.$parent.removeClass('has-open-editor');
 					currentOpen = null;
-					if ( hasError &&  errorEditor == self.id ) {
-						hasError 	= false;
-						errorEditor = null; 
+					console.log(module.errorEditor);
+					if ( module.hasError &&  module.errorEditor == self.id ) {
+						console.log('this was error');
+						module.hasError 	= false;
+						module.errorEditor = null; 
 					}
 				}
 			} else {
@@ -139,25 +156,37 @@ App.createModule('editor',(function (app,$) {
 				formData 	= self.$form.serializeArray();
 				
 			formData.forEach(function (pair) {
-				// Convert options into array				
+				// Convert options into array	
 				if ( pair.name == 'options' ) {
-					var arr = pair.value.split('\r\n').map(function (option) {
-						var label,value;
-						// checked for quoted input
-						if ( option.match(/\"[^\"]+"/) ) {
-							label = option.match(/\"[^\"]+"/)[0];
-							value = option.slice(label.length+1);
-							console.log(label);
-							console.log(value);
-						}
-						else {
-							var opt = option.split(',');
-							label = opt[0];
-							value = opt[1];
+					if ( pair.value.length > 1 ) {
+						var arr = pair.value.split('\r\n');
+						if ( arr.length > 1 ) {
+							arr = arr.map(function (option) {
+								var label,value,
+									option = option.trim();
+								// checked for quoted input
+								if ( option.match(/^[\“\"][^“"]+[\”\"]/) ) {
+									label = option.match(/^[\“\"][^“"]+[\”\"]/)[0];
+									console.log('label match');
+									console.log(label);
+									value = option.slice(label.length+1).trim();
+									label = label.trim();
+									console.log('label should be ' + label);
+								}
+								else {
+									label = option.substring(0,option.indexOf(','));
+									value = option.replace(label+',','').trim();
+									label = label.trim();
+								}						
+								return { label: label, value: value};
+							});
+						} else {
+							arr = [];
 						}						
-						return { label: label, value: value};
-					});
-					pair.value = arr;
+						pair.value = arr;
+					} else {
+						pair.value = [];
+					}
 				}				
 				// Convert to boolean
 				if ( pair.value == "true" ) {
@@ -277,7 +306,7 @@ App.createModule('editor',(function (app,$) {
 
 	// checks if there is an error
 	function editorHasError () {
-		return hasError;
+		return module.hasError;
 	}
 
 	// bind event handlers
@@ -301,7 +330,6 @@ App.createModule('editor',(function (app,$) {
 	module.editorClicked	= false;
 	module.hasOpenEditor 	= hasOpenEditor;
 	module.reset 			= reset;
-	module.hasError 		= editorHasError;
 
 
 	// define module init

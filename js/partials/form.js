@@ -233,7 +233,7 @@ App.createModule('form',(function (app,$) {
 		// get the form contents data
 		$saveBtn.on('click',function () {
 			validateForm();
-			if ( formDataError.length === 0 ) {
+			if ( formDataError.length === 0 && !Editor.hasError ) {
 				var formData 	= cloneObject(getFormData());
 				console.log('data to send:');
 				console.log(formData);
@@ -313,7 +313,7 @@ App.createModule('form',(function (app,$) {
 		form.data.title 		= newData.title;
 		form.data.description 	= newData.description;
 		form.data.tags 			= newData.tags;
-		form.data.status 			= newData.status;
+		form.data.status 		= newData.status;
 		form.$formTitle.text(newData.title);
 	}
 
@@ -356,12 +356,20 @@ App.createModule('form',(function (app,$) {
 		getFormData().config.forEach(function (section) {
 			if ( section.fields ) {
 				section.fields.forEach(function (_field) {
-					// validate options
-					if ( _field.options ) {
-						if ( _field.options.length > 1 ) {
-							if ( _field.options instanceof Array ) {
+					// validate options for selected field types
+					if ( _field.isSelect || _field.isSwitch || _field.isRadiobox ) {
+						console.log('validating,..');
+						if ( _field.options instanceof Array ) {
+							if ( _field.options.length > 1 ) {								
 								_field.options.forEach(function (option) {
-									if ( !option.label || !option.value ) {
+									var opt = option.label + ',' + option.value;
+									console.log(opt);
+									if (
+										!opt.match(/^[\“\"][^“”]+[\”\"],[\“\"][^“”]+[\”\"]$/)
+										&& !opt.match(/^[^,]+,[^,]+$/)
+										&& !opt.match(/^[\“\"][^“”]+[\”\"],[^,]+$/)
+										&& !opt.match(/^[^\,]+,[\“\"][^“”]+[\”\"]$/)
+									) {
 										isValid = false;	
 										formDataError.push('Options must have at least two pairs of valid label and value.');							
 									}

@@ -94,8 +94,6 @@ App.createModule('fields',(function (app,$) {
 		// ------------------------
 		self.update = function (newData) {
 
-			console.log(newData);
-			
 			for ( var key in self.data ) {
 				if ( key in newData ) {
 					self.data[key] = newData[key];
@@ -112,17 +110,53 @@ App.createModule('fields',(function (app,$) {
 					delete self.data.isSwitch;
 				}
 			}
+
+			// prepare data for presentation
+			var presentationData = cloneObject(self.data);
+			if ( 'options' in presentationData ) {
+				if ( presentationData.options instanceof Array && presentationData.options.length > 1 ) {
+					var newOpts = presentationData.options.map(function (option) {
+						
+						var newLabel = option.label ? option.label.replace(/[\“\”\"]/gi,'') : option.label,
+							newValue = option.value ? option.value.replace(/[\“\”\"]/gi,'') : option.value;
+						return {label:newLabel, value:newValue};
+					});
+					presentationData.options = newOpts;
+				}
+			}
+			console.log(presentationData.options);
 			
-			updateFieldDOM(self,self.data);
+			updateFieldDOM(self,presentationData);
 
 			// validate options if any
-			if ( self.data.options ) {
-				var isValid = 	self.data.options.length > 1 &&
-								self.data.options.every(function (option) {
-									return option.label && option.value;
-								});
-				if ( isValid ) {
+			var isValid  = true;
+			if ( self.data.isSwitch || self.data.isRadiobox || self.data.isSelect ) {
+				if ( self.data.options instanceof Array && self.data.options.length > 1 ) {
+					self.data.options.forEach(function (option) {
+						var opt = option.label + ',' + option.value;
+						if (
+							!opt.match(/^[\“\"][^“”]+[\”\"],[\“\"][^“”]+[\”\"]$/)
+							&& !opt.match(/^[^,]+,[^,]+$/)
+							&& !opt.match(/^[\“\"][^“”]+[\”\"],[^,]+$/)
+							&& !opt.match(/^[^\,]+,[\“\"][^“”]+[\”\"]$/)
+						) {
+							isValid = false;
+						}
+					});
+				} else {
+					isValid = false;
+				}
+
+				// if error
+				if ( !isValid ) {
 					Editor.hasError = true;
+					Editor.errorEditor = self.id;
+					console.log('error from field update');
+				} else {
+					if ( Editor.hasError && Editor.errorEditor == self.id ) {
+						Editor.hasError = false;
+						Editor.errorEditor = null;
+					}
 				}
 			}
 

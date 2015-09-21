@@ -200,9 +200,11 @@
 				<div class="field-content js-drag-handle js-field-handle">
 					<label class="<%=(required?'is-required':'')%>"><%=label%></label>
 					<select id="<%=key%>" name="<%=key%>" <%= ( multiple ? 'multiple' : '' ) %> >
-						<% options.forEach(function(option,key){ %>
-				    		<option value="<%=option.value%>" <%= ( value.match(new RegExp(option.value,'i')) || ( !value && key === 0 ) ? 'selected' : '' ) %> ><%=option.label.replace(/(^\"|\"$)/gi,'')%></option>
-						<% }); %>
+						<% if ( options instanceof Array) { %>
+							<% options.forEach(function(option,key){ %>
+					    		<option value="<%=option.value%>" <%= ( value.match(new RegExp(option.value,'i')) || ( !value && key === 0 ) ? 'selected' : '' ) %> ><%=option.label%></option>
+							<% }); %>
+						<%}%>
 					</select>
 					<span class="help-block field-description"><%=description%></span>
 				</div>	
@@ -219,11 +221,13 @@
 				<div class="field-content js-drag-handle js-field-handle">
 					<label ><%=label%></label>
 					<span class="help-block field-description"><%=description%></span>
-					<% options.forEach(function(option,key){ %>
-						<label class="label-block">
-							<input type="radio" name="<%=id%>" value="<%=option.value%>" <%= ( value.match(new RegExp(option.value,'i')) || ( !value && key === 0 ) ? 'checked' : '' ) %> > <%=option.label.replace(/(^\"|\"$)/gi,'')%>
-						</label>
-					<% }); %>
+					<% if ( options instanceof Array) { %>
+						<% options.forEach(function(option,key){ %>
+							<label class="label-block">
+								<input type="radio" name="<%=id%>" value="<%=option.value%>" <%= ( value.match(new RegExp(option.value,'i')) || ( !value && key === 0 ) ? 'checked' : '' ) %> > <%=option.label%>
+							</label>
+						<% }); %>
+					<%}%>
 				</div>	
 				<i class="disable-icon fa fa-eye-slash fa-lg"></i>					
 			</div>
@@ -238,11 +242,13 @@
 				<div class="field-content js-drag-handle js-field-handle">
 					<label class="<%=(required?'is-required':'')%>"><%=label%></label>
 					<span class="help-block field-description"><%=description%></span>
-					<% options.forEach(function(option,key) { %>
-						<label class="label-block">
-							<input type="checkbox" name="<%=option.key%>" value="<%=option.value%>" <%= ( value.match(new RegExp(option.value,'i')) || ( !value && key === 0 ) ? 'checked' : '' ) %> > <%=option.label.replace(/(^\"|\"$)/gi,'')%>
-						</label>
-					<% }); %>					
+					<% if ( options instanceof Array ) { %>
+						<% options.forEach(function(option,key) { %>
+							<label class="label-block">
+								<input type="checkbox" name="<%=option.key%>" value="<%=option.value%>" <%= ( value.match(new RegExp(option.value,'i')) || ( !value && key === 0 ) ? 'checked' : '' ) %> > <%=option.label%>
+							</label>
+						<% }); %>	
+					<%}%>				
 				</div>		
 				<i class="disable-icon fa fa-eye-slash fa-lg"></i>				
 			</div>

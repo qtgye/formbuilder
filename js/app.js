@@ -657,6 +657,9 @@ App.createModule('editor',(function (app,$) {
 	// ====================================================================================
 	var module = {};
 
+	module.hasError = false;
+	module.errorEditor = null;
+
 
 
 	// define private variables
@@ -666,8 +669,6 @@ App.createModule('editor',(function (app,$) {
 		editors = {},
 		editorTemplate,
 		editorClicked,
-		hasError,
-		errorEditor,
 		currentOpen, // holds the data-id of the open editor
 
 		$editorGuide;
@@ -723,7 +724,8 @@ App.createModule('editor',(function (app,$) {
 		// opens the editor
 		function open () {
 			module.closeEditor();
-			if ( !hasError ) {				
+			console.log(module.hasError);
+			if ( !module.hasError ) {				
 				self.$parent.addClass('has-open-editor');
 				currentOpen = self.id;
 			}			
@@ -734,11 +736,23 @@ App.createModule('editor',(function (app,$) {
 			if ( object.data.isRadiobox || object.data.isSwitch || object.data.isSelect ) {
 				var formDataString = self.$form.serialize(),
 					optionsVal = self.$optionsEl.val().split(/[\r\n]/),
-					isValid;
-				isValid = optionsVal.length >= 2 &&
-						  optionsVal.every(function (item) {
-						  	return item.match(/(^\"?[^\"]+\"?$|[^"]+),[\w\d\s]+/);
-						  });
+					isValid = true;
+				if ( optionsVal.length >= 2 ) {
+					optionsVal.forEach(function (option) {
+						var opt = option.trim();
+						if (
+							!opt.match(/^[\“\"][^“”]+[\”\"],[\“\"][^“”]+[\”\"]$/)
+							&& !opt.match(/^[^,]+,[^,]+$/)
+							&& !opt.match(/^[\“\"][^“”]+[\”\"],[^,]+$/)
+							&& !opt.match(/^[^\,]+,[\“\"][^“”]+[\”\"]$/)
+						) {
+							isValid = false;
+						}
+					});
+				} else {
+					isValid  = false;
+				}
+
 				if ( !isValid ) {
 					swal({
 						title 				: 'Oops!',
@@ -747,14 +761,17 @@ App.createModule('editor',(function (app,$) {
 						showConfirmButton 	: true,
 						confirmButtonText 	: "Ok"
 					});
-					hasError 	= true;
-					errorEditor = self.id; 
+					module.hasError 	= true;
+					module.errorEditor = self.id;
+
 				} else {
 					self.$parent.removeClass('has-open-editor');
 					currentOpen = null;
-					if ( hasError &&  errorEditor == self.id ) {
-						hasError 	= false;
-						errorEditor = null; 
+					console.log(module.errorEditor);
+					if ( module.hasError &&  module.errorEditor == self.id ) {
+						console.log('this was error');
+						module.hasError 	= false;
+						module.errorEditor = null; 
 					}
 				}
 			} else {
@@ -783,25 +800,37 @@ App.createModule('editor',(function (app,$) {
 				formData 	= self.$form.serializeArray();
 				
 			formData.forEach(function (pair) {
-				// Convert options into array				
+				// Convert options into array	
 				if ( pair.name == 'options' ) {
-					var arr = pair.value.split('\r\n').map(function (option) {
-						var label,value;
-						// checked for quoted input
-						if ( option.match(/\"[^\"]+"/) ) {
-							label = option.match(/\"[^\"]+"/)[0];
-							value = option.slice(label.length+1);
-							console.log(label);
-							console.log(value);
-						}
-						else {
-							var opt = option.split(',');
-							label = opt[0];
-							value = opt[1];
+					if ( pair.value.length > 1 ) {
+						var arr = pair.value.split('\r\n');
+						if ( arr.length > 1 ) {
+							arr = arr.map(function (option) {
+								var label,value,
+									option = option.trim();
+								// checked for quoted input
+								if ( option.match(/^[\“\"][^“"]+[\”\"]/) ) {
+									label = option.match(/^[\“\"][^“"]+[\”\"]/)[0];
+									console.log('label match');
+									console.log(label);
+									value = option.slice(label.length+1).trim();
+									label = label.trim();
+									console.log('label should be ' + label);
+								}
+								else {
+									label = option.substring(0,option.indexOf(','));
+									value = option.replace(label+',','').trim();
+									label = label.trim();
+								}						
+								return { label: label, value: value};
+							});
+						} else {
+							arr = [];
 						}						
-						return { label: label, value: value};
-					});
-					pair.value = arr;
+						pair.value = arr;
+					} else {
+						pair.value = [];
+					}
 				}				
 				// Convert to boolean
 				if ( pair.value == "true" ) {
@@ -921,7 +950,7 @@ App.createModule('editor',(function (app,$) {
 
 	// checks if there is an error
 	function editorHasError () {
-		return hasError;
+		return module.hasError;
 	}
 
 	// bind event handlers
@@ -945,7 +974,6 @@ App.createModule('editor',(function (app,$) {
 	module.editorClicked	= false;
 	module.hasOpenEditor 	= hasOpenEditor;
 	module.reset 			= reset;
-	module.hasError 		= editorHasError;
 
 
 	// define module init
@@ -1071,8 +1099,6 @@ App.createModule('fields',(function (app,$) {
 		// ------------------------
 		self.update = function (newData) {
 
-			console.log(newData);
-			
 			for ( var key in self.data ) {
 				if ( key in newData ) {
 					self.data[key] = newData[key];
@@ -1089,17 +1115,53 @@ App.createModule('fields',(function (app,$) {
 					delete self.data.isSwitch;
 				}
 			}
+
+			// prepare data for presentation
+			var presentationData = cloneObject(self.data);
+			if ( 'options' in presentationData ) {
+				if ( presentationData.options instanceof Array && presentationData.options.length > 1 ) {
+					var newOpts = presentationData.options.map(function (option) {
+						
+						var newLabel = option.label ? option.label.replace(/[\“\”\"]/gi,'') : option.label,
+							newValue = option.value ? option.value.replace(/[\“\”\"]/gi,'') : option.value;
+						return {label:newLabel, value:newValue};
+					});
+					presentationData.options = newOpts;
+				}
+			}
+			console.log(presentationData.options);
 			
-			updateFieldDOM(self,self.data);
+			updateFieldDOM(self,presentationData);
 
 			// validate options if any
-			if ( self.data.options ) {
-				var isValid = 	self.data.options.length > 1 &&
-								self.data.options.every(function (option) {
-									return option.label && option.value;
-								});
-				if ( isValid ) {
+			var isValid  = true;
+			if ( self.data.isSwitch || self.data.isRadiobox || self.data.isSelect ) {
+				if ( self.data.options instanceof Array && self.data.options.length > 1 ) {
+					self.data.options.forEach(function (option) {
+						var opt = option.label + ',' + option.value;
+						if (
+							!opt.match(/^[\“\"][^“”]+[\”\"],[\“\"][^“”]+[\”\"]$/)
+							&& !opt.match(/^[^,]+,[^,]+$/)
+							&& !opt.match(/^[\“\"][^“”]+[\”\"],[^,]+$/)
+							&& !opt.match(/^[^\,]+,[\“\"][^“”]+[\”\"]$/)
+						) {
+							isValid = false;
+						}
+					});
+				} else {
+					isValid = false;
+				}
+
+				// if error
+				if ( !isValid ) {
 					Editor.hasError = true;
+					Editor.errorEditor = self.id;
+					console.log('error from field update');
+				} else {
+					if ( Editor.hasError && Editor.errorEditor == self.id ) {
+						Editor.hasError = false;
+						Editor.errorEditor = null;
+					}
 				}
 			}
 
@@ -1803,7 +1865,7 @@ App.createModule('form',(function (app,$) {
 		// get the form contents data
 		$saveBtn.on('click',function () {
 			validateForm();
-			if ( formDataError.length === 0 ) {
+			if ( formDataError.length === 0 && !Editor.hasError ) {
 				var formData 	= cloneObject(getFormData());
 				console.log('data to send:');
 				console.log(formData);
@@ -1883,7 +1945,7 @@ App.createModule('form',(function (app,$) {
 		form.data.title 		= newData.title;
 		form.data.description 	= newData.description;
 		form.data.tags 			= newData.tags;
-		form.data.status 			= newData.status;
+		form.data.status 		= newData.status;
 		form.$formTitle.text(newData.title);
 	}
 
@@ -1926,12 +1988,20 @@ App.createModule('form',(function (app,$) {
 		getFormData().config.forEach(function (section) {
 			if ( section.fields ) {
 				section.fields.forEach(function (_field) {
-					// validate options
-					if ( _field.options ) {
-						if ( _field.options.length > 1 ) {
-							if ( _field.options instanceof Array ) {
+					// validate options for selected field types
+					if ( _field.isSelect || _field.isSwitch || _field.isRadiobox ) {
+						console.log('validating,..');
+						if ( _field.options instanceof Array ) {
+							if ( _field.options.length > 1 ) {								
 								_field.options.forEach(function (option) {
-									if ( !option.label || !option.value ) {
+									var opt = option.label + ',' + option.value;
+									console.log(opt);
+									if (
+										!opt.match(/^[\“\"][^“”]+[\”\"],[\“\"][^“”]+[\”\"]$/)
+										&& !opt.match(/^[^,]+,[^,]+$/)
+										&& !opt.match(/^[\“\"][^“”]+[\”\"],[^,]+$/)
+										&& !opt.match(/^[^\,]+,[\“\"][^“”]+[\”\"]$/)
+									) {
 										isValid = false;	
 										formDataError.push('Options must have at least two pairs of valid label and value.');							
 									}
