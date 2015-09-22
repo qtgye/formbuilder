@@ -493,13 +493,9 @@ App.createModule('user',(function (app,$) {
 	credentials = {
 		user_id 		: [
 			"1e5cb1f2-0e3f-441d-8958-c6fc392071b0",
-			"test1",
-			"test2"
 		],
 		account_id	 	: [
 			"5b960be8-f871-475c-ad76-6b8ab1bc4200",
-			"test3",
-			"test4"
 		]
 	},
 
@@ -519,10 +515,23 @@ App.createModule('user',(function (app,$) {
 		return null;
 	}
 
+	// updates user ids
+	function updateUsers (usersArray) {
+		credentials.user_id = usersArray;
+	}
+
+	// updates account ids
+	function updateAccounts (accountsArray) {
+		credentials.account_id = accountsArray;
+	}
+
 
 	// define public application interface
 	// ====================================================================================
-	module.getAll = getAll;
+	module.getAll 			= getAll;
+	module.updateUsers 		= updateUsers;
+	module.updateAccounts 	= updateAccounts;
+
 
 	// define module init
 	// ====================================================================================
@@ -1654,6 +1663,8 @@ App.createModule('form',(function (app,$) {
 	Request,
 	Defaults,
 	Editor,
+	User,
+
 
 	sortableInitialized = false,
 	formDataError = [],
@@ -1679,6 +1690,7 @@ App.createModule('form',(function (app,$) {
 		Sections 	= app.sections 	;
 		Fields 		= app.fields 	;
 		Request 	= app.request 	;
+		User 		= app.user 		;
 
 		data 		= cloneObject(data);
 		template 	= $('#tmpl-read-form')[0].innerHTML;
@@ -2163,6 +2175,26 @@ App.createModule('form',(function (app,$) {
 		}
 	}
 
+	// loads defaults
+	function loadDefaults () {
+		// create initial form
+		module.create(cloneObject(Defaults.form));
+
+		// loaded template if id is present
+		var pathname = window.location.pathname;
+		if ( pathname.length > 1 ) {
+			formLoader.fetchedFormId = pathname.slice(1);			
+			Request.getForm(formLoader.fetchedFormId,onFetchFormSuccess,onFetchFormError);
+			swal({
+				type 				: 'info',
+				title 				: 'Loading template...',
+				showConfirmButton 	: false
+			});	
+		}
+
+		swal.close();
+	}
+
 
 	// define public application interface
 	// ====================================================================================
@@ -2184,20 +2216,36 @@ App.createModule('form',(function (app,$) {
 		bindGlobalHandlers();
 		initializeFormLoader();
 
-		// create initial form
-		module.create(cloneObject(Defaults.form));
+		swal({
+			type 				: 'info',
+			title 				: 'Preparing Form Builder...',
+			showConfirmButton 	: false,
+			allowEscapeKey 		: false
+		});
 
-		// loaded template if id is present
-		var pathname = window.location.pathname;
-		if ( pathname.length > 1 ) {
-			formLoader.fetchedFormId = pathname.slice(1);			
-			Request.getForm(formLoader.fetchedFormId,onFetchFormSuccess,onFetchFormError);
-			swal({
-				type 				: 'info',
-				title 				: 'Loading template...',
-				showConfirmButton 	: false
-			});	
-		}
+
+
+		// uncomment this
+		// $.ajax({
+		// 	url 		: '',
+		// 	method 		: 'GET',
+		// 	dataType 	: 'json',
+		// 	error 		: function (response) {
+		// 		// error handler
+		// 	},
+		// 	success		: function (data) {
+		// 		// update user ids by using
+		// 		// User.updateUsers(arrayOfIds)
+
+		// 		// update account ids by using
+		// 		// User.updateAccounts(arrayOfIds)
+
+		// 		// loadDefaults();		
+		// 	}			
+		// });
+
+		// move this function call inside success callback
+		loadDefaults();		
 	};
 
 	// retrn module object

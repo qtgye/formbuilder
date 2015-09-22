@@ -22,6 +22,8 @@ App.createModule('form',(function (app,$) {
 	Request,
 	Defaults,
 	Editor,
+	User,
+
 
 	sortableInitialized = false,
 	formDataError = [],
@@ -47,6 +49,7 @@ App.createModule('form',(function (app,$) {
 		Sections 	= app.sections 	;
 		Fields 		= app.fields 	;
 		Request 	= app.request 	;
+		User 		= app.user 		;
 
 		data 		= cloneObject(data);
 		template 	= $('#tmpl-read-form')[0].innerHTML;
@@ -531,6 +534,26 @@ App.createModule('form',(function (app,$) {
 		}
 	}
 
+	// loads defaults
+	function loadDefaults () {
+		// create initial form
+		module.create(cloneObject(Defaults.form));
+
+		// loaded template if id is present
+		var pathname = window.location.pathname;
+		if ( pathname.length > 1 ) {
+			formLoader.fetchedFormId = pathname.slice(1);			
+			Request.getForm(formLoader.fetchedFormId,onFetchFormSuccess,onFetchFormError);
+			swal({
+				type 				: 'info',
+				title 				: 'Loading template...',
+				showConfirmButton 	: false
+			});	
+		}
+
+		swal.close();
+	}
+
 
 	// define public application interface
 	// ====================================================================================
@@ -552,20 +575,36 @@ App.createModule('form',(function (app,$) {
 		bindGlobalHandlers();
 		initializeFormLoader();
 
-		// create initial form
-		module.create(cloneObject(Defaults.form));
+		swal({
+			type 				: 'info',
+			title 				: 'Preparing Form Builder...',
+			showConfirmButton 	: false,
+			allowEscapeKey 		: false
+		});
 
-		// loaded template if id is present
-		var pathname = window.location.pathname;
-		if ( pathname.length > 1 ) {
-			formLoader.fetchedFormId = pathname.slice(1);			
-			Request.getForm(formLoader.fetchedFormId,onFetchFormSuccess,onFetchFormError);
-			swal({
-				type 				: 'info',
-				title 				: 'Loading template...',
-				showConfirmButton 	: false
-			});	
-		}
+
+
+		// uncomment this
+		// $.ajax({
+		// 	url 		: '',
+		// 	method 		: 'GET',
+		// 	dataType 	: 'json',
+		// 	error 		: function (response) {
+		// 		// error handler
+		// 	},
+		// 	success		: function (data) {
+		// 		// update user ids by using
+		// 		// User.updateUsers(arrayOfIds)
+
+		// 		// update account ids by using
+		// 		// User.updateAccounts(arrayOfIds)
+
+		// 		// loadDefaults();		
+		// 	}			
+		// });
+
+		// move this function call inside success callback
+		loadDefaults();		
 	};
 
 	// retrn module object
